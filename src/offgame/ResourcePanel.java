@@ -3,6 +3,8 @@ package offgame;
 import java.awt.*;
 import java.awt.image.*;
 import java.io.IOException;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -35,9 +37,16 @@ public class ResourcePanel extends JPanel
         g2d.drawRect(0, 0, getWidth(), getHeight());
 	}
 	
-	protected void setText(String text)
+	protected void setTextAsNum(int num)
 	{
-		label.setText(text);
+		label.setText(NumberFormat.getNumberInstance(Locale.US).format(num));
+		revalidate();
+	}
+	
+	protected void setTextAsMail(int num)
+	{
+		label.setText("[" + num + "]");
+		revalidate();
 	}
 	
 	private ResourceLabel label;

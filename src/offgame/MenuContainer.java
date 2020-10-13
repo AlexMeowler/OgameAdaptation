@@ -10,6 +10,7 @@ import javax.swing.*;
 
 public class MenuContainer extends JPanel implements MouseListener, MouseMotionListener
 {
+
 	public MenuContainer()
 	{
 		addMouseListener(this);
@@ -25,40 +26,40 @@ public class MenuContainer extends JPanel implements MouseListener, MouseMotionL
 		constraints.gridwidth = 1;
 		constraints.gridheight = 1;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
-		add(new MenuLabel("Технологии", constraints.gridy), constraints);
+		add(new MenuLabel("Технологии", TECH_TREE), constraints);
 		constraints.gridx = 0;
 		constraints.gridy = 1;
-		add(new MenuLabel("Обзор", constraints.gridy), constraints);
+		add(new MenuLabel("Обзор", OVERVIEW), constraints);
 		constraints.gridx = 0;
 		constraints.gridy = 2;
-		add(new MenuLabel("Ресурсы", constraints.gridy), constraints);
+		add(new MenuLabel("Ресурсы", RESOURCES), constraints);
 		constraints.gridx = 0;
 		constraints.gridy = 3;
-		add(new MenuLabel("Постройки", constraints.gridy), constraints);
+		add(new MenuLabel("Постройки", BUILDINGS), constraints);
 		constraints.gridx = 0;
 		constraints.gridy = 4;
-		add(new MenuLabel("Исследования", constraints.gridy), constraints);
+		add(new MenuLabel("Исследования", RESEARCH), constraints);
 		constraints.gridx = 0;
 		constraints.gridy = 5;
-		add(new MenuLabel("Верфь", constraints.gridy), constraints);
+		add(new MenuLabel("Верфь", SPACE_YARD), constraints);
 		constraints.gridx = 0;
 		constraints.gridy = 6;
-		add(new MenuLabel("Оборона", constraints.gridy), constraints);
+		add(new MenuLabel("Оборона", DEFENCE), constraints);
 		constraints.gridx = 0;
 		constraints.gridy = 7;
-		add(new MenuLabel("Флот", constraints.gridy), constraints);
+		add(new MenuLabel("Флот", FLEET), constraints);
 		constraints.gridx = 0;
 		constraints.gridy = 8;
-		add(new MenuLabel("Галактика", constraints.gridy), constraints);
+		add(new MenuLabel("Галактика", GALAXY), constraints);
 		constraints.gridx = 0;
 		constraints.gridy = 9;
-		add(new MenuLabel("Империя", constraints.gridy), constraints);
+		add(new MenuLabel("Империя", EMPIRE), constraints);
 		constraints.gridx = 0;
 		constraints.gridy = 10;
-		add(new MenuLabel("Симулятор боя", constraints.gridy), constraints);
+		add(new MenuLabel("Симулятор боя", SIMULATOR), constraints);
 		constraints.gridx = 0;
 		constraints.gridy = 11;
-		add(new MenuLabel("Сообщения", constraints.gridy), constraints);
+		add(new MenuLabel("Сообщения", MESSAGES), constraints);
 		constraints.gridx = 0;
 		constraints.gridy = 12;
 		add(new MenuLabel("Выход", EXIT_CODE), constraints);
@@ -128,12 +129,17 @@ public class MenuContainer extends JPanel implements MouseListener, MouseMotionL
 				{
 					switch(((MenuLabel)list[i]).getCode())
 					{
+						case OVERVIEW:
+						((OffGamePanel)SwingUtilities.getAncestorNamed("main_panel", this)).setCurrentWindow(OVERVIEW);
+						break;
+						case BUILDINGS:
+							((OffGamePanel)SwingUtilities.getAncestorNamed("main_panel", this)).setCurrentWindow(BUILDINGS);
+							break;
 						case EXIT_CODE:
 							JFrame window = (JFrame)SwingUtilities.getAncestorNamed("game frame", this);
-							if  (window != null)
-							{
-								window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
-							}
+							OffGamePanel panel = (OffGamePanel)SwingUtilities.getAncestorNamed("main_panel", this);
+							panel.killClock();
+							window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
 							break;
 					}
 				}
@@ -199,5 +205,17 @@ public class MenuContainer extends JPanel implements MouseListener, MouseMotionL
 		}
 	}
 	
+	public static final int TECH_TREE = 0;
+	public static final int OVERVIEW = 1;
+	public static final int RESOURCES = 2;
+	public static final int BUILDINGS = 3;
+	public static final int RESEARCH = 4;
+	public static final int SPACE_YARD = 5;
+	public static final int DEFENCE = 6;
+	public static final int FLEET = 7;
+	public static final int GALAXY = 8;
+	public static final int EMPIRE = 9;
+	public static final int SIMULATOR = 10;
+	public static final int MESSAGES = 11;
 	public static final int EXIT_CODE = 12;
 }
