@@ -5,19 +5,24 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-public class InfoPanel extends JPanel  implements MouseWheelListener, MouseListener, MouseMotionListener
+public class InfoPanel extends JPanel  implements MouseWheelListener, MouseListener, MouseMotionListener, Scrollable
 {
-	public InfoPanel(String name)
+	public InfoPanel(String name, Planet planet)
 	{
 		setName(name);
 		setLayout(new GridBagLayout());
+		current_planet = planet;
 	}
 	
 	public void mouseWheelMoved(MouseWheelEvent e) 
 	{
-		
+		if(e.getSource() instanceof InfoPanel)
+		{
+			JScrollBar bar = ((JScrollPane)SwingUtilities.getAncestorOfClass(JScrollPane.class, this)).getVerticalScrollBar();
+			int x = e.getWheelRotation();
+			bar.setValue(bar.getValue() + MOUSE_SPEED_MODIFIER * x);
+		}
 	}
-
 	public void mouseClicked(MouseEvent e) 
 	{
 		
@@ -52,6 +57,35 @@ public class InfoPanel extends JPanel  implements MouseWheelListener, MouseListe
 	{
 		
 	}
+
+	public Dimension getPreferredScrollableViewportSize() 
+	{
+		return null;
+	}
+
+	public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) 
+	{
+
+		return 0;
+	}
+
+	public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) 
+	{
+
+		return 0;
+	}
+
+	public boolean getScrollableTracksViewportWidth() 
+	{
+		return true;
+	}
+
+	public boolean getScrollableTracksViewportHeight() 
+	{
+		return false;
+	}
 	
 	protected GridBagConstraints constraints = new GridBagConstraints();
+	private static final int MOUSE_SPEED_MODIFIER = 60;
+	protected Planet current_planet;
 }

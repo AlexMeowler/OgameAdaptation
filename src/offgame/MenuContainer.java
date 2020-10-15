@@ -16,7 +16,6 @@ public class MenuContainer extends JPanel implements MouseListener, MouseMotionL
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		setName("menu");
-		
 		setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.weightx = 1.0f;
@@ -136,7 +135,7 @@ public class MenuContainer extends JPanel implements MouseListener, MouseMotionL
 							((OffGamePanel)SwingUtilities.getAncestorNamed("main_panel", this)).setCurrentWindow(BUILDINGS);
 							break;
 						case EXIT_CODE:
-							JFrame window = (JFrame)SwingUtilities.getAncestorNamed("game frame", this);
+							JFrame window = (JFrame)SwingUtilities.getAncestorNamed("game_frame", this);
 							OffGamePanel panel = (OffGamePanel)SwingUtilities.getAncestorNamed("main_panel", this);
 							panel.killClock();
 							window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
@@ -201,7 +200,6 @@ public class MenuContainer extends JPanel implements MouseListener, MouseMotionL
 					}
 				}
 			}
-			//repaint();
 		}
 	}
 	

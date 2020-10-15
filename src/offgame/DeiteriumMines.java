@@ -24,6 +24,17 @@ public class DeiteriumMines extends Building
 		return 20 * level * pow(1.1, level);
 	}
 	
+	public double calcDifference(int level1, int level2)
+	{
+		int save_level = level;
+		level = level1;
+		double first = calcConsuming();
+		level = level2;
+		double second = calcConsuming();
+		level = save_level;
+		return second - first;
+	}
+	
 	public double calcDifference(int level1, int level2, int temp)
 	{
 		int save_level = level;

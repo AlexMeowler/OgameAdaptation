@@ -15,9 +15,8 @@ public class OverviewPanel extends InfoPanel
 
 	public OverviewPanel(String name, Planet planet) 
 	{
-		super(name);
+		super(name, planet);
 		setOpaque(false);
-		addMouseWheelListener(this);
 		constraints.weightx = 1.0f;
 		constraints.weighty = 0.0f;
 		constraints.gridx = 0;
@@ -27,13 +26,12 @@ public class OverviewPanel extends InfoPanel
 		constraints.insets.bottom = 3;
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.NORTHWEST;
-		add(new TextLabel("Планета", false), constraints);
+		add(new TextLabel("Планета\"" + planet.getName() + "\"", false), constraints);
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		constraints.gridwidth = 3;
 		constraints.gridheight = 1;
 		constraints.anchor = GridBagConstraints.NORTH;
-		//constraints.ipady = 10;
 		add(new TextLabel("Почта", true), constraints);
 		constraints.gridx = 0;
 		constraints.gridy = 2;
@@ -83,7 +81,6 @@ public class OverviewPanel extends InfoPanel
 		constraints.gridheight = 1;
 		add(new PlanetImg(planet), constraints);
 		add(Box.createVerticalStrut(new PlanetImg(planet).getIcon().getIconHeight() + 30), constraints);
-		//add(Box.createHorizontalStrut(200), constraints);
 		constraints.gridx = 2;
 		constraints.gridy = 6;
 		constraints.gridwidth = 1;
@@ -234,16 +231,6 @@ public class OverviewPanel extends InfoPanel
 		}
 	}
 	
-	public void mouseWheelMoved(MouseWheelEvent e) 
-	{
-		if(e.getSource() instanceof OverviewPanel)
-		{
-			JScrollBar bar = ((JScrollPane)SwingUtilities.getAncestorOfClass(JScrollPane.class, this)).getVerticalScrollBar();
-			int x = e.getWheelRotation();
-			bar.setValue(bar.getValue() + MOUSE_SPEED_MODIFIER * x);
-		}
-	}
-	
 	private class TextLabel extends JLabel
 	{
 		public TextLabel(String text, boolean centered)
@@ -262,5 +249,4 @@ public class OverviewPanel extends InfoPanel
 	}
 	
 	private static final int STRUT_SIZE = 20;
-	private static final int MOUSE_SPEED_MODIFIER = 20;
 }

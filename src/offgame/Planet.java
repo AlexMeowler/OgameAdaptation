@@ -12,8 +12,9 @@ import javax.imageio.ImageIO;
 
 public class Planet 
 {
-	public Planet(int diameter, int temp_min, int temp_max, int gal, int system, int pos, int img_num) throws IOException
+	public Planet(String planet_name, int diameter, int temp_min, int temp_max, int gal, int system, int pos, int img_num) throws IOException
 	{
+		this.planet_name = planet_name;
 		this.diameter = diameter;
 		this.fields = round((float)(pow((double)this.diameter/1000, 2)));
 		this.temperature_min = temp_min;
@@ -30,6 +31,7 @@ public class Planet
 		metal_current = 1000;
 		crystal_current = 1000;
 		deiterium_current = 1000;
+		electricity_current = 0;
 	}
 	
 	public Image getImg()
@@ -70,7 +72,12 @@ public class Planet
 	public static Planet generateStartPlanet() throws IOException
 	{
 		Random r = new Random();
-		return new Planet(12247, -6, 0, 1, 1, 1, r.nextInt(31)+1);
+		return new Planet("Planet", 12247, -6, 0, 1, 1, 1, r.nextInt(31)+1);
+	}
+	
+	public String getName()
+	{
+		return planet_name;
 	}
 	
 	public double getCurrentMetal()
@@ -88,11 +95,21 @@ public class Planet
 		return deiterium_current;
 	}
 	
+	public double getCurrentElectricity() 
+	{
+		return electricity_current;
+	}
+	
 	public void updateResources()
 	{
 		metal_current = min(metal_current + (METAL_DEFAULT_PRODUCTION + metal_production) / 3600, metal_capacity);
 		crystal_current = min(crystal_current + (CRYSTAL_DEFAULT_PRODUCTION + crystal_production) / 3600, crystal_capacity);
 		deiterium_current = min(deiterium_current + (DEITERIUM_DEFAULT_PRODUCTION + deiterium_production) / 3600, deiterium_capacity);
+	}
+	
+	public void updateElectricity()
+	{
+		electricity_current = getBuildings()[Building.POWER_STATION].calcGathering(); // спутники
 	}
 	
 	private int diameter;
@@ -108,6 +125,8 @@ public class Planet
 	private double metal_production;
 	private double crystal_production;
 	private double deiterium_production;
+	private double electricity_current;
+	private String planet_name;
 	private BufferedImage img;
 	private Building[] building_list;
 	public int[] coords;

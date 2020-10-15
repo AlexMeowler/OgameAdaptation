@@ -15,11 +15,13 @@ public class TimeProcessingThread extends Thread
 				panel.getPlanet(i).updateResources();
 			}
 			panel.updateResourceBar();
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) 
+			try 
 			{
-				continue;
+				Thread.sleep(1000);
+			} 
+			catch (InterruptedException e) 
+			{
+				
 			}
 		}
 	}
