@@ -32,4 +32,19 @@ public class NuclearStation extends Building
 		d[2] = 0;
 		return d;
 	}
+	
+	public String generateEnergyChange()
+	{
+		return " (<font color='lime'>+" + (int)calcDifference(level, level + 1) + " Энергия</font>)";
+	}
+	
+	public String generateHeader()
+	{
+		return "Термоядерная электростанция " + getCurrentLevelString();
+	}
+	
+	public String generateDescription(double[] current_resources)
+	{
+		return "Добывает энергию из процесса образования атома гелия двумя атомами тяжёлого водорода. Потребляет дейтерий.<br>" + super.generateDescription(current_resources);
+	}
 }

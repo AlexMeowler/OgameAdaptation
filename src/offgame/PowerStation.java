@@ -32,4 +32,19 @@ public class PowerStation extends Building
 		d[2] = 0;
 		return d;
 	}
+	
+	public String generateEnergyChange()
+	{
+		return " (<font color='lime'>+" + (int)calcDifference(level, level + 1) + " Ёнерги€</font>)";
+	}
+	
+	public String generateHeader()
+	{
+		return "—олнечна€ электростанци€ " + getCurrentLevelString();
+	}
+	
+	public String generateDescription(double[] current_resources)
+	{
+		return "ѕроизводит энергию из солнечных лучей.Ёнерги€ требуетс€ дл€ работы всех строений, производ€щих ресурсы.<br>" + super.generateDescription(current_resources);
+	}
 }

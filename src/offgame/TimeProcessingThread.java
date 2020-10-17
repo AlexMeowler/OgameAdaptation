@@ -13,6 +13,8 @@ public class TimeProcessingThread extends Thread
 			for(int i = 0; i < panel.getPlanetAmount(); i++)
 			{
 				panel.getPlanet(i).updateResources();
+				panel.getPlanet(i).updateBuildingsProduction();
+				panel.getCurrentWindow().updatePanelUI();
 			}
 			panel.updateResourceBar();
 			try 

@@ -17,4 +17,14 @@ public class RocketShaft extends Building
 		base_cost[1] = 20000;
 		base_cost[2] = 1000;
 	}
+	
+	public String generateHeader()
+	{
+		return "Ракетная шахта " + getCurrentLevelString();
+	}
+	
+	public String generateDescription(double[] current_resources)
+	{
+		return "Служит для хранения ракет. Увеличение уровня позволяет хранить больше ракет.<br>" + super.generateDescription(current_resources);
+	}
 }

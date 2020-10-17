@@ -2,6 +2,10 @@ package offgame;
 
 import static java.lang.Math.pow;
 
+import java.text.NumberFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public abstract class Building
 {
 	public Building()
@@ -11,6 +15,7 @@ public abstract class Building
 		base_cost[0] = 0;
 		base_cost[1] = 0; 
 		base_cost[2] = 0;
+		build_end_time = null;
 	}
 	
 	public Building(int level)
@@ -54,7 +59,7 @@ public abstract class Building
 		return cost;
 	}
 	
-	public long calcBuildingTime(int robotics_factory, int nanite_factory)
+	public long calcBuildingTime(int robotics_factory, int nanite_factory) // возвращает в секундах
 	{
 		double[] d = calcBuildingCost();
 		return (long)( ((d[0] + d[1]) / 2500) * (1 / (robotics_factory + 1)) * pow(0.5, nanite_factory) * 15 * 60);
@@ -63,6 +68,76 @@ public abstract class Building
 	public int getLevel()
 	{
 		return level;
+	}
+	
+	public void updateLevel()
+	{
+		level++;
+	}
+	
+	public String generateEnergyChange()
+	{
+		return "";
+	}
+	
+	public String generateHeader()
+	{
+		return "";
+	}
+	
+	protected String getCurrentLevelString()
+	{
+		String s = "";
+		if(level != 0)
+		{
+			s = "(Уровень " + level + ")";
+		}
+		return s;
+	}
+	
+	public String generateDescription(double[] current_resources)
+	{
+		double[] building_cost = calcBuildingCost();
+		String font_opening;
+		String font_ending = "</font>";
+		String[] names = {"Металл: ", "Кристалл: ", "Дейтерий: "};
+		
+		for(int i = 0; i < 3; i++)
+		{
+			if (current_resources[i] >= building_cost[i])
+			{
+				font_opening = "<font color='lime'>";
+			}
+			else
+			{
+				font_opening = "<font color='red'>";
+			}
+			if (building_cost[i] != 0)
+			{
+				names[i] += font_opening + NumberFormat.getNumberInstance(Locale.US).format((int)building_cost[i]) + font_ending;
+			}
+			else
+			{
+				names[i] = "";
+			}
+		}
+		
+		return "Необходимые ресурсы: " + names[0] + " " + names[1] + " " + names[2] + "<br>";
+	}
+	
+	public void startBuilding(int robotics_factory, int nanite_factory)
+	{
+		build_end_time = new Date(new Date().getTime() + calcBuildingTime(robotics_factory, nanite_factory) * 1000); 
+	}
+	
+	public void stopBuilding()
+	{
+		build_end_time = null;
+	}
+	
+	public Date getBuildDate()
+	{
+		return build_end_time;
 	}
 	
 	public static Building[] createList()
@@ -88,6 +163,7 @@ public abstract class Building
 	protected int level;
 	protected int code;
 	protected double[] base_cost; 
+	protected Date build_end_time;
 	public static final int POWER_STATION = 0;
 	public static final int METAL_MINES = 1;
 	public static final int CRYSTAL_MINES = 2;

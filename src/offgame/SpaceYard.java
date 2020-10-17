@@ -17,4 +17,14 @@ public class SpaceYard extends Building
 		base_cost[1] = 200;
 		base_cost[2] = 100;
 	}
+	
+	public String generateHeader()
+	{
+		return "Верфь " + getCurrentLevelString();
+	}
+	
+	public String generateDescription(double[] current_resources)
+	{
+		return "В строительной верфи производятся все виды кораблей и оборонительных сооружений. Увеличение уровня повышает скорость постройки кораблей и обороны.<br>" + super.generateDescription(current_resources);
+	}
 }

@@ -43,4 +43,19 @@ public class CrystalMines extends Building
 		d[2] = 0;
 		return d;
 	}
+	
+	public String generateEnergyChange()
+	{
+		return " (<font color='red'>-" + (int)calcDifference(level, level + 1) + " Ёнерги€</font>)";
+	}
+	
+	public String generateHeader()
+	{
+		return "–удник по добыче кристалла " + getCurrentLevelString();
+	}
+	
+	public String generateDescription(double[] current_resources)
+	{
+		return "ќсновной поставщик сырь€ дл€ электронных строительных элементов и сплавов.<br>" + super.generateDescription(current_resources);
+	}
 }

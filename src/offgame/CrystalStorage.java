@@ -3,6 +3,9 @@ package offgame;
 import static java.lang.Math.E;
 import static java.lang.Math.pow;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class CrystalStorage extends Building
 {
 	public CrystalStorage()
@@ -31,5 +34,15 @@ public class CrystalStorage extends Building
 		{
 			return 10000;
 		}
+	}
+	
+	public String generateHeader()
+	{
+		return "Хранилище кристалла " + getCurrentLevelString();
+	}
+	
+	public String generateDescription(double[] current_resources)
+	{
+		return "Хранилище для необработанного кристалла до его дальнейшей переработки.<br>Текущая вместимость: <font color='lime'>" + NumberFormat.getNumberInstance(Locale.US).format((int)calcGathering()) + "</font><br>" + super.generateDescription(current_resources);
 	}
 }

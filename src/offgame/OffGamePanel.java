@@ -4,7 +4,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -19,6 +21,9 @@ public class OffGamePanel extends JPanel
 		background = ImageIO.read(this.getClass().getResourceAsStream("/bg_elite.jpg"));
 		planets = new Planet[1];
 		planets[0] = Planet.generateStartPlanet();
+		UIManager.put("ToolTip.background", InfoPanel.BACKGROUND_COLOR);
+		UIManager.put("ToolTip.foreground", Color.WHITE);
+		setResourcesToolTips();
 		windows = new ArrayList<>();
 		scrolls = new ArrayList<>();
 		windows.add(new InfoPanel("tech_tree", planets[current_planet]));
@@ -145,14 +150,28 @@ public class OffGamePanel extends JPanel
 	
 	public void updateResourceBar()
 	{
-		metal.setTextAsNum((int)planets[0].getCurrentMetal()); //current plant
-		crystal.setTextAsNum((int)planets[0].getCurrentCrystal());
-		deiterium.setTextAsNum((int)planets[0].getCurrentDeiterium());
+		metal.setTextAsNum((int)planets[current_planet].getCurrentMetal()); //current planet
+		crystal.setTextAsNum((int)planets[current_planet].getCurrentCrystal());
+		deiterium.setTextAsNum((int)planets[current_planet].getCurrentDeiterium());
+		electricity.setTextAsNum((int)planets[current_planet].getCurrentElectricity());
+		setResourcesToolTips();
+	}
+	
+	private void setResourcesToolTips()
+	{
+		metal.setToolTipText("<html><font size='4'>Металл<br>Вместимость: " + NumberFormat.getNumberInstance(Locale.US).format((int)planets[current_planet].getMetalCapacity()) + "</font></html>");
+		crystal.setToolTipText("<html><font size='4'>Кристалл<br>Вместимость: " + NumberFormat.getNumberInstance(Locale.US).format((int)planets[current_planet].getCrystalCapacity()) + "</font></html>");
+		deiterium.setToolTipText("<html><font size='4'>Дейтерий<br>Вместимость: " + NumberFormat.getNumberInstance(Locale.US).format((int)planets[current_planet].getDeiteriumCapacity()) + "</font></html>");
 	}
 	
 	public void killClock()
 	{
 		clock.interrupt();
+	}
+	
+	public InfoPanel getCurrentWindow()
+	{
+		return windows.get(currentActiveWindow);
 	}
 	
 	public void setCurrentWindow(int i)
@@ -199,7 +218,7 @@ public class OffGamePanel extends JPanel
 	private ResourcePanel deiterium = new ResourcePanel("d.png");
 	private ResourcePanel electricity = new ResourcePanel("e.png");
 	private ResourcePanel mail = new ResourcePanel("ml.png");
-	public ArrayList<InfoPanel> windows;
+	private ArrayList<InfoPanel> windows;
 	private ArrayList<JScrollPane> scrolls;
 	private Planet[] planets;
 	private int current_planet;

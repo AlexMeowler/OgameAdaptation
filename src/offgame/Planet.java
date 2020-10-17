@@ -2,7 +2,7 @@ package offgame;
 
 import static java.lang.Math.*;
 
-import java.util.Random;
+import java.util.*;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -16,9 +16,10 @@ public class Planet
 	{
 		this.planet_name = planet_name;
 		this.diameter = diameter;
-		this.fields = round((float)(pow((double)this.diameter/1000, 2)));
 		this.temperature_min = temp_min;
 		this.temperature_max = temp_max;
+		fields = round((float)(pow((double)this.diameter/1000, 2)));
+		fields_taken = 0;
 		coords = new int[3];
 		coords[0] = gal;
 		coords[1] = system;
@@ -32,6 +33,7 @@ public class Planet
 		crystal_current = 1000;
 		deiterium_current = 1000;
 		electricity_current = 0;
+		building_queue = new ArrayList<>();
 	}
 	
 	public Image getImg()
@@ -64,9 +66,24 @@ public class Planet
 		return fields;
 	}
 	
+	public int getTakenFields()
+	{
+		return fields_taken;
+	}
+	
 	public Building[] getBuildings()
 	{
 		return building_list; //сделать clone()
+	}
+	
+	public int getQueueElem(int i)
+	{
+		return building_queue.get(i);
+	}
+	
+	public int getQueueSize()
+	{
+		return building_queue.size();
 	}
 	
 	public static Planet generateStartPlanet() throws IOException
@@ -95,6 +112,21 @@ public class Planet
 		return deiterium_current;
 	}
 	
+	public double getMetalCapacity()
+	{
+		return metal_capacity;
+	}
+	
+	public double getCrystalCapacity()
+	{
+		return crystal_capacity;
+	}
+	
+	public double getDeiteriumCapacity()
+	{
+		return deiterium_capacity;
+	}
+	
 	public double getCurrentElectricity() 
 	{
 		return electricity_current;
@@ -109,11 +141,88 @@ public class Planet
 	
 	public void updateElectricity()
 	{
-		electricity_current = getBuildings()[Building.POWER_STATION].calcGathering(); // спутники
+		electricity_current = getBuildings()[Building.POWER_STATION].calcGathering() + getBuildings()[Building.NUCLEAR_STATION].calcGathering() - getBuildings()[Building.METAL_MINES].calcConsuming() - getBuildings()[Building.CRYSTAL_MINES].calcConsuming() - getBuildings()[Building.DEITERIUM_MINES].calcConsuming(); // еще спутники
+	}
+	
+	public boolean isBuildable(int code)
+	{
+		double[] current = {metal_current, crystal_current, deiterium_current};
+		double[] required = building_list[code].calcBuildingCost();
+		boolean f = true;
+		for(int i = 0; i < 2; i++)
+		{
+			f = f && (current[i] > required[i]);
+		}
+		return f && (fields_taken < fields);
+	}
+	
+	public void updateBuildingsProduction()
+	{
+		try
+		{
+			Date now = new Date();
+			int code = building_queue.get(0);
+			if (!building_list[code].getBuildDate().after(now))
+			{
+				building_list[code].stopBuilding();
+				building_list[code].updateLevel();
+				fields_taken++;
+				switch(code)
+				{
+					case Building.POWER_STATION:
+					case Building.NUCLEAR_STATION:
+					case Building.METAL_MINES:
+					case Building.CRYSTAL_MINES:
+					case Building.DEITERIUM_MINES:
+						updateElectricity();
+						break;
+				}
+				building_queue.remove(0);
+				while(building_queue.size() > 0)
+				{
+					if(isBuildable(building_queue.get(0)))
+					{
+						startBuilding(building_queue.get(0));
+						break;
+					}
+					else
+					{
+						building_queue.remove(0);
+					}
+				}
+			}
+		}
+		catch(IndexOutOfBoundsException e)
+		{
+			
+		}
+	}
+	
+	public void addBuildingQueue(int code)
+	{
+		int size = building_queue.size();
+		if(size < MAX_BUILD_QUEUE)
+		{
+			building_queue.add(code);
+			if (size == 0)
+			{
+				startBuilding(code);
+			}
+		}
+	}
+	
+	public void startBuilding(int code)
+	{
+		double[] cost = getBuildings()[code].calcBuildingCost();
+		metal_current -= cost[0];
+		crystal_current -= cost[1];
+		deiterium_current -= cost[2];
+		getBuildings()[code].startBuilding(getBuildings()[Building.ROBOT_FACTORY].getLevel(), getBuildings()[Building.NANITE_FACTORY].getLevel());	
 	}
 	
 	private int diameter;
 	private int fields;
+	private int fields_taken;
 	private int temperature_min;
 	private int temperature_max;
 	private int metal_capacity;
@@ -129,8 +238,10 @@ public class Planet
 	private String planet_name;
 	private BufferedImage img;
 	private Building[] building_list;
+	private ArrayList<Integer> building_queue;
 	public int[] coords;
 	public static final double METAL_DEFAULT_PRODUCTION = 1200;
 	public static final double CRYSTAL_DEFAULT_PRODUCTION = 600;
 	public static final double DEITERIUM_DEFAULT_PRODUCTION = 300;
+	public static final int MAX_BUILD_QUEUE = 5;
 }

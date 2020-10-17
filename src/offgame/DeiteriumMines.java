@@ -54,4 +54,19 @@ public class DeiteriumMines extends Building
 		d[2] = 0;
 		return d;
 	}
+	
+	public String generateEnergyChange()
+	{
+		return " (<font color='red'>-" + (int)calcDifference(level, level + 1) + " Ёнерги€</font>)";
+	}
+	
+	public String generateHeader()
+	{
+		return "—интезатор дейтери€ " + getCurrentLevelString();
+	}
+	
+	public String generateDescription(double[] current_resources)
+	{
+		return "»звлекает из воды на планете незначительную долю дейтери€.<br>" + super.generateDescription(current_resources);
+	}
 }

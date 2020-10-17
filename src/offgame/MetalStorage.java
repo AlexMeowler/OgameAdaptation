@@ -2,6 +2,9 @@ package offgame;
 
 import static java.lang.Math.*;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class MetalStorage extends Building 
 {
 	public MetalStorage()
@@ -30,5 +33,15 @@ public class MetalStorage extends Building
 		{
 			return 10000;
 		}
+	}
+	
+	public String generateHeader()
+	{
+		return "Хранилище металла " + getCurrentLevelString();
+	}
+	
+	public String generateDescription(double[] current_resources)
+	{
+		return "Хранилище для необработанных руд металлов до их дальнейшей переработки.<br>Текущая вместимость: <font color='lime'>" + NumberFormat.getNumberInstance(Locale.US).format((int)calcGathering()) + "</font><br>" + super.generateDescription(current_resources);
 	}
 }

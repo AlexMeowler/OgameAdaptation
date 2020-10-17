@@ -43,4 +43,19 @@ public class MetalMines extends Building
 		d[2] = 0;
 		return d;
 	}
+	
+	public String generateEnergyChange()
+	{
+		return " (<font color='red'>-" + (int)calcDifference(level, level + 1) + " Ёнерги€</font>)";
+	}
+	
+	public String generateHeader()
+	{
+		return "–удник по добыче металла " + getCurrentLevelString();
+	}
+	
+	public String generateDescription(double[] current_resources)
+	{
+		return "ќсновной поставщик сырь€ дл€ строительства несущих структур построек и кораблей.<br>" + super.generateDescription(current_resources);
+	}
 }

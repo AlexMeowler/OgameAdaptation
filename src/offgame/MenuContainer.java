@@ -129,8 +129,8 @@ public class MenuContainer extends JPanel implements MouseListener, MouseMotionL
 					switch(((MenuLabel)list[i]).getCode())
 					{
 						case OVERVIEW:
-						((OffGamePanel)SwingUtilities.getAncestorNamed("main_panel", this)).setCurrentWindow(OVERVIEW);
-						break;
+							((OffGamePanel)SwingUtilities.getAncestorNamed("main_panel", this)).setCurrentWindow(OVERVIEW);
+							break;
 						case BUILDINGS:
 							((OffGamePanel)SwingUtilities.getAncestorNamed("main_panel", this)).setCurrentWindow(BUILDINGS);
 							break;
