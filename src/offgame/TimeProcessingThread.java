@@ -10,10 +10,10 @@ public class TimeProcessingThread extends Thread
 	{
 		while(true)
 		{
-			for(int i = 0; i < panel.getPlanetAmount(); i++)
+			for(int i = 0; i < panel.getPlayer().getPlanetAmount(); i++)
 			{
-				panel.getPlanet(i).updateResources();
-				panel.getPlanet(i).updateBuildingsProduction();
+				panel.getPlayer().getPlanet(i).updateResources();
+				panel.getPlayer().getPlanet(i).updateBuildingsProduction();
 				panel.getCurrentWindow().updatePanelUI();
 			}
 			panel.updateResourceBar();

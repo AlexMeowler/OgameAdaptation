@@ -17,27 +17,33 @@ public class OffGamePanel extends JPanel
 	{
 		setVisible(false);
 		setName("main_panel");
-		current_planet = 0;
+		
 		background = ImageIO.read(this.getClass().getResourceAsStream("/bg_elite.jpg"));
-		planets = new Planet[1];
-		planets[0] = Planet.generateStartPlanet();
+		//
+		player = new Player();
+		//
 		UIManager.put("ToolTip.background", InfoPanel.BACKGROUND_COLOR);
 		UIManager.put("ToolTip.foreground", Color.WHITE);
 		setResourcesToolTips();
+		//
 		windows = new ArrayList<>();
 		scrolls = new ArrayList<>();
-		windows.add(new InfoPanel("tech_tree", planets[current_planet]));
+		windows.add(new InfoPanel("tech_tree", player.getPlanet(player.getCurrentPlanet())));
 		scrolls.add(new JScrollPane(windows.get(MenuContainer.TECH_TREE)));
 		prepareScrollBar(scrolls.get(MenuContainer.TECH_TREE));
-		windows.add(new OverviewPanel("overview", planets[current_planet]));
+		windows.add(new OverviewPanel("overview", player.getPlanet(player.getCurrentPlanet())));
 		scrolls.add(new JScrollPane(windows.get(MenuContainer.OVERVIEW)));
 		prepareScrollBar(scrolls.get(MenuContainer.OVERVIEW));
-		windows.add(new InfoPanel("resources", planets[current_planet]));
+		windows.add(new InfoPanel("resources", player.getPlanet(player.getCurrentPlanet())));
 		scrolls.add(new JScrollPane(windows.get(MenuContainer.RESOURCES)));
 		prepareScrollBar(scrolls.get(MenuContainer.RESOURCES));
-		windows.add(new BuildingPanel("buildings", planets[current_planet]));
+		windows.add(new BuildingPanel("buildings", player.getPlanet(player.getCurrentPlanet())));
 		scrolls.add(new JScrollPane(windows.get(MenuContainer.BUILDINGS)));
 		prepareScrollBar(scrolls.get(MenuContainer.BUILDINGS));
+		windows.add(new ResearchPanel("research", player));
+		scrolls.add(new JScrollPane(windows.get(MenuContainer.RESEARCH)));
+		prepareScrollBar(scrolls.get(MenuContainer.RESEARCH));
+		//
 		currentActiveWindow = MenuContainer.OVERVIEW;
 		setWindowActive(scrolls.get(MenuContainer.OVERVIEW));
 		createUI();
@@ -81,19 +87,19 @@ public class OffGamePanel extends JPanel
 		constraints.gridy = 0;
 		constraints.ipady = topRowHeight;
 		constraints.weightx = 0.4f;
-		metal.setTextAsNum((int)planets[current_planet].getCurrentMetal());
+		metal.setTextAsNum((int)player.getPlanet(player.getCurrentPlanet()).getCurrentMetal());
 		add(metal, constraints);
 		constraints.gridx = 3;
 		constraints.gridy = 0;
-		crystal.setTextAsNum((int)planets[current_planet].getCurrentCrystal());
+		crystal.setTextAsNum((int)player.getPlanet(player.getCurrentPlanet()).getCurrentCrystal());
 		add(crystal, constraints);
 		constraints.gridx = 4;
 		constraints.gridy = 0;
-		deiterium.setTextAsNum((int)planets[current_planet].getCurrentDeiterium());
+		deiterium.setTextAsNum((int)player.getPlanet(player.getCurrentPlanet()).getCurrentDeiterium());
 		add(deiterium, constraints);
 		constraints.gridx = 5;
 		constraints.gridy = 0;
-		electricity.setTextAsNum((int)planets[current_planet].getCurrentElectricity());
+		electricity.setTextAsNum((int)player.getPlanet(player.getCurrentPlanet()).getCurrentElectricity());
 		add(electricity, constraints);
 		constraints.gridx = 6;
 		constraints.gridy = 0;
@@ -116,7 +122,7 @@ public class OffGamePanel extends JPanel
 		constraints.gridy = 1;
 		constraints.gridwidth = 1;
 		constraints.gridheight = 2;
-		add(new PlanetMenuContainer(planets), constraints);
+		add(new PlanetMenuContainer(player.getPlanets()), constraints);
 		//
 		constraints.weighty = 1.0f;
 		constraints.fill = GridBagConstraints.BOTH;
@@ -133,35 +139,25 @@ public class OffGamePanel extends JPanel
 
 	}
 	
-	public int getCurrentPlanet()
+	public Player getPlayer()
 	{
-		return current_planet;
-	}
-	
-	public Planet getPlanet(int i)
-	{
-		return planets[i];
-	}
-	
-	public int getPlanetAmount()
-	{
-		return planets.length;
+		return player;
 	}
 	
 	public void updateResourceBar()
 	{
-		metal.setTextAsNum((int)planets[current_planet].getCurrentMetal()); //current planet
-		crystal.setTextAsNum((int)planets[current_planet].getCurrentCrystal());
-		deiterium.setTextAsNum((int)planets[current_planet].getCurrentDeiterium());
-		electricity.setTextAsNum((int)planets[current_planet].getCurrentElectricity());
+		metal.setTextAsNum((int)player.getPlanet(player.getCurrentPlanet()).getCurrentMetal()); //current planet
+		crystal.setTextAsNum((int)player.getPlanet(player.getCurrentPlanet()).getCurrentCrystal());
+		deiterium.setTextAsNum((int)player.getPlanet(player.getCurrentPlanet()).getCurrentDeiterium());
+		electricity.setTextAsNum((int)player.getPlanet(player.getCurrentPlanet()).getCurrentElectricity());
 		setResourcesToolTips();
 	}
 	
 	private void setResourcesToolTips()
 	{
-		metal.setToolTipText("<html><font size='4'>Металл<br>Вместимость: " + NumberFormat.getNumberInstance(Locale.US).format((int)planets[current_planet].getMetalCapacity()) + "</font></html>");
-		crystal.setToolTipText("<html><font size='4'>Кристалл<br>Вместимость: " + NumberFormat.getNumberInstance(Locale.US).format((int)planets[current_planet].getCrystalCapacity()) + "</font></html>");
-		deiterium.setToolTipText("<html><font size='4'>Дейтерий<br>Вместимость: " + NumberFormat.getNumberInstance(Locale.US).format((int)planets[current_planet].getDeiteriumCapacity()) + "</font></html>");
+		metal.setToolTipText("<html><font size='4'>Металл<br>Вместимость: " + NumberFormat.getNumberInstance(Locale.US).format((int)player.getPlanet(player.getCurrentPlanet()).getMetalCapacity()) + "</font></html>");
+		crystal.setToolTipText("<html><font size='4'>Кристалл<br>Вместимость: " + NumberFormat.getNumberInstance(Locale.US).format((int)player.getPlanet(player.getCurrentPlanet()).getCrystalCapacity()) + "</font></html>");
+		deiterium.setToolTipText("<html><font size='4'>Дейтерий<br>Вместимость: " + NumberFormat.getNumberInstance(Locale.US).format((int)player.getPlanet(player.getCurrentPlanet()).getDeiteriumCapacity()) + "</font></html>");
 	}
 	
 	public void killClock()
@@ -177,9 +173,9 @@ public class OffGamePanel extends JPanel
 	public void setCurrentWindow(int i)
 	{
 		setWindowNotActive(scrolls.get(currentActiveWindow));
+		windows.get(i).updatePanelUI();
 		setWindowActive(scrolls.get(i));
 		currentActiveWindow = i;
-		revalidate();
 	}
 	
 	private void prepareScrollBar(JScrollPane p)
@@ -220,8 +216,7 @@ public class OffGamePanel extends JPanel
 	private ResourcePanel mail = new ResourcePanel("ml.png");
 	private ArrayList<InfoPanel> windows;
 	private ArrayList<JScrollPane> scrolls;
-	private Planet[] planets;
-	private int current_planet;
+	private Player player;
 	private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 	private int topRowHeight = (int)(dim.height * 0.02);
 	private int topRowCellWidth = 130;

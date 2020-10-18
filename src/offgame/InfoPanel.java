@@ -2,6 +2,7 @@ package offgame;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Date;
 
 import javax.swing.*;
 
@@ -17,6 +18,27 @@ public class InfoPanel extends JPanel  implements MouseWheelListener, MouseListe
 	public void updatePanelUI()
 	{
 		
+	}
+	
+	protected int[] getBuildingTimeArray(int code)
+	{
+		return null;
+	}
+	
+	protected String createTimeString(int code)
+	{
+		int[] time_digits = getBuildingTimeArray(code);
+		return String.format("Время строительства: %02d дн. %02d ч. %02d мин. %02d с.", time_digits[0], time_digits[1], time_digits[2], time_digits[3]);
+	}
+	
+	protected int[] getRemainingTime(int code, Date date)
+	{
+		return null;
+	}
+	
+	protected String generateButtonText(int row)
+	{
+		return "";
 	}
 	
 	public void mouseWheelMoved(MouseWheelEvent e) 
@@ -94,5 +116,6 @@ public class InfoPanel extends JPanel  implements MouseWheelListener, MouseListe
 	protected GridBagConstraints constraints = new GridBagConstraints();
 	private static final int MOUSE_SPEED_MODIFIER = 60;
 	protected Planet current_planet;
+	protected int y_offset;
 	public static final Color BACKGROUND_COLOR = new Color(42, 69, 112);
 }

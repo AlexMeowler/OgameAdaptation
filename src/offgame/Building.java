@@ -1,6 +1,6 @@
 package offgame;
 
-import static java.lang.Math.pow;
+import static java.lang.Math.*;
 
 import java.text.NumberFormat;
 import java.util.Date;
@@ -11,10 +11,12 @@ public abstract class Building
 	public Building()
 	{
 		level = 0;
-		base_cost = new double[3];
+		base_cost = new double[4];
 		base_cost[0] = 0;
 		base_cost[1] = 0; 
 		base_cost[2] = 0;
+		base_cost[3] = 0;
+		base = 2;
 		build_end_time = null;
 	}
 	
@@ -51,10 +53,10 @@ public abstract class Building
 	
 	public double[] calcBuildingCost() 
 	{
-		double[] cost = new double[3];
-		for(int i = 0; i < 3; i++)
+		double[] cost = new double[4];
+		for(int i = 0; i < 4; i++)
 		{
-			cost[i] = base_cost[i] * pow(2, level);
+			cost[i] = base_cost[i] * pow(base, level);
 		}
 		return cost;
 	}
@@ -62,7 +64,7 @@ public abstract class Building
 	public long calcBuildingTime(int robotics_factory, int nanite_factory) // возвращает в секундах
 	{
 		double[] d = calcBuildingCost();
-		return (long)( ((d[0] + d[1]) / 2500) * (1 / (robotics_factory + 1)) * pow(0.5, nanite_factory) * 15 * 60);
+		return (long)max(( ((d[0] + d[1]) / 2500) * (1 / (robotics_factory + 1)) * pow(0.5, nanite_factory) * 15 * 60), 1);
 	}
 	
 	public int getLevel()
@@ -100,9 +102,9 @@ public abstract class Building
 		double[] building_cost = calcBuildingCost();
 		String font_opening;
 		String font_ending = "</font>";
-		String[] names = {"Металл: ", "Кристалл: ", "Дейтерий: "};
+		String[] names = {"Металл: ", "Кристалл: ", "Дейтерий: ", "Энергия: "};
 		
-		for(int i = 0; i < 3; i++)
+		for(int i = 0; i < 4; i++)
 		{
 			if (current_resources[i] >= building_cost[i])
 			{
@@ -122,7 +124,7 @@ public abstract class Building
 			}
 		}
 		
-		return "Необходимые ресурсы: " + names[0] + " " + names[1] + " " + names[2] + "<br>";
+		return "Необходимые ресурсы: " + names[0] + " " + names[1] + " " + names[2] + " " + names[3] + "<br>";
 	}
 	
 	public void startBuilding(int robotics_factory, int nanite_factory)
@@ -164,6 +166,7 @@ public abstract class Building
 	protected int code;
 	protected double[] base_cost; 
 	protected Date build_end_time;
+	protected double base;
 	public static final int POWER_STATION = 0;
 	public static final int METAL_MINES = 1;
 	public static final int CRYSTAL_MINES = 2;

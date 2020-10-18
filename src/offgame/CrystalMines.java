@@ -37,10 +37,11 @@ public class CrystalMines extends Building
 	
 	public double[] calcBuildingCost() 
 	{
-		double[] d = new double[3];
+		double[] d = new double[4];
 		d[0] = 48 * pow(1.6, level);
 		d[1] = 24 * pow(1.6, level);
 		d[2] = 0;
+		d[3] = 0;
 		return d;
 	}
 	

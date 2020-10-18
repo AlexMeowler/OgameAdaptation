@@ -128,17 +128,14 @@ public class MenuContainer extends JPanel implements MouseListener, MouseMotionL
 				{
 					switch(((MenuLabel)list[i]).getCode())
 					{
-						case OVERVIEW:
-							((OffGamePanel)SwingUtilities.getAncestorNamed("main_panel", this)).setCurrentWindow(OVERVIEW);
-							break;
-						case BUILDINGS:
-							((OffGamePanel)SwingUtilities.getAncestorNamed("main_panel", this)).setCurrentWindow(BUILDINGS);
-							break;
 						case EXIT_CODE:
 							JFrame window = (JFrame)SwingUtilities.getAncestorNamed("game_frame", this);
 							OffGamePanel panel = (OffGamePanel)SwingUtilities.getAncestorNamed("main_panel", this);
 							panel.killClock();
 							window.dispatchEvent(new WindowEvent(window, WindowEvent.WINDOW_CLOSING));
+							break;
+						default:
+							((OffGamePanel)SwingUtilities.getAncestorNamed("main_panel", this)).setCurrentWindow(((MenuLabel)list[i]).getCode());
 							break;
 					}
 				}

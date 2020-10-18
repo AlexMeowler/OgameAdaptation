@@ -18,7 +18,6 @@ public class BuildingPanel extends InfoPanel
 	{
 		super(name, planet);
 		setOpaque(false);
-		// добавить резерв для очереди
 		constraints.weightx = 0.0f;
 		constraints.weighty = 0.0f;
 		String text;
@@ -77,29 +76,29 @@ public class BuildingPanel extends InfoPanel
 		constraints.gridheight = 1;
 		constraints.insets.right = 0;
 		add(new TextLabel("<div style='text-align: center'>" + current_planet.getMinTemperature() + " — " + current_planet.getMaxTemperature() + "°C</div>",  "" + constraints.gridx + "." +constraints.gridy, false), constraints);
-		x_offset = Planet.MAX_BUILD_QUEUE + 1;
-		addRow(Building.POWER_STATION + x_offset);
-		addRow(Building.METAL_MINES + x_offset);
-		addRow(Building.CRYSTAL_MINES + x_offset);
-		addRow(Building.DEITERIUM_MINES + x_offset);
-		addRow(Building.ROBOT_FACTORY + x_offset);
-		addRow(Building.SPACE_YARD + x_offset);
-		addRow(Building.LABORATORY + x_offset);
-		addRow(Building.METAL_STORAGE + x_offset);
-		addRow(Building.CRYSTAL_STORAGE + x_offset);
-		addRow(Building.DEITERIUM_STORAGE + x_offset);
-		addRow(Building.NUCLEAR_STATION + x_offset);
-		addRow(Building.NANITE_FACTORY + x_offset);
-		addRow(Building.TERRAFORMER + x_offset);
-		addRow(Building.ROCKET_SHAFT + x_offset);
+		y_offset = Planet.MAX_BUILD_QUEUE + 1;
+		addRow(Building.POWER_STATION + y_offset);
+		addRow(Building.METAL_MINES + y_offset);
+		addRow(Building.CRYSTAL_MINES + y_offset);
+		addRow(Building.DEITERIUM_MINES + y_offset);
+		addRow(Building.ROBOT_FACTORY + y_offset);
+		addRow(Building.SPACE_YARD + y_offset);
+		addRow(Building.LABORATORY + y_offset);
+		addRow(Building.METAL_STORAGE + y_offset);
+		addRow(Building.CRYSTAL_STORAGE + y_offset);
+		addRow(Building.DEITERIUM_STORAGE + y_offset);
+		addRow(Building.NUCLEAR_STATION + y_offset);
+		addRow(Building.NANITE_FACTORY + y_offset);
+		addRow(Building.TERRAFORMER + y_offset);
+		addRow(Building.ROCKET_SHAFT + y_offset);
 		
 	}
 	
 	private void addRow(int row) throws IOException
 	{
-		int code = row - x_offset;
+		int code = row - y_offset;
 		String header = current_planet.getBuildings()[code].generateHeader() + " " + current_planet.getBuildings()[code].generateEnergyChange();
-		double[] resources = {current_planet.getCurrentMetal(), current_planet.getCurrentCrystal(), current_planet.getCurrentDeiterium()};
+		double[] resources = {current_planet.getCurrentMetal(), current_planet.getCurrentCrystal(), current_planet.getCurrentDeiterium(), current_planet.getCurrentEnergy()};
 		String description = current_planet.getBuildings()[code].generateDescription(resources);
 		// добавить остаток ресурсов
 		constraints.anchor = GridBagConstraints.NORTH;
@@ -125,7 +124,7 @@ public class BuildingPanel extends InfoPanel
 		add(Box.createHorizontalStrut(80), constraints);
 	}
 	
-	private int[] getBuildingTimeArray(int code)
+	protected int[] getBuildingTimeArray(int code)
 	{
 		long total = current_planet.getBuildings()[code].calcBuildingTime(current_planet.getBuildings()[Building.ROBOT_FACTORY].getLevel(), current_planet.getBuildings()[Building.NANITE_FACTORY].getLevel());
 		int day = (int)(total / 86400);
@@ -136,7 +135,7 @@ public class BuildingPanel extends InfoPanel
 		return answer;
 	}
 	// можно вызывать только для строящегося здания 
-	private int[] getRemainingTime(int code, Date date)
+	protected int[] getRemainingTime(int code, Date date)
 	{
 		long total = (current_planet.getBuildings()[code].getBuildDate().getTime() - date.getTime()) / 1000;
 		int day = (int)(total / 86400);
@@ -160,12 +159,6 @@ public class BuildingPanel extends InfoPanel
 		return "<div style='text-align: center'>" + font_opening + fields_taken + font_ending + " / <font color='red'>" + fields + "</font> (осталось " + (fields - fields_taken) +" свободных полей)</div>";
 	}
 	
-	private String createTimeString(int code)
-	{
-		int[] time_digits = getBuildingTimeArray(code);
-		return String.format("Время строительства: %02d дн. %02d ч. %02d мин. %02d с.", time_digits[0], time_digits[1], time_digits[2], time_digits[3]);
-	}
-	
 	public void updatePanelUI()
 	{
 		Component[] list = getComponents();
@@ -175,18 +168,18 @@ public class BuildingPanel extends InfoPanel
 			{
 				String[] s = ((TextLabel)list[i]).getName().split("\\.");
 				int[] coords = {Integer.parseInt(s[0]), Integer.parseInt(s[1])};
-				if(coords[1] >= x_offset)
+				if(coords[1] >= y_offset)
 				{
-					String header = current_planet.getBuildings()[coords[1] - x_offset].generateHeader() + " " + current_planet.getBuildings()[coords[1] - x_offset].generateEnergyChange();
-					double[] resources = {current_planet.getCurrentMetal(), current_planet.getCurrentCrystal(), current_planet.getCurrentDeiterium()};
-					String description = current_planet.getBuildings()[coords[1] - x_offset].generateDescription(resources);
+					String header = current_planet.getBuildings()[coords[1] - y_offset].generateHeader() + " " + current_planet.getBuildings()[coords[1] - y_offset].generateEnergyChange();
+					double[] resources = {current_planet.getCurrentMetal(), current_planet.getCurrentCrystal(), current_planet.getCurrentDeiterium(), current_planet.getCurrentElectricity()};
+					String description = current_planet.getBuildings()[coords[1] - y_offset].generateDescription(resources);
 					switch(coords[0])
 					{
 						case 1:
-							((TextLabel)list[i]).setText(header + "<br>" + description + createTimeString(coords[1] - x_offset));
+							((TextLabel)list[i]).setText(header + "<br>" + description + createTimeString(coords[1] - y_offset));
 							break;
 						case 2:
-							((TextLabel)list[i]).setText(generateButtonText(coords[1] - x_offset));
+							((TextLabel)list[i]).setText(generateButtonText(coords[1] - y_offset));
 							break;
 					}
 				}
@@ -222,7 +215,7 @@ public class BuildingPanel extends InfoPanel
 									if (coords[1] == 0)
 									{
 										int[] digits = getRemainingTime(current_planet.getQueueElem(coords[1]), new Date());
-										((TextLabel)list[i]).setText("<div style='text-align: center'>" + String.format("%02d:%02d:%02d:%02d", digits[0], digits[1], digits[2], digits[3]) + "<br><font color='lime'>" + new SimpleDateFormat("dd/mm kk:mm:ss").format(current_planet.getBuildings()[current_planet.getQueueElem(coords[1])].getBuildDate()) +"</font></div>");
+										((TextLabel)list[i]).setText("<div style='text-align: center'>" + String.format("%02d:%02d:%02d:%02d", digits[0], digits[1], digits[2], digits[3]) + "<br><font color='lime'>" + new SimpleDateFormat("dd/MM kk:mm:ss").format(current_planet.getBuildings()[current_planet.getQueueElem(coords[1])].getBuildDate()) +"</font></div>");
 									}
 									else
 									{
@@ -249,10 +242,9 @@ public class BuildingPanel extends InfoPanel
 		}
 	}
 	
-	private String generateButtonText(int row)
+	protected String generateButtonText(int row)
 	{
 		String s = "<div style='text-align: center'>";
-		// тут добавить проверку на очередь
 		if(current_planet.getQueueSize() == 0)
 		{
 			if(current_planet.isBuildable(row))
@@ -287,7 +279,7 @@ public class BuildingPanel extends InfoPanel
 					{
 						if((list[i].contains(new Point(e.getX() - list[i].getX(), e.getY() - list[i].getY()))) /*&& current_planet.isBuildable(coords[1] - x_offset)*/)
 						{
-							current_planet.addBuildingQueue(coords[1] - x_offset);
+							current_planet.addBuildingQueue(coords[1] - y_offset);
 							updatePanelUI();
 						}
 					}
@@ -300,7 +292,6 @@ public class BuildingPanel extends InfoPanel
 	{
 		public BuildingImg(int img_num) throws IOException
 		{
-			//setIcon(new ImageIcon(ImageIO.read(this.getClass().getResourceAsStream("/bl/" + img_num + ".gif"))));
 			setIcon(new ImageIcon(getClass().getResource("/bl/" + img_num + ".gif")));
 			setBackground(BACKGROUND_COLOR);
 			setHorizontalAlignment(SwingConstants.CENTER);
@@ -355,5 +346,4 @@ public class BuildingPanel extends InfoPanel
 		private String real_text;
 	}
 	
-	private int x_offset;
 }

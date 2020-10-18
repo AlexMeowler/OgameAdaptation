@@ -48,10 +48,11 @@ public class DeiteriumMines extends Building
 	
 	public double[] calcBuildingCost() 
 	{
-		double[] d = new double[3];
+		double[] d = new double[4];
 		d[0] = 225 * pow(1.5, level);
 		d[1] = 75 * pow(1.5, level);
 		d[2] = 0;
+		d[3] = 0;
 		return d;
 	}
 	

@@ -12,12 +12,13 @@ import javax.imageio.ImageIO;
 
 public class Planet 
 {
-	public Planet(String planet_name, int diameter, int temp_min, int temp_max, int gal, int system, int pos, int img_num) throws IOException
+	public Planet(String planet_name, int diameter, int temp_min, int temp_max, int gal, int system, int pos, int img_num, Player owner) throws IOException
 	{
 		this.planet_name = planet_name;
 		this.diameter = diameter;
 		this.temperature_min = temp_min;
 		this.temperature_max = temp_max;
+		this.owner = owner;
 		fields = round((float)(pow((double)this.diameter/1000, 2)));
 		fields_taken = 0;
 		coords = new int[3];
@@ -86,10 +87,10 @@ public class Planet
 		return building_queue.size();
 	}
 	
-	public static Planet generateStartPlanet() throws IOException
+	public static Planet generateStartPlanet(Player owner) throws IOException
 	{
 		Random r = new Random();
-		return new Planet("Planet", 12247, -6, 0, 1, 1, 1, r.nextInt(31)+1);
+		return new Planet("Planet", 12247, -6, 0, 1, 1, 1, r.nextInt(31)+1, owner);
 	}
 	
 	public String getName()
@@ -110,6 +111,11 @@ public class Planet
 	public double getCurrentDeiterium()
 	{
 		return deiterium_current;
+	}
+	
+	public double getCurrentEnergy()
+	{
+		return electricity_current;
 	}
 	
 	public double getMetalCapacity()
@@ -149,11 +155,24 @@ public class Planet
 		double[] current = {metal_current, crystal_current, deiterium_current};
 		double[] required = building_list[code].calcBuildingCost();
 		boolean f = true;
-		for(int i = 0; i < 2; i++)
+		for(int i = 0; i < 3; i++)
 		{
 			f = f && (current[i] > required[i]);
 		}
 		return f && (fields_taken < fields);
+	}
+	
+	public boolean isResearchable(int code)
+	{
+		double[] current = {metal_current, crystal_current, deiterium_current, electricity_current};
+		double[] required = owner.getTechs()[code].calcBuildingCost();
+		boolean f = true;
+		for(int i = 0; i < 3; i++)
+		{
+			f = f && (current[i] >= required[i]);
+		}
+		f = f && ((required[3] == 0) || (current[3] >= required[3]));
+		return f;
 	}
 	
 	public void updateBuildingsProduction()
@@ -239,6 +258,7 @@ public class Planet
 	private BufferedImage img;
 	private Building[] building_list;
 	private ArrayList<Integer> building_queue;
+	private Player owner;
 	public int[] coords;
 	public static final double METAL_DEFAULT_PRODUCTION = 1200;
 	public static final double CRYSTAL_DEFAULT_PRODUCTION = 600;
