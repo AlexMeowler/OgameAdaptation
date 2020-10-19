@@ -14,6 +14,7 @@ public class TimeProcessingThread extends Thread
 			{
 				panel.getPlayer().getPlanet(i).updateResources();
 				panel.getPlayer().getPlanet(i).updateBuildingsProduction();
+				panel.getPlayer().getPlanet(i).updateResearchProcess();
 				panel.getCurrentWindow().updatePanelUI();
 			}
 			panel.updateResourceBar();

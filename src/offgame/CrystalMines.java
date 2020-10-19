@@ -7,11 +7,13 @@ public class CrystalMines extends Building
 	public CrystalMines()
 	{
 		super();
+		required_buildings[Building.METAL_MINES] = 2;
 	}
 	
 	public CrystalMines(int level)
 	{
 		super(level);
+		required_buildings[Building.METAL_MINES] = 2;
 	}
 	
 	public double calcGathering()

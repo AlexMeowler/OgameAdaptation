@@ -8,6 +8,8 @@ public class ImpulseEngine extends Technology
 		base_cost[0] = 2000;
 		base_cost[1] = 4000; 
 		base_cost[2] = 600;
+		required_buildings[Building.LABORATORY] = 1;
+		required_technologies[Technology.ENERGY_TECHNOLOGY] = 2;
 	}
 	
 	public ImpulseEngine(int level)
@@ -16,6 +18,8 @@ public class ImpulseEngine extends Technology
 		base_cost[0] = 2000;
 		base_cost[1] = 4000; 
 		base_cost[2] = 600;
+		required_buildings[Building.LABORATORY] = 1;
+		required_technologies[Technology.ENERGY_TECHNOLOGY] = 2;
 	}
 	
 	public String generateHeader()

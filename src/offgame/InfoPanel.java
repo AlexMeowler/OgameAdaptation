@@ -8,11 +8,12 @@ import javax.swing.*;
 
 public class InfoPanel extends JPanel  implements MouseWheelListener, MouseListener, MouseMotionListener, Scrollable
 {
-	public InfoPanel(String name, Planet planet)
+	public InfoPanel(String name, Player player)
 	{
 		setName(name);
 		setLayout(new GridBagLayout());
-		current_planet = planet;
+		current_planet = player.getPlanet(player.getCurrentPlanetIndex());
+		this.player = player;
 	}
 	
 	public void updatePanelUI()
@@ -116,6 +117,7 @@ public class InfoPanel extends JPanel  implements MouseWheelListener, MouseListe
 	protected GridBagConstraints constraints = new GridBagConstraints();
 	private static final int MOUSE_SPEED_MODIFIER = 60;
 	protected Planet current_planet;
+	protected Player player;
 	protected int y_offset;
 	public static final Color BACKGROUND_COLOR = new Color(42, 69, 112);
 }

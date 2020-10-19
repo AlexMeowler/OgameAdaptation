@@ -7,11 +7,15 @@ public class DeiteriumMines extends Building
 	public DeiteriumMines()
 	{
 		super();
+		required_buildings[Building.METAL_MINES] = 4;
+		required_buildings[Building.CRYSTAL_MINES] = 2;
 	}
 	
 	public DeiteriumMines(int level)
 	{
 		super(level);
+		required_buildings[Building.METAL_MINES] = 4;
+		required_buildings[Building.CRYSTAL_MINES] = 2;
 	}
 	
 	public double calcGathering(int temp)

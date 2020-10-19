@@ -8,6 +8,7 @@ public class Laboratory extends Building
 		base_cost[0] = 200;
 		base_cost[1] = 400;
 		base_cost[2] = 200;
+		required_buildings[Building.POWER_STATION] = 3;
 	}
 	
 	public Laboratory(int level)
@@ -16,6 +17,7 @@ public class Laboratory extends Building
 		base_cost[0] = 200;
 		base_cost[1] = 400;
 		base_cost[2] = 200;
+		required_buildings[Building.POWER_STATION] = 3;
 	}
 	
 	public String generateHeader()

@@ -8,6 +8,8 @@ public class Terraformer extends Building
 		base_cost[0] = 0;
 		base_cost[1] = 50000;
 		base_cost[2] = 100000;
+		required_buildings[Building.NANITE_FACTORY] = 1;
+		required_technologies[Technology.ENERGY_TECHNOLOGY] = 12;
 	}
 	
 	public Terraformer(int level)
@@ -16,6 +18,8 @@ public class Terraformer extends Building
 		base_cost[0] = 0;
 		base_cost[1] = 50000;
 		base_cost[2] = 100000;
+		required_buildings[Building.NANITE_FACTORY] = 1;
+		required_technologies[Technology.ENERGY_TECHNOLOGY] = 12;
 	}
 	
 	public String generateHeader()

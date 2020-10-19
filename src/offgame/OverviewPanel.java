@@ -13,9 +13,9 @@ import javax.swing.*;
 public class OverviewPanel extends InfoPanel
 {
 
-	public OverviewPanel(String name, Planet planet) 
+	public OverviewPanel(String name, Player player) 
 	{
-		super(name, planet);
+		super(name, player);
 		setOpaque(false);
 		constraints.weightx = 1.0f;
 		constraints.weighty = 0.0f;
@@ -26,7 +26,7 @@ public class OverviewPanel extends InfoPanel
 		constraints.insets.bottom = 3;
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.NORTHWEST;
-		add(new TextLabel("Планета\"" + planet.getName() + "\"", false), constraints);
+		add(new TextLabel("Планета\"" + player.getCurrentPlanet().getName() + "\"", false), constraints);
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		constraints.gridwidth = 3;
@@ -79,8 +79,8 @@ public class OverviewPanel extends InfoPanel
 		constraints.gridy = 6;
 		constraints.gridwidth = 1;
 		constraints.gridheight = 1;
-		add(new PlanetImg(planet), constraints);
-		add(Box.createVerticalStrut(new PlanetImg(planet).getIcon().getIconHeight() + 30), constraints);
+		add(new PlanetImg(player.getCurrentPlanet()), constraints);
+		add(Box.createVerticalStrut(new PlanetImg(player.getCurrentPlanet()).getIcon().getIconHeight() + 30), constraints);
 		constraints.gridx = 2;
 		constraints.gridy = 6;
 		constraints.gridwidth = 1;
@@ -96,7 +96,7 @@ public class OverviewPanel extends InfoPanel
 		constraints.gridy = 7;
 		constraints.gridwidth = 2;
 		constraints.gridheight = 1;
-		add(new TextLabel("" + NumberFormat.getNumberInstance(Locale.US).format(planet.getDiameter()) + " км", true), constraints);
+		add(new TextLabel("" + NumberFormat.getNumberInstance(Locale.US).format(player.getCurrentPlanet().getDiameter()) + " км", true), constraints);
 		constraints.gridx = 0;
 		constraints.gridy = 8;
 		constraints.gridwidth = 1;
@@ -136,7 +136,7 @@ public class OverviewPanel extends InfoPanel
 		constraints.gridy = 11;
 		constraints.gridwidth = 2;
 		constraints.gridheight = 1;
-		add(new TextLabel("от " + planet.getMinTemperature() + "°C до " + planet.getMaxTemperature() + "°C", true), constraints);
+		add(new TextLabel("от " + player.getCurrentPlanet().getMinTemperature() + "°C до " + player.getCurrentPlanet().getMaxTemperature() + "°C", true), constraints);
 		constraints.gridx = 0;
 		constraints.gridy = 12;
 		constraints.gridwidth = 1;
@@ -146,7 +146,7 @@ public class OverviewPanel extends InfoPanel
 		constraints.gridy = 12;
 		constraints.gridwidth = 2;
 		constraints.gridheight = 1;
-		add(new TextLabel("[" + planet.getCoords()[0] + ":" + planet.getCoords()[1] + ":" + planet.getCoords()[2] + "]", true), constraints);
+		add(new TextLabel("[" + player.getCurrentPlanet().getCoords()[0] + ":" + player.getCurrentPlanet().getCoords()[1] + ":" + player.getCurrentPlanet().getCoords()[2] + "]", true), constraints);
 		constraints.gridx = 0;
 		constraints.gridy = 13;
 		constraints.gridwidth = 1;

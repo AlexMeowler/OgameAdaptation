@@ -16,6 +16,8 @@ public abstract class Building
 		base_cost[1] = 0; 
 		base_cost[2] = 0;
 		base_cost[3] = 0;
+		required_buildings = new int[14];
+		required_technologies = new int[17];
 		base = 2;
 		build_end_time = null;
 	}
@@ -23,6 +25,16 @@ public abstract class Building
 	public Building(int level)
 	{
 		this.level = level;
+	}
+	
+	public int[] getRequiredBuildings()
+	{
+		return required_buildings;
+	}
+	
+	public int[] getRequiredTechnologies()
+	{
+		return required_technologies;
 	}
 	
 	public double calcGathering()
@@ -167,6 +179,8 @@ public abstract class Building
 	protected double[] base_cost; 
 	protected Date build_end_time;
 	protected double base;
+	protected int[] required_buildings;
+	protected int[] required_technologies;
 	public static final int POWER_STATION = 0;
 	public static final int METAL_MINES = 1;
 	public static final int CRYSTAL_MINES = 2;

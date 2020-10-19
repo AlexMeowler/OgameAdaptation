@@ -7,11 +7,15 @@ public class NuclearStation extends Building
 	public NuclearStation()
 	{
 		super();
+		required_buildings[Building.DEITERIUM_MINES] = 5;
+		required_technologies[Technology.ENERGY_TECHNOLOGY] = 3;
 	}
 	
 	public NuclearStation(int level)
 	{
 		super(level);
+		required_buildings[Building.DEITERIUM_MINES] = 5;
+		required_technologies[Technology.ENERGY_TECHNOLOGY] = 3;
 	}
 	
 	public double calcGathering(int temp)

@@ -30,9 +30,9 @@ public class Planet
 		metal_capacity = (int) building_list[Building.METAL_STORAGE].calcGathering();
 		crystal_capacity = (int) building_list[Building.CRYSTAL_STORAGE].calcGathering();
 		deiterium_capacity = (int) building_list[Building.DEITERIUM_STORAGE].calcGathering();
-		metal_current = 1000;
-		crystal_current = 1000;
-		deiterium_current = 1000;
+		metal_current = 1000000;
+		crystal_current = 1000000;
+		deiterium_current = 1000000;
 		electricity_current = 0;
 		building_queue = new ArrayList<>();
 	}
@@ -140,9 +140,18 @@ public class Planet
 	
 	public void updateResources()
 	{
-		metal_current = min(metal_current + (METAL_DEFAULT_PRODUCTION + metal_production) / 3600, metal_capacity);
-		crystal_current = min(crystal_current + (CRYSTAL_DEFAULT_PRODUCTION + crystal_production) / 3600, crystal_capacity);
-		deiterium_current = min(deiterium_current + (DEITERIUM_DEFAULT_PRODUCTION + deiterium_production) / 3600, deiterium_capacity);
+		if(metal_current < metal_capacity)
+		{
+			metal_current = metal_current + (METAL_DEFAULT_PRODUCTION + metal_production) / 3600;
+		}
+		if(crystal_current < crystal_capacity)
+		{
+			crystal_current = crystal_current + (CRYSTAL_DEFAULT_PRODUCTION + crystal_production) / 3600;
+		}
+		if(deiterium_current < deiterium_capacity)
+		{
+			deiterium_current = deiterium_current + (DEITERIUM_DEFAULT_PRODUCTION + deiterium_production) / 3600;
+		}
 	}
 	
 	public void updateElectricity()
@@ -172,6 +181,45 @@ public class Planet
 			f = f && (current[i] >= required[i]);
 		}
 		f = f && ((required[3] == 0) || (current[3] >= required[3]));
+		return f;
+	}
+	
+	public boolean requirementsMet(EntityCategory type, int code)
+	{
+		boolean f = true;
+		int[] buildings_required;
+		int[] technologires_required;
+		switch(type)
+		{
+			case BUILDING:
+				buildings_required = building_list[code].getRequiredBuildings();
+				technologires_required = building_list[code].getRequiredTechnologies();
+				for(int i = 0; i < buildings_required.length; i++)
+				{
+					f = f && (building_list[i].getLevel() >= buildings_required[i]);
+				}
+				for(int i = 0; i < technologires_required.length; i++)
+				{
+					f = f && (owner.getTechs()[i].getLevel() >= technologires_required[i]);
+				}
+				break;
+			case RESEARCH:
+				buildings_required = owner.getTechs()[code].getRequiredBuildings();
+				technologires_required = owner.getTechs()[code].getRequiredTechnologies();
+				for(int i = 0; i < buildings_required.length; i++)
+				{
+					f = f && (building_list[i].getLevel() >= buildings_required[i]);
+				}
+				for(int i = 0; i < technologires_required.length; i++)
+				{
+					f = f && (owner.getTechs()[i].getLevel() >= technologires_required[i]);
+				}
+				break;
+			case FLEET:
+				break;
+			case DEFENCE:
+				break;
+		}
 		return f;
 	}
 	
@@ -217,6 +265,25 @@ public class Planet
 		}
 	}
 	
+	public void updateResearchProcess()
+	{
+		Date now = new Date();
+		int code = owner.getActiveResearch();
+		try
+		{
+			if (!owner.getTechs()[code].getBuildDate().after(now))
+			{
+				owner.getTechs()[code].stopBuilding();
+				owner.getTechs()[code].updateLevel();
+				owner.setActiveResearch(Player.NO_ACTIVE_RESEARCH);
+			}
+		}
+		catch(IndexOutOfBoundsException e)
+		{
+			
+		}
+	}
+	
 	public void addBuildingQueue(int code)
 	{
 		int size = building_queue.size();
@@ -237,6 +304,16 @@ public class Planet
 		crystal_current -= cost[1];
 		deiterium_current -= cost[2];
 		getBuildings()[code].startBuilding(getBuildings()[Building.ROBOT_FACTORY].getLevel(), getBuildings()[Building.NANITE_FACTORY].getLevel());	
+	}
+	
+	public void startResearching(int code)
+	{
+		double[] cost = owner.getTechs()[code].calcBuildingCost();
+		metal_current -= cost[0];
+		crystal_current -= cost[1];
+		deiterium_current -= cost[2];
+		owner.setActiveResearch(code);
+		owner.getTechs()[code].startBuilding(getBuildings()[Building.LABORATORY].getLevel());	
 	}
 	
 	private int diameter;
@@ -264,4 +341,6 @@ public class Planet
 	public static final double CRYSTAL_DEFAULT_PRODUCTION = 600;
 	public static final double DEITERIUM_DEFAULT_PRODUCTION = 300;
 	public static final int MAX_BUILD_QUEUE = 5;
+	public static final int BUILDINGS = 0;
+	public static final int TECHNOLOGIES = 0;
 }

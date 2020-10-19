@@ -28,16 +28,16 @@ public class OffGamePanel extends JPanel
 		//
 		windows = new ArrayList<>();
 		scrolls = new ArrayList<>();
-		windows.add(new InfoPanel("tech_tree", player.getPlanet(player.getCurrentPlanet())));
+		windows.add(new InfoPanel("tech_tree", player));
 		scrolls.add(new JScrollPane(windows.get(MenuContainer.TECH_TREE)));
 		prepareScrollBar(scrolls.get(MenuContainer.TECH_TREE));
-		windows.add(new OverviewPanel("overview", player.getPlanet(player.getCurrentPlanet())));
+		windows.add(new OverviewPanel("overview", player));
 		scrolls.add(new JScrollPane(windows.get(MenuContainer.OVERVIEW)));
 		prepareScrollBar(scrolls.get(MenuContainer.OVERVIEW));
-		windows.add(new InfoPanel("resources", player.getPlanet(player.getCurrentPlanet())));
+		windows.add(new InfoPanel("resources", player));
 		scrolls.add(new JScrollPane(windows.get(MenuContainer.RESOURCES)));
 		prepareScrollBar(scrolls.get(MenuContainer.RESOURCES));
-		windows.add(new BuildingPanel("buildings", player.getPlanet(player.getCurrentPlanet())));
+		windows.add(new BuildingPanel("buildings", player));
 		scrolls.add(new JScrollPane(windows.get(MenuContainer.BUILDINGS)));
 		prepareScrollBar(scrolls.get(MenuContainer.BUILDINGS));
 		windows.add(new ResearchPanel("research", player));
@@ -87,19 +87,19 @@ public class OffGamePanel extends JPanel
 		constraints.gridy = 0;
 		constraints.ipady = topRowHeight;
 		constraints.weightx = 0.4f;
-		metal.setTextAsNum((int)player.getPlanet(player.getCurrentPlanet()).getCurrentMetal());
+		metal.setTextAsNum((int)player.getPlanet(player.getCurrentPlanetIndex()).getCurrentMetal());
 		add(metal, constraints);
 		constraints.gridx = 3;
 		constraints.gridy = 0;
-		crystal.setTextAsNum((int)player.getPlanet(player.getCurrentPlanet()).getCurrentCrystal());
+		crystal.setTextAsNum((int)player.getPlanet(player.getCurrentPlanetIndex()).getCurrentCrystal());
 		add(crystal, constraints);
 		constraints.gridx = 4;
 		constraints.gridy = 0;
-		deiterium.setTextAsNum((int)player.getPlanet(player.getCurrentPlanet()).getCurrentDeiterium());
+		deiterium.setTextAsNum((int)player.getPlanet(player.getCurrentPlanetIndex()).getCurrentDeiterium());
 		add(deiterium, constraints);
 		constraints.gridx = 5;
 		constraints.gridy = 0;
-		electricity.setTextAsNum((int)player.getPlanet(player.getCurrentPlanet()).getCurrentElectricity());
+		electricity.setTextAsNum((int)player.getPlanet(player.getCurrentPlanetIndex()).getCurrentElectricity());
 		add(electricity, constraints);
 		constraints.gridx = 6;
 		constraints.gridy = 0;
@@ -146,18 +146,18 @@ public class OffGamePanel extends JPanel
 	
 	public void updateResourceBar()
 	{
-		metal.setTextAsNum((int)player.getPlanet(player.getCurrentPlanet()).getCurrentMetal()); //current planet
-		crystal.setTextAsNum((int)player.getPlanet(player.getCurrentPlanet()).getCurrentCrystal());
-		deiterium.setTextAsNum((int)player.getPlanet(player.getCurrentPlanet()).getCurrentDeiterium());
-		electricity.setTextAsNum((int)player.getPlanet(player.getCurrentPlanet()).getCurrentElectricity());
+		metal.setTextAsNum((int)player.getPlanet(player.getCurrentPlanetIndex()).getCurrentMetal()); //current planet
+		crystal.setTextAsNum((int)player.getPlanet(player.getCurrentPlanetIndex()).getCurrentCrystal());
+		deiterium.setTextAsNum((int)player.getPlanet(player.getCurrentPlanetIndex()).getCurrentDeiterium());
+		electricity.setTextAsNum((int)player.getPlanet(player.getCurrentPlanetIndex()).getCurrentElectricity());
 		setResourcesToolTips();
 	}
 	
 	private void setResourcesToolTips()
 	{
-		metal.setToolTipText("<html><font size='4'>Металл<br>Вместимость: " + NumberFormat.getNumberInstance(Locale.US).format((int)player.getPlanet(player.getCurrentPlanet()).getMetalCapacity()) + "</font></html>");
-		crystal.setToolTipText("<html><font size='4'>Кристалл<br>Вместимость: " + NumberFormat.getNumberInstance(Locale.US).format((int)player.getPlanet(player.getCurrentPlanet()).getCrystalCapacity()) + "</font></html>");
-		deiterium.setToolTipText("<html><font size='4'>Дейтерий<br>Вместимость: " + NumberFormat.getNumberInstance(Locale.US).format((int)player.getPlanet(player.getCurrentPlanet()).getDeiteriumCapacity()) + "</font></html>");
+		metal.setToolTipText("<html><font size='4'>Металл<br>Вместимость: " + NumberFormat.getNumberInstance(Locale.US).format((int)player.getPlanet(player.getCurrentPlanetIndex()).getMetalCapacity()) + "</font></html>");
+		crystal.setToolTipText("<html><font size='4'>Кристалл<br>Вместимость: " + NumberFormat.getNumberInstance(Locale.US).format((int)player.getPlanet(player.getCurrentPlanetIndex()).getCrystalCapacity()) + "</font></html>");
+		deiterium.setToolTipText("<html><font size='4'>Дейтерий<br>Вместимость: " + NumberFormat.getNumberInstance(Locale.US).format((int)player.getPlanet(player.getCurrentPlanetIndex()).getDeiteriumCapacity()) + "</font></html>");
 	}
 	
 	public void killClock()

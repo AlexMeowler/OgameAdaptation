@@ -1,11 +1,7 @@
 package offgame;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.IOException;
 import java.util.Date;
 
@@ -15,8 +11,7 @@ public class ResearchPanel extends InfoPanel
 {
 	public ResearchPanel(String name, Player player) throws IOException
 	{
-		super(name, player.getPlanet(player.getCurrentPlanet()));
-		this.player = player;
+		super(name, player);
 		setOpaque(false);
 		constraints.weightx = 0.0f;
 		constraints.weighty = 0.0f;
@@ -78,6 +73,8 @@ public class ResearchPanel extends InfoPanel
 		add(new TextLabel("<div style='text-align: center'>" + current_planet.getMinTemperature() + " Ч " + current_planet.getMaxTemperature() + "∞C</div>",  "" + constraints.gridx + "." +constraints.gridy, false), constraints);*/
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.insets.bottom = 3;
+		y_offset = 0;
+		requirements_panels = new RequirementsPanel[17];
 		addRow(Technology.ESPIONAGE + y_offset);
 		addRow(Technology.ENERGY_TECHNOLOGY + y_offset);
 		addRow(Technology.REACTIVE_ENGINE + y_offset);
@@ -124,6 +121,14 @@ public class ResearchPanel extends InfoPanel
 		constraints.weightx = 0.0f;
 		constraints.insets.right = 0;
 		constraints.anchor = GridBagConstraints.CENTER;
+		//
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		int[] buildings_required = player.getTechs()[code].getRequiredBuildings();
+		int[] technologies_required = player.getTechs()[code].getRequiredTechnologies();
+		requirements_panels[code] = new RequirementsPanel(buildings_required, technologies_required, current_planet.getBuildings(), player.getTechs());
+		add(requirements_panels[code], constraints);
+		//
+		constraints.fill = GridBagConstraints.BOTH;
 		add(new TextLabel(generateButtonText(code),  "" + constraints.gridx + "." +constraints.gridy, false), constraints);
 		add(Box.createHorizontalStrut(80), constraints);
 	}
@@ -153,13 +158,37 @@ public class ResearchPanel extends InfoPanel
 	protected String generateButtonText(int row)
 	{
 		String s = "<div style='text-align: center'>";
-		if(current_planet.isResearchable(row))
+		if(current_planet.requirementsMet(EntityCategory.RESEARCH, row))
 		{
-			s += "<font color='lime'><u>»сследовать уровень " + (player.getTechs()[row].getLevel() + 1) + "</u></font>";
+			int active = player.getActiveResearch();
+			if(active == -1)
+			{
+				if(current_planet.isResearchable(row))
+				{
+					s += "<font color='lime'><u>»сследовать уровень " + (player.getTechs()[row].getLevel() + 1) + "</u></font>";
+				}
+				else
+				{
+					s += "<font color='red'>»сследовать уровень " + (player.getTechs()[row].getLevel() + 1) + "</font>";
+				}
+			}
+			else
+			{
+				if(row == active)
+				{
+					int[] digits = getRemainingTime(row, new Date());
+					s += String.format("%02d:%02d:%02d:%02d", digits[0], digits[1], digits[2], digits[3]);
+				}
+				else
+				{
+					s += "-";
+				}
+				
+			}
 		}
 		else
 		{
-			s += "<font color='red'>»сследовать уровень " + (player.getTechs()[row].getLevel() + 1) + "</font>";
+			s += "";
 		}
 		s += "</div>";
 		return s;
@@ -174,21 +203,59 @@ public class ResearchPanel extends InfoPanel
 			{
 				String[] s = ((TextLabel)list[i]).getName().split("\\.");
 				int[] coords = {Integer.parseInt(s[0]), Integer.parseInt(s[1])};
-				String header = player.getTechs()[coords[1]].generateHeader() + " " + player.getTechs()[coords[1]].generateEnergyChange();
-				double[] resources = {current_planet.getCurrentMetal(), current_planet.getCurrentCrystal(), current_planet.getCurrentDeiterium(), current_planet.getCurrentElectricity()};
-				String description = player.getTechs()[coords[1]].generateDescription(resources);
-				switch(coords[0])
+				if(coords[1] >= y_offset)
 				{
-					case 1:
-						((TextLabel)list[i]).setText(header + "<br>" + description + createTimeString(coords[1]));
-						break;
-					case 2:
-						((TextLabel)list[i]).setText(generateButtonText(coords[1]));
-						break;
-				}	
+					String header = player.getTechs()[coords[1]].generateHeader() + " " + player.getTechs()[coords[1]].generateEnergyChange();
+					double[] resources = {current_planet.getCurrentMetal(), current_planet.getCurrentCrystal(), current_planet.getCurrentDeiterium(), current_planet.getCurrentElectricity()};
+					String description = player.getTechs()[coords[1]].generateDescription(resources);
+					switch(coords[0])
+					{
+						case 1:
+							((TextLabel)list[i]).setText(header + "<br>" + description + createTimeString(coords[1]));
+							break;
+						case 2:
+							((TextLabel)list[i]).setText(generateButtonText(coords[1] - y_offset));
+							break;
+					}	
+				}
+			}
+		}
+		for(int i = 0; i < requirements_panels.length; i++)
+		{
+			int[] buildings_required = player.getTechs()[i].getRequiredBuildings();
+			int[] technologies_required = player.getTechs()[i].getRequiredTechnologies();
+			requirements_panels[i].updatePanelUI(buildings_required, technologies_required, current_planet.getBuildings(), player.getTechs());
+			if(current_planet.requirementsMet(EntityCategory.RESEARCH, i))
+			{
+				requirements_panels[i].setVisible(false);
 			}
 		}
 	}
+	
+	public void mouseClicked(MouseEvent e)
+	{
+		if(e.getSource() instanceof ResearchPanel)
+		{
+			Component[] list = ((ResearchPanel)e.getSource()).getComponents();
+			for(int i = 0; i < list.length; i++)
+			{
+				if(list[i] instanceof TextLabel)
+				{
+					String[] s = ((TextLabel)list[i]).getName().split("\\.");
+					int[] coords = {Integer.parseInt(s[0]), Integer.parseInt(s[1])};
+					if((coords[1] >= y_offset) && (coords[0] == 2) && (!requirements_panels[coords[1] - y_offset].isVisible()))
+					{
+						if((list[i].contains(new Point(e.getX() - list[i].getX(), e.getY() - list[i].getY()))) && current_planet.isResearchable(coords[1]) && (player.getActiveResearch() == Player.NO_ACTIVE_RESEARCH))
+						{
+							current_planet.startResearching(coords[1]);
+							updatePanelUI();
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	private class BuildingImg extends JLabel
 	{
 		public BuildingImg(int img_num) throws IOException
@@ -247,5 +314,5 @@ public class ResearchPanel extends InfoPanel
 		private String real_text;
 	}
 	
-	private Player player;
+	private RequirementsPanel[] requirements_panels;
 }

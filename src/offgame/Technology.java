@@ -2,6 +2,8 @@ package offgame;
 
 import static java.lang.Math.*;
 
+import java.util.Date;
+
 public abstract class Technology extends Building
 {
 	public Technology()
@@ -18,6 +20,11 @@ public abstract class Technology extends Building
 	{
 		double[] d = calcBuildingCost();
 		return (long)max(((d[0] + d[1]) / (1000 * (laboratory + 1)) * 15 * 60), 1);
+	}
+	
+	public void startBuilding(int laboratory)
+	{
+		build_end_time = new Date(new Date().getTime() + calcBuildingTime(laboratory) * 1000); 
 	}
 	
 	public static Technology[] createList()

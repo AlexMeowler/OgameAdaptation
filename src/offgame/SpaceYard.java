@@ -8,6 +8,7 @@ public class SpaceYard extends Building
 		base_cost[0] = 400;
 		base_cost[1] = 200;
 		base_cost[2] = 100;
+		required_buildings[Building.ROBOT_FACTORY] = 2;
 	}
 	
 	public SpaceYard(int level)
@@ -16,6 +17,7 @@ public class SpaceYard extends Building
 		base_cost[0] = 400;
 		base_cost[1] = 200;
 		base_cost[2] = 100;
+		required_buildings[Building.ROBOT_FACTORY] = 2;
 	}
 	
 	public String generateHeader()

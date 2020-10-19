@@ -8,6 +8,8 @@ public class NaniteFactory extends Building
 		base_cost[0] = 1000000;
 		base_cost[1] = 500000;
 		base_cost[2] = 100000;
+		required_buildings[Building.ROBOT_FACTORY] = 10;
+		required_technologies[Technology.COMPUTER_TECHNOLOGY] = 10;
 	}
 	
 	public NaniteFactory(int level)
@@ -16,6 +18,8 @@ public class NaniteFactory extends Building
 		base_cost[0] = 1000000;
 		base_cost[1] = 500000;
 		base_cost[2] = 100000;
+		required_buildings[Building.ROBOT_FACTORY] = 10;
+		required_technologies[Technology.COMPUTER_TECHNOLOGY] = 10;
 	}
 	
 	public String generateHeader()

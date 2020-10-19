@@ -7,11 +7,13 @@ public class MetalMines extends Building
 	public MetalMines()
 	{
 		super();
+		required_buildings[Building.POWER_STATION] = 1;
 	}
 	
 	public MetalMines(int level)
 	{
 		super(level);
+		required_buildings[Building.POWER_STATION] = 1;
 	}
 	
 	public double calcGathering()

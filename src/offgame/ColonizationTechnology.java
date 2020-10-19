@@ -9,6 +9,9 @@ public class ColonizationTechnology extends Technology
 		base_cost[1] = 4000; 
 		base_cost[2] = 1000;
 		base = 3;
+		required_buildings[Building.LABORATORY] = 3;
+		required_technologies[Technology.ENERGY_TECHNOLOGY] = 5;
+		required_technologies[Technology.METALLURGY] = 2;
 	}
 	
 	public ColonizationTechnology(int level)
@@ -18,6 +21,9 @@ public class ColonizationTechnology extends Technology
 		base_cost[1] = 4000; 
 		base_cost[2] = 1000;
 		base = 3;
+		required_buildings[Building.LABORATORY] = 3;
+		required_technologies[Technology.ENERGY_TECHNOLOGY] = 5;
+		required_technologies[Technology.METALLURGY] = 2;
 	}
 	
 	public String generateHeader()

@@ -8,6 +8,7 @@ public class Espionage extends Technology
 		base_cost[0] = 200;
 		base_cost[1] = 1000; 
 		base_cost[2] = 200;
+		required_buildings[Building.LABORATORY] = 3;
 	}
 	
 	public Espionage(int level)
@@ -16,6 +17,7 @@ public class Espionage extends Technology
 		base_cost[0] = 200;
 		base_cost[1] = 1000; 
 		base_cost[2] = 200;
+		required_buildings[Building.LABORATORY] = 3;
 	}
 	
 	public String generateHeader()

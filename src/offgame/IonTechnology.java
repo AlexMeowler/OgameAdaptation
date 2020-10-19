@@ -8,6 +8,9 @@ public class IonTechnology extends Technology
 		base_cost[0] = 1000;
 		base_cost[1] = 300; 
 		base_cost[2] = 100;
+		required_buildings[Building.LABORATORY] = 4;
+		required_technologies[Technology.LASER_TECHNOLOGY] = 5;
+		required_technologies[Technology.ENERGY_TECHNOLOGY] = 4;
 	}
 	
 	public IonTechnology(int level)
@@ -16,6 +19,9 @@ public class IonTechnology extends Technology
 		base_cost[0] = 1000;
 		base_cost[1] = 300; 
 		base_cost[2] = 100;
+		required_buildings[Building.LABORATORY] = 4;
+		required_technologies[Technology.LASER_TECHNOLOGY] = 5;
+		required_technologies[Technology.ENERGY_TECHNOLOGY] = 4;
 	}
 	
 	public String generateHeader()

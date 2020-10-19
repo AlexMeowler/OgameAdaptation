@@ -8,6 +8,10 @@ public class PlasmaTechnology extends Technology
 		base_cost[0] = 2000;
 		base_cost[1] = 4000; 
 		base_cost[2] = 1000;
+		required_buildings[Building.LABORATORY] = 5;
+		required_technologies[Technology.LASER_TECHNOLOGY] = 10;
+		required_technologies[Technology.ENERGY_TECHNOLOGY] = 8;
+		required_technologies[Technology.ION_TECHNOLOGY] = 5;
 	}
 	
 	public PlasmaTechnology(int level)
@@ -16,6 +20,10 @@ public class PlasmaTechnology extends Technology
 		base_cost[0] = 2000;
 		base_cost[1] = 4000; 
 		base_cost[2] = 1000;
+		required_buildings[Building.LABORATORY] = 5;
+		required_technologies[Technology.LASER_TECHNOLOGY] = 10;
+		required_technologies[Technology.ENERGY_TECHNOLOGY] = 8;
+		required_technologies[Technology.ION_TECHNOLOGY] = 5;
 	}
 	
 	public String generateHeader()

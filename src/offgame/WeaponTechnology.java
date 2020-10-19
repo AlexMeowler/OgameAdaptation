@@ -8,6 +8,7 @@ public class WeaponTechnology extends Technology
 		base_cost[0] = 800;
 		base_cost[1] = 200; 
 		base_cost[2] = 0;
+		required_buildings[Building.LABORATORY] = 4;
 	}
 	
 	public WeaponTechnology(int level)
@@ -16,6 +17,7 @@ public class WeaponTechnology extends Technology
 		base_cost[0] = 800;
 		base_cost[1] = 200; 
 		base_cost[2] = 0;
+		required_buildings[Building.LABORATORY] = 4;
 	}
 	
 	public String generateHeader()

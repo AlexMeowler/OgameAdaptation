@@ -14,9 +14,9 @@ import javax.swing.text.html.*;
 
 public class BuildingPanel extends InfoPanel 
 {
-	public BuildingPanel(String name, Planet planet) throws IOException 
+	public BuildingPanel(String name, Player player) throws IOException 
 	{
-		super(name, planet);
+		super(name, player);
 		setOpaque(false);
 		constraints.weightx = 0.0f;
 		constraints.weighty = 0.0f;
@@ -77,6 +77,7 @@ public class BuildingPanel extends InfoPanel
 		constraints.insets.right = 0;
 		add(new TextLabel("<div style='text-align: center'>" + current_planet.getMinTemperature() + " — " + current_planet.getMaxTemperature() + "°C</div>",  "" + constraints.gridx + "." +constraints.gridy, false), constraints);
 		y_offset = Planet.MAX_BUILD_QUEUE + 1;
+		requirements_panels = new RequirementsPanel[14];
 		addRow(Building.POWER_STATION + y_offset);
 		addRow(Building.METAL_MINES + y_offset);
 		addRow(Building.CRYSTAL_MINES + y_offset);
@@ -91,7 +92,6 @@ public class BuildingPanel extends InfoPanel
 		addRow(Building.NANITE_FACTORY + y_offset);
 		addRow(Building.TERRAFORMER + y_offset);
 		addRow(Building.ROCKET_SHAFT + y_offset);
-		
 	}
 	
 	private void addRow(int row) throws IOException
@@ -120,6 +120,14 @@ public class BuildingPanel extends InfoPanel
 		constraints.weightx = 0.0f;
 		constraints.insets.right = 0;
 		constraints.anchor = GridBagConstraints.CENTER;
+		//
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		int[] buildings_required = current_planet.getBuildings()[code].getRequiredBuildings();
+		int[] technologies_required = current_planet.getBuildings()[code].getRequiredTechnologies();
+		requirements_panels[code] = new RequirementsPanel(buildings_required, technologies_required, current_planet.getBuildings(), player.getTechs());
+		add(requirements_panels[code], constraints);
+		//
+		constraints.fill = GridBagConstraints.BOTH;
 		add(new TextLabel(generateButtonText(code),  "" + constraints.gridx + "." +constraints.gridy, false), constraints);
 		add(Box.createHorizontalStrut(80), constraints);
 	}
@@ -240,25 +248,42 @@ public class BuildingPanel extends InfoPanel
 				}
 			}
 		}
+		for(int i = 0; i < requirements_panels.length; i++)
+		{
+			int[] buildings_required = current_planet.getBuildings()[i].getRequiredBuildings();
+			int[] technologies_required = current_planet.getBuildings()[i].getRequiredTechnologies();
+			requirements_panels[i].updatePanelUI(buildings_required, technologies_required, current_planet.getBuildings(), player.getTechs());
+			if(current_planet.requirementsMet(EntityCategory.BUILDING, i))
+			{
+				requirements_panels[i].setVisible(false);
+			}
+		}
 	}
 	
 	protected String generateButtonText(int row)
 	{
 		String s = "<div style='text-align: center'>";
-		if(current_planet.getQueueSize() == 0)
+		if(current_planet.requirementsMet(EntityCategory.BUILDING, row))
 		{
-			if(current_planet.isBuildable(row))
+			if(current_planet.getQueueSize() == 0)
 			{
-				s += "<font color='lime'><u>Построить<br>следующий<br>уровень " + (current_planet.getBuildings()[row].getLevel() + 1) + "</u></font>";
+				if(current_planet.isBuildable(row))
+				{
+					s += "<font color='lime'><u>Построить<br>следующий<br>уровень " + (current_planet.getBuildings()[row].getLevel() + 1) + "</u></font>";
+				}
+				else
+				{
+					s += "<font color='red'>Построить следующий уровень " + (current_planet.getBuildings()[row].getLevel() + 1) + "</font>";
+				}
 			}
 			else
 			{
-				s += "<font color='red'>Построить следующий уровень " + (current_planet.getBuildings()[row].getLevel() + 1) + "</font>";
+				s += "<font color='lime'><u>Добавить в очередь</u></font>";
 			}
 		}
 		else
 		{
-			s += "<font color='lime'><u>Добавить в очередь</u></font>";
+			s += "";
 		}
 		s += "</div>";
 		return s;
@@ -275,9 +300,9 @@ public class BuildingPanel extends InfoPanel
 				{
 					String[] s = ((TextLabel)list[i]).getName().split("\\.");
 					int[] coords = {Integer.parseInt(s[0]), Integer.parseInt(s[1])};
-					if((coords[0] == 2) && (coords[1] > 0))
+					if((coords[0] == 2) && (coords[1] >= y_offset) && (!requirements_panels[coords[1] - y_offset].isVisible()))
 					{
-						if((list[i].contains(new Point(e.getX() - list[i].getX(), e.getY() - list[i].getY()))) /*&& current_planet.isBuildable(coords[1] - x_offset)*/)
+						if((list[i].contains(new Point(e.getX() - list[i].getX(), e.getY() - list[i].getY()))))
 						{
 							current_planet.addBuildingQueue(coords[1] - y_offset);
 							updatePanelUI();
@@ -346,4 +371,5 @@ public class BuildingPanel extends InfoPanel
 		private String real_text;
 	}
 	
+	private RequirementsPanel[] requirements_panels;
 }

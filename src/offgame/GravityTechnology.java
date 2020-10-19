@@ -10,6 +10,7 @@ public class GravityTechnology extends Technology
 		base_cost[2] = 0;
 		base_cost[3] = 300000;
 		base = 3;
+		required_buildings[Building.LABORATORY] = 12;
 	}
 	
 	public GravityTechnology(int level)
@@ -20,6 +21,7 @@ public class GravityTechnology extends Technology
 		base_cost[2] = 0;
 		base_cost[3] = 300000;
 		base = 3;
+		required_buildings[Building.LABORATORY] = 12;
 	}
 	
 	public String generateHeader()

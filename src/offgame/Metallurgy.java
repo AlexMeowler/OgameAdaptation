@@ -8,6 +8,7 @@ public class Metallurgy extends Technology
 		base_cost[0] = 1000;
 		base_cost[1] = 0; 
 		base_cost[2] = 0;
+		required_buildings[Building.LABORATORY] = 2;
 	}
 	
 	public Metallurgy(int level)
@@ -16,6 +17,7 @@ public class Metallurgy extends Technology
 		base_cost[0] = 1000;
 		base_cost[1] = 0; 
 		base_cost[2] = 0;
+		required_buildings[Building.LABORATORY] = 2;
 	}
 	
 	public String generateHeader()

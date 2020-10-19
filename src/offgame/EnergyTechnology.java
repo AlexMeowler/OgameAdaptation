@@ -8,6 +8,7 @@ public class EnergyTechnology extends Technology
 		base_cost[0] = 0;
 		base_cost[1] = 800; 
 		base_cost[2] = 400;
+		required_buildings[Building.LABORATORY] = 1;
 	}
 	
 	public EnergyTechnology(int level)
@@ -16,6 +17,7 @@ public class EnergyTechnology extends Technology
 		base_cost[0] = 0;
 		base_cost[1] = 800; 
 		base_cost[2] = 400;
+		required_buildings[Building.LABORATORY] = 1;
 	}
 	
 	public String generateHeader()

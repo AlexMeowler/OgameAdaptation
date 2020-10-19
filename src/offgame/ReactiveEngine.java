@@ -8,6 +8,8 @@ public class ReactiveEngine extends Technology
 		base_cost[0] = 0;
 		base_cost[1] = 400; 
 		base_cost[2] = 600;
+		required_buildings[Building.LABORATORY] = 1;
+		required_technologies[Technology.ENERGY_TECHNOLOGY] = 1;
 	}
 	
 	public ReactiveEngine(int level)
@@ -16,6 +18,8 @@ public class ReactiveEngine extends Technology
 		base_cost[0] = 0;
 		base_cost[1] = 400; 
 		base_cost[2] = 600;
+		required_buildings[Building.LABORATORY] = 1;
+		required_technologies[Technology.ENERGY_TECHNOLOGY] = 1;
 	}
 	
 	public String generateHeader()

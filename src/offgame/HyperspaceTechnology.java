@@ -8,6 +8,9 @@ public class HyperspaceTechnology extends Technology
 		base_cost[0] = 0;
 		base_cost[1] = 4000; 
 		base_cost[2] = 2000;
+		required_buildings[Building.LABORATORY] = 7;
+		required_technologies[Technology.ENERGY_TECHNOLOGY] = 5;
+		required_technologies[Technology.SHIELD_TECHNOLOGY] = 5;
 	}
 	
 	public HyperspaceTechnology(int level)
@@ -16,6 +19,9 @@ public class HyperspaceTechnology extends Technology
 		base_cost[0] = 0;
 		base_cost[1] = 4000; 
 		base_cost[2] = 2000;
+		required_buildings[Building.LABORATORY] = 7;
+		required_technologies[Technology.ENERGY_TECHNOLOGY] = 5;
+		required_technologies[Technology.SHIELD_TECHNOLOGY] = 5;
 	}
 	
 	public String generateHeader()
