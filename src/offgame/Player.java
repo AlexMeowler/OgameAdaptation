@@ -43,7 +43,7 @@ public class Player
 		return techs;
 	}
 	
-	public int getActiveResearch() //код исследования, -1 если нет исследований
+	public int getActiveResearch() //РєРѕРґ РёСЃСЃР»РµРґРѕРІР°РЅРёСЏ, -1 РµСЃР»Рё РЅРµС‚ РёСЃСЃР»РµРґРѕРІР°РЅРёР№
 	{
 		return active_research;
 	}

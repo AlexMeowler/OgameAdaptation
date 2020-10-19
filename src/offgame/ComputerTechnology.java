@@ -2,31 +2,26 @@ package offgame;
 
 public class ComputerTechnology extends Technology 
 {
-	public ComputerTechnology()
+	public ComputerTechnology(String name)
 	{
-		super();
+		super(name);
 		base_cost[0] = 0;
 		base_cost[1] = 400; 
 		base_cost[2] = 600;
 		required_buildings[Building.LABORATORY] = 1;
 	}
 	
-	public ComputerTechnology(int level)
+	public ComputerTechnology(int level, String name)
 	{
-		super(level);
+		super(level, name);
 		base_cost[0] = 0;
 		base_cost[1] = 400; 
 		base_cost[2] = 600;
 		required_buildings[Building.LABORATORY] = 1;
-	}
-	
-	public String generateHeader()
-	{
-		return "Компьютерная технология " + getCurrentLevelString();
 	}
 	
 	public String generateDescription(double[] current_resources)
 	{
-		return "С увеличением мощности компьютеров можно командовать всё большим количеством флотов. Каждый уровень компьютерной технологии увеличивает максимальное количество флотов на один.<br>" + super.generateDescription(current_resources);
+		return "РЎ СѓРІРµР»РёС‡РµРЅРёРµРј РјРѕС‰РЅРѕСЃС‚Рё РєРѕРјРїСЊСЋС‚РµСЂРѕРІ РјРѕР¶РЅРѕ РєРѕРјР°РЅРґРѕРІР°С‚СЊ РІСЃС‘ Р±РѕР»СЊС€РёРј РєРѕР»РёС‡РµСЃС‚РІРѕРј С„Р»РѕС‚РѕРІ. РљР°Р¶РґС‹Р№ СѓСЂРѕРІРµРЅСЊ РєРѕРјРїСЊСЋС‚РµСЂРЅРѕР№ С‚РµС…РЅРѕР»РѕРіРёРё СѓРІРµР»РёС‡РёРІР°РµС‚ РјР°РєСЃРёРјР°Р»СЊРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ С„Р»РѕС‚РѕРІ РЅР° РѕРґРёРЅ.<br>" + super.generateDescription(current_resources);
 	}
 }

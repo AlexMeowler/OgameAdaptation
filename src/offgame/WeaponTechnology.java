@@ -2,31 +2,26 @@ package offgame;
 
 public class WeaponTechnology extends Technology 
 {
-	public WeaponTechnology()
+	public WeaponTechnology(String name)
 	{
-		super();
+		super(name);
 		base_cost[0] = 800;
 		base_cost[1] = 200; 
 		base_cost[2] = 0;
 		required_buildings[Building.LABORATORY] = 4;
 	}
 	
-	public WeaponTechnology(int level)
+	public WeaponTechnology(int level, String name)
 	{
-		super(level);
+		super(level, name);
 		base_cost[0] = 800;
 		base_cost[1] = 200; 
 		base_cost[2] = 0;
 		required_buildings[Building.LABORATORY] = 4;
-	}
-	
-	public String generateHeader()
-	{
-		return "Оружейная технология " + getCurrentLevelString();
 	}
 	
 	public String generateDescription(double[] current_resources)
 	{
-		return "Оружейная технология делает системы вооружения эффективней. Каждый уровень увеличивает мощность орудий флота и обороны на 10%.<br>" + super.generateDescription(current_resources);
+		return "РћСЂСѓР¶РµР№РЅР°СЏ С‚РµС…РЅРѕР»РѕРіРёСЏ РґРµР»Р°РµС‚ СЃРёСЃС‚РµРјС‹ РІРѕРѕСЂСѓР¶РµРЅРёСЏ СЌС„С„РµРєС‚РёРІРЅРµР№. РљР°Р¶РґС‹Р№ СѓСЂРѕРІРµРЅСЊ СѓРІРµР»РёС‡РёРІР°РµС‚ РјРѕС‰РЅРѕСЃС‚СЊ РѕСЂСѓРґРёР№ С„Р»РѕС‚Р° Рё РѕР±РѕСЂРѕРЅС‹ РЅР° 10%.<br>" + super.generateDescription(current_resources);
 	}
 }

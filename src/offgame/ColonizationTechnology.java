@@ -2,9 +2,9 @@ package offgame;
 
 public class ColonizationTechnology extends Technology
 {
-	public ColonizationTechnology()
+	public ColonizationTechnology(String name)
 	{
-		super();
+		super(name);
 		base_cost[0] = 1000;
 		base_cost[1] = 4000; 
 		base_cost[2] = 1000;
@@ -14,9 +14,9 @@ public class ColonizationTechnology extends Technology
 		required_technologies[Technology.METALLURGY] = 2;
 	}
 	
-	public ColonizationTechnology(int level)
+	public ColonizationTechnology(int level, String name)
 	{
-		super(level);
+		super(level, name);
 		base_cost[0] = 1000;
 		base_cost[1] = 4000; 
 		base_cost[2] = 1000;
@@ -24,15 +24,10 @@ public class ColonizationTechnology extends Technology
 		required_buildings[Building.LABORATORY] = 3;
 		required_technologies[Technology.ENERGY_TECHNOLOGY] = 5;
 		required_technologies[Technology.METALLURGY] = 2;
-	}
-	
-	public String generateHeader()
-	{
-		return "Колонизационная технология " + getCurrentLevelString();
 	}
 	
 	public String generateDescription(double[] current_resources)
 	{
-		return "Эта технология позволит вам расширить вашу империю до 20 колоний. Каждый уровень позволяет контролировать ещё одну колонию.<br>" + super.generateDescription(current_resources);
+		return "Р­С‚Р° С‚РµС…РЅРѕР»РѕРіРёСЏ РїРѕР·РІРѕР»РёС‚ РІР°Рј СЂР°СЃС€РёСЂРёС‚СЊ РІР°С€Сѓ РёРјРїРµСЂРёСЋ РґРѕ 20 РєРѕР»РѕРЅРёР№. РљР°Р¶РґС‹Р№ СѓСЂРѕРІРµРЅСЊ РїРѕР·РІРѕР»СЏРµС‚ РєРѕРЅС‚СЂРѕР»РёСЂРѕРІР°С‚СЊ РµС‰С‘ РѕРґРЅСѓ РєРѕР»РѕРЅРёСЋ.<br>" + super.generateDescription(current_resources);
 	}
 }

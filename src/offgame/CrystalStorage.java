@@ -8,18 +8,18 @@ import java.util.Locale;
 
 public class CrystalStorage extends Building
 {
-	public CrystalStorage()
+	public CrystalStorage(String name)
 	{
-		super();
+		super(name);
 		base_cost[0] = 2000;
 		base_cost[1] = 1000;
 		base_cost[2] = 0;
 		required_buildings[Building.CRYSTAL_MINES] = 5;
 	}
 	
-	public CrystalStorage(int level)
+	public CrystalStorage(int level, String name)
 	{
-		super(level);
+		super(level, name);
 		base_cost[0] = 2000;
 		base_cost[1] = 1000;
 		base_cost[2] = 0;
@@ -50,13 +50,8 @@ public class CrystalStorage extends Building
 		}
 	}
 	
-	public String generateHeader()
-	{
-		return "Хранилище кристалла " + getCurrentLevelString();
-	}
-	
 	public String generateDescription(double[] current_resources)
 	{
-		return "Хранилище для необработанного кристалла до его дальнейшей переработки.<br>Вместимость на следующем уровне: <font color='lime'>" + NumberFormat.getNumberInstance(Locale.US).format((int)calcGathering(level + 1)) + "</font><br>" + super.generateDescription(current_resources);
+		return "РҐСЂР°РЅРёР»РёС‰Рµ РґР»СЏ РЅРµРѕР±СЂР°Р±РѕС‚Р°РЅРЅРѕРіРѕ РєСЂРёСЃС‚Р°Р»Р»Р° РґРѕ РµРіРѕ РґР°Р»СЊРЅРµР№С€РµР№ РїРµСЂРµСЂР°Р±РѕС‚РєРё.<br>Р’РјРµСЃС‚РёРјРѕСЃС‚СЊ РЅР° СЃР»РµРґСѓСЋС‰РµРј СѓСЂРѕРІРЅРµ: <font color='lime'>" + NumberFormat.getNumberInstance(Locale.US).format((int)calcGathering(level + 1)) + "</font><br>" + super.generateDescription(current_resources);
 	}
 }

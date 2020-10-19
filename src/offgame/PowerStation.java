@@ -4,14 +4,14 @@ import static java.lang.Math.pow;
 
 public class PowerStation extends Building
 {
-	public PowerStation()
+	public PowerStation(String name)
 	{
-		super();
+		super(name);
 	}
 	
-	public PowerStation(int level)
+	public PowerStation(int level, String name)
 	{
-		super(level);
+		super(name);
 	}
 	
 	public double calcGathering()
@@ -32,16 +32,11 @@ public class PowerStation extends Building
 	
 	public String generateEnergyChange()
 	{
-		return " (<font color='lime'>+" + (int)calcDifference(level, level + 1) + " Энергия</font>)";
-	}
-	
-	public String generateHeader()
-	{
-		return "Солнечная электростанция " + getCurrentLevelString();
+		return " (<font color='lime'>+" + (int)calcDifference(level, level + 1) + " Р­РЅРµСЂРіРёСЏ</font>)";
 	}
 	
 	public String generateDescription(double[] current_resources)
 	{
-		return "Производит энергию из солнечных лучей.Энергия требуется для работы всех строений, производящих ресурсы.<br>" + super.generateDescription(current_resources);
+		return "РџСЂРѕРёР·РІРѕРґРёС‚ СЌРЅРµСЂРіРёСЋ РёР· СЃРѕР»РЅРµС‡РЅС‹С… Р»СѓС‡РµР№.Р­РЅРµСЂРіРёСЏ С‚СЂРµР±СѓРµС‚СЃСЏ РґР»СЏ СЂР°Р±РѕС‚С‹ РІСЃРµС… СЃС‚СЂРѕРµРЅРёР№, РїСЂРѕРёР·РІРѕРґСЏС‰РёС… СЂРµСЃСѓСЂСЃС‹.<br>" + super.generateDescription(current_resources);
 	}
 }

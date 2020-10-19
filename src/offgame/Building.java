@@ -8,8 +8,9 @@ import java.util.Locale;
 
 public abstract class Building
 {
-	public Building()
+	public Building(String name)
 	{
+		this.name = name;
 		level = 0;
 		base_cost = new double[4];
 		base_cost[0] = 0;
@@ -22,9 +23,19 @@ public abstract class Building
 		build_end_time = null;
 	}
 	
-	public Building(int level)
+	public Building(int level, String name)
 	{
 		this.level = level;
+		this.name = name;
+		base_cost = new double[4];
+		base_cost[0] = 0;
+		base_cost[1] = 0; 
+		base_cost[2] = 0;
+		base_cost[3] = 0;
+		required_buildings = new int[14];
+		required_technologies = new int[17];
+		base = 2;
+		build_end_time = null;
 	}
 	
 	public int[] getRequiredBuildings()
@@ -73,7 +84,7 @@ public abstract class Building
 		return cost;
 	}
 	
-	public long calcBuildingTime(int robotics_factory, int nanite_factory) // ���������� � ��������
+	public long calcBuildingTime(int robotics_factory, int nanite_factory) // возвращает в секундах
 	{
 		double[] d = calcBuildingCost();
 		return (long)max(( ((d[0] + d[1]) / 2500) * (1 / (robotics_factory + 1)) * pow(0.5, nanite_factory) * 15 * 60), 1);
@@ -96,7 +107,12 @@ public abstract class Building
 	
 	public String generateHeader()
 	{
-		return "";
+		return generateHeaderWithoutLevel() + getCurrentLevelString();
+	}
+	
+	public String generateHeaderWithoutLevel()
+	{
+		return name;
 	}
 	
 	protected String getCurrentLevelString()
@@ -104,17 +120,19 @@ public abstract class Building
 		String s = "";
 		if(level != 0)
 		{
-			s = "(������� " + level + ")";
+			s = "(Уровень " + level + ")";
 		}
 		return s;
 	}
+	
+	
 	
 	public String generateDescription(double[] current_resources)
 	{
 		double[] building_cost = calcBuildingCost();
 		String font_opening;
 		String font_ending = "</font>";
-		String[] names = {"������: ", "��������: ", "��������: ", "�������: "};
+		String[] names = {"Металл: ", "Кристалл: ", "Дейтерий: ", "Энергия: "};
 		
 		for(int i = 0; i < 4; i++)
 		{
@@ -136,7 +154,7 @@ public abstract class Building
 			}
 		}
 		
-		return "����������� �������: " + names[0] + " " + names[1] + " " + names[2] + " " + names[3] + "<br>";
+		return "Необходимые ресурсы: " + names[0] + " " + names[1] + " " + names[2] + " " + names[3] + "<br>";
 	}
 	
 	public void startBuilding(int robotics_factory, int nanite_factory)
@@ -154,23 +172,23 @@ public abstract class Building
 		return build_end_time;
 	}
 	
-	public static Building[] createList()
+	public static Building[] createListForPlanet()
 	{
 		Building[] list = new Building[14];
-		list[POWER_STATION] = new PowerStation();
-		list[METAL_MINES] = new MetalMines();
-		list[CRYSTAL_MINES] = new CrystalMines();
-		list[DEITERIUM_MINES] = new DeiteriumMines();
-		list[ROBOT_FACTORY] = new RobotFactory();
-		list[LABORATORY] = new Laboratory();
-		list[SPACE_YARD] = new SpaceYard();
-		list[METAL_STORAGE] = new MetalStorage();
-		list[CRYSTAL_STORAGE] = new CrystalStorage();
-		list[DEITERIUM_STORAGE] = new DeiteriumStorage();
-		list[NUCLEAR_STATION] = new NuclearStation();
-		list[NANITE_FACTORY] = new NaniteFactory();
-		list[TERRAFORMER] = new Terraformer();
-		list[ROCKET_SHAFT] = new RocketShaft();
+		list[POWER_STATION] = new PowerStation("Солнечная электростанция");
+		list[METAL_MINES] = new MetalMines("Рудник по добыче металла");
+		list[CRYSTAL_MINES] = new CrystalMines("Рудник по добыче кристалла");
+		list[DEITERIUM_MINES] = new DeiteriumMines("Синтезатор дейтерия");
+		list[ROBOT_FACTORY] = new RobotFactory("Фабрика роботов");
+		list[SPACE_YARD] = new SpaceYard("Верфь");
+		list[LABORATORY] = new Laboratory("Исследовательская лаборатория");
+		list[METAL_STORAGE] = new MetalStorage("Хранилище металла");
+		list[CRYSTAL_STORAGE] = new CrystalStorage("Хранилище кристалла");
+		list[DEITERIUM_STORAGE] = new DeiteriumStorage("Емкость для дейтерия");
+		list[NUCLEAR_STATION] = new NuclearStation("Термоядерная электростанция");
+		list[NANITE_FACTORY] = new NaniteFactory("Фабрика нанитов");
+		list[TERRAFORMER] = new Terraformer("Терраформер");
+		list[ROCKET_SHAFT] = new RocketShaft("Ракетная шахта");
 		return list;
 	}
 	
@@ -181,6 +199,7 @@ public abstract class Building
 	protected double base;
 	protected int[] required_buildings;
 	protected int[] required_technologies;
+	protected String name;
 	public static final int POWER_STATION = 0;
 	public static final int METAL_MINES = 1;
 	public static final int CRYSTAL_MINES = 2;

@@ -2,31 +2,26 @@ package offgame;
 
 public class Metallurgy extends Technology
 {
-	public Metallurgy()
+	public Metallurgy(String name)
 	{
-		super();
+		super(name);
 		base_cost[0] = 1000;
 		base_cost[1] = 0; 
 		base_cost[2] = 0;
 		required_buildings[Building.LABORATORY] = 2;
 	}
 	
-	public Metallurgy(int level)
+	public Metallurgy(int level, String name)
 	{
-		super(level);
+		super(level, name);
 		base_cost[0] = 1000;
 		base_cost[1] = 0; 
 		base_cost[2] = 0;
 		required_buildings[Building.LABORATORY] = 2;
-	}
-	
-	public String generateHeader()
-	{
-		return "Металлургия " + getCurrentLevelString();
 	}
 	
 	public String generateDescription(double[] current_resources)
 	{
-		return "Специальные сплавы улучшают броню космических кораблей и оборонительных сооружений, повышая их живучесть. Каждый уровень усиливает структуру кораблей и обороны на 10%.<br>" + super.generateDescription(current_resources);
+		return "РЎРїРµС†РёР°Р»СЊРЅС‹Рµ СЃРїР»Р°РІС‹ СѓР»СѓС‡С€Р°СЋС‚ Р±СЂРѕРЅСЋ РєРѕСЃРјРёС‡РµСЃРєРёС… РєРѕСЂР°Р±Р»РµР№ Рё РѕР±РѕСЂРѕРЅРёС‚РµР»СЊРЅС‹С… СЃРѕРѕСЂСѓР¶РµРЅРёР№, РїРѕРІС‹С€Р°СЏ РёС… Р¶РёРІСѓС‡РµСЃС‚СЊ. РљР°Р¶РґС‹Р№ СѓСЂРѕРІРµРЅСЊ СѓСЃРёР»РёРІР°РµС‚ СЃС‚СЂСѓРєС‚СѓСЂСѓ РєРѕСЂР°Р±Р»РµР№ Рё РѕР±РѕСЂРѕРЅС‹ РЅР° 10%.<br>" + super.generateDescription(current_resources);
 	}
 }

@@ -2,9 +2,9 @@ package offgame;
 
 public class ExpeditionTechnology extends Technology 
 {
-	public ExpeditionTechnology()
+	public ExpeditionTechnology(String name)
 	{
-		super();
+		super(name);
 		base_cost[0] = 4000;
 		base_cost[1] = 8000; 
 		base_cost[2] = 4000;
@@ -14,9 +14,9 @@ public class ExpeditionTechnology extends Technology
 		required_technologies[Technology.IMPULSE_ENGINE] = 3;
 	}
 	
-	public ExpeditionTechnology(int level)
+	public ExpeditionTechnology(int level, String name)
 	{
-		super(level);
+		super(level, name);
 		base_cost[0] = 4000;
 		base_cost[1] = 8000; 
 		base_cost[2] = 4000;
@@ -24,15 +24,10 @@ public class ExpeditionTechnology extends Technology
 		required_buildings[Building.LABORATORY] = 3;
 		required_technologies[Technology.COMPUTER_TECHNOLOGY] = 4;
 		required_technologies[Technology.IMPULSE_ENGINE] = 3;
-	}
-	
-	public String generateHeader()
-	{
-		return "Экспедиционная технология " + getCurrentLevelString();
 	}
 	
 	public String generateDescription(double[] current_resources)
 	{
-		return "Позволяет посылать экспедиции в неизведанные дали. Каждый уровень позволяет контролировать большее количество одновременных экспедиций.<br>" + super.generateDescription(current_resources);
+		return "РџРѕР·РІРѕР»СЏРµС‚ РїРѕСЃС‹Р»Р°С‚СЊ СЌРєСЃРїРµРґРёС†РёРё РІ РЅРµРёР·РІРµРґР°РЅРЅС‹Рµ РґР°Р»Рё. РљР°Р¶РґС‹Р№ СѓСЂРѕРІРµРЅСЊ РїРѕР·РІРѕР»СЏРµС‚ РєРѕРЅС‚СЂРѕР»РёСЂРѕРІР°С‚СЊ Р±РѕР»СЊС€РµРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РѕРґРЅРѕРІСЂРµРјРµРЅРЅС‹С… СЌРєСЃРїРµРґРёС†РёР№.<br>" + super.generateDescription(current_resources);
 	}
 }

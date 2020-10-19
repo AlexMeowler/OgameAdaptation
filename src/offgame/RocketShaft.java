@@ -2,31 +2,26 @@ package offgame;
 
 public class RocketShaft extends Building
 {
-	public RocketShaft()
+	public RocketShaft(String name)
 	{
-		super();
+		super(name);
 		base_cost[0] = 20000;
 		base_cost[1] = 20000;
 		base_cost[2] = 1000;
 		required_buildings[Building.SPACE_YARD] = 5;
 	}
 	
-	public RocketShaft(int level)
+	public RocketShaft(int level, String name)
 	{
-		super(level);
+		super(level, name);
 		base_cost[0] = 20000;
 		base_cost[1] = 20000;
 		base_cost[2] = 1000;
 		required_buildings[Building.SPACE_YARD] = 5;
-	}
-	
-	public String generateHeader()
-	{
-		return "Ракетная шахта " + getCurrentLevelString();
 	}
 	
 	public String generateDescription(double[] current_resources)
 	{
-		return "Служит для хранения ракет. Увеличение уровня позволяет хранить больше ракет.<br>" + super.generateDescription(current_resources);
+		return "РЎР»СѓР¶РёС‚ РґР»СЏ С…СЂР°РЅРµРЅРёСЏ СЂР°РєРµС‚. РЈРІРµР»РёС‡РµРЅРёРµ СѓСЂРѕРІРЅСЏ РїРѕР·РІРѕР»СЏРµС‚ С…СЂР°РЅРёС‚СЊ Р±РѕР»СЊС€Рµ СЂР°РєРµС‚.<br>" + super.generateDescription(current_resources);
 	}
 }

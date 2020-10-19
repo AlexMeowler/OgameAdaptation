@@ -4,16 +4,16 @@ import static java.lang.Math.pow;
 
 public class NuclearStation extends Building 
 {
-	public NuclearStation()
+	public NuclearStation(String name)
 	{
-		super();
+		super(name);
 		required_buildings[Building.DEITERIUM_MINES] = 5;
 		required_technologies[Technology.ENERGY_TECHNOLOGY] = 3;
 	}
 	
-	public NuclearStation(int level)
+	public NuclearStation(int level, String name)
 	{
-		super(level);
+		super(level, name);
 		required_buildings[Building.DEITERIUM_MINES] = 5;
 		required_technologies[Technology.ENERGY_TECHNOLOGY] = 3;
 	}
@@ -40,16 +40,11 @@ public class NuclearStation extends Building
 	
 	public String generateEnergyChange()
 	{
-		return " (<font color='lime'>+" + (int)calcDifference(level, level + 1) + " Энергия</font>)";
-	}
-	
-	public String generateHeader()
-	{
-		return "Термоядерная электростанция " + getCurrentLevelString();
+		return " (<font color='lime'>+" + (int)calcDifference(level, level + 1) + " Р­РЅРµСЂРіРёСЏ</font>)";
 	}
 	
 	public String generateDescription(double[] current_resources)
 	{
-		return "Добывает энергию из процесса образования атома гелия двумя атомами тяжёлого водорода. Потребляет дейтерий.<br>" + super.generateDescription(current_resources);
+		return "Р”РѕР±С‹РІР°РµС‚ СЌРЅРµСЂРіРёСЋ РёР· РїСЂРѕС†РµСЃСЃР° РѕР±СЂР°Р·РѕРІР°РЅРёСЏ Р°С‚РѕРјР° РіРµР»РёСЏ РґРІСѓРјСЏ Р°С‚РѕРјР°РјРё С‚СЏР¶С‘Р»РѕРіРѕ РІРѕРґРѕСЂРѕРґР°. РџРѕС‚СЂРµР±Р»СЏРµС‚ РґРµР№С‚РµСЂРёР№.<br>" + super.generateDescription(current_resources);
 	}
 }

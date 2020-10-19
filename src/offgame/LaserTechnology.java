@@ -2,9 +2,9 @@ package offgame;
 
 public class LaserTechnology extends Technology
 {
-	public LaserTechnology()
+	public LaserTechnology(String name)
 	{
-		super();
+		super(name);
 		base_cost[0] = 200;
 		base_cost[1] = 100; 
 		base_cost[2] = 0;
@@ -12,23 +12,18 @@ public class LaserTechnology extends Technology
 		required_technologies[Technology.ENERGY_TECHNOLOGY] = 2;
 	}
 	
-	public LaserTechnology(int level)
+	public LaserTechnology(int level, String name)
 	{
-		super(level);
+		super(level, name);
 		base_cost[0] = 200;
 		base_cost[1] = 100; 
 		base_cost[2] = 0;
 		required_buildings[Building.LABORATORY] = 1;
 		required_technologies[Technology.ENERGY_TECHNOLOGY] = 2;
-	}
-	
-	public String generateHeader()
-	{
-		return "Лазерная технология " + getCurrentLevelString();
 	}
 	
 	public String generateDescription(double[] current_resources)
 	{
-		return "Благодаря фокусированию света возникает луч, который при попадании на объект наносит ему повреждения.<br>" + super.generateDescription(current_resources);
+		return "Р‘Р»Р°РіРѕРґР°СЂСЏ С„РѕРєСѓСЃРёСЂРѕРІР°РЅРёСЋ СЃРІРµС‚Р° РІРѕР·РЅРёРєР°РµС‚ Р»СѓС‡, РєРѕС‚РѕСЂС‹Р№ РїСЂРё РїРѕРїР°РґР°РЅРёРё РЅР° РѕР±СЉРµРєС‚ РЅР°РЅРѕСЃРёС‚ РµРјСѓ РїРѕРІСЂРµР¶РґРµРЅРёСЏ.<br>" + super.generateDescription(current_resources);
 	}
 }

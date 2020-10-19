@@ -8,18 +8,18 @@ import java.util.Locale;
 
 public class DeiteriumStorage extends Building 
 {
-	public DeiteriumStorage()
+	public DeiteriumStorage(String name)
 	{
-		super();
+		super(name);
 		base_cost[0] = 2000;
 		base_cost[1] = 2000;
 		base_cost[2] = 0;
 		required_buildings[Building.DEITERIUM_MINES] = 6;
 	}
 	
-	public DeiteriumStorage(int level)
+	public DeiteriumStorage(int level, String name)
 	{
-		super(level);
+		super(level, name);
 		base_cost[0] = 2000;
 		base_cost[1] = 2000;
 		base_cost[2] = 0;
@@ -50,13 +50,8 @@ public class DeiteriumStorage extends Building
 		}
 	}
 	
-	public String generateHeader()
-	{
-		return "Емкость для дейтерия " + getCurrentLevelString();
-	}
-	
 	public String generateDescription(double[] current_resources)
 	{
-		return "Огромные ёмкости для сберегания добытого дейтерия.<br>Вместимость на следующем уровне: <font color='lime'>" + NumberFormat.getNumberInstance(Locale.US).format((int)calcGathering(level + 1)) + "</font><br>" + super.generateDescription(current_resources);
+		return "РћРіСЂРѕРјРЅС‹Рµ С‘РјРєРѕСЃС‚Рё РґР»СЏ СЃР±РµСЂРµРіР°РЅРёСЏ РґРѕР±С‹С‚РѕРіРѕ РґРµР№С‚РµСЂРёСЏ.<br>Р’РјРµСЃС‚РёРјРѕСЃС‚СЊ РЅР° СЃР»РµРґСѓСЋС‰РµРј СѓСЂРѕРІРЅРµ: <font color='lime'>" + NumberFormat.getNumberInstance(Locale.US).format((int)calcGathering(level + 1)) + "</font><br>" + super.generateDescription(current_resources);
 	}
 }

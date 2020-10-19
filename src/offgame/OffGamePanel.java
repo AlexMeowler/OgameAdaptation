@@ -28,7 +28,7 @@ public class OffGamePanel extends JPanel
 		//
 		windows = new ArrayList<>();
 		scrolls = new ArrayList<>();
-		windows.add(new InfoPanel("tech_tree", player));
+		windows.add(new TechTreePanel("tech_tree", player));
 		scrolls.add(new JScrollPane(windows.get(MenuContainer.TECH_TREE)));
 		prepareScrollBar(scrolls.get(MenuContainer.TECH_TREE));
 		windows.add(new OverviewPanel("overview", player));
@@ -70,36 +70,41 @@ public class OffGamePanel extends JPanel
 		constraints.gridy = 0;
 		constraints.gridwidth = 2;
 		constraints.gridheight = 1;
-		constraints.ipady = topRowHeight;
-		constraints.ipadx = topRowCellWidth;
+		//constraints.ipady = topRowHeight;
+		//constraints.ipadx = topRowCellWidth;
 		constraints.anchor = GridBagConstraints.PAGE_START;
-		add(Box.createVerticalStrut(topRowHeight  * constraints.gridheight), constraints);
+		//add(Box.createVerticalStrut(31), constraints);
 		constraints.weightx = 0.3f;
+		constraints.weighty = 1.0f;
 		constraints.gridx = 7;
 		constraints.gridy = 0;
 		constraints.gridwidth = 1;
 		constraints.gridheight = 3;
 		add(Box.createVerticalStrut(dim.height), constraints);
+		constraints.gridheight = 1;
 		constraints.ipadx = 0;
 		constraints.ipady = 0;
 		constraints.anchor = GridBagConstraints.PAGE_START;
 		constraints.gridx = 2;
 		constraints.gridy = 0;
-		constraints.ipady = topRowHeight;
-		constraints.weightx = 0.4f;
-		metal.setTextAsNum((int)player.getPlanet(player.getCurrentPlanetIndex()).getCurrentMetal());
+		constraints.ipady = topRowPadding;
+		constraints.weightx = 0.2f;
+		constraints.weighty = 0.0f;
+		constraints.insets.left = INFO_PANELS_LEFT_INSET;
 		add(metal, constraints);
+		metal.setTextAsNum((int)player.getCurrentPlanet().getCurrentMetal());
+		constraints.insets.left = 0;
 		constraints.gridx = 3;
 		constraints.gridy = 0;
-		crystal.setTextAsNum((int)player.getPlanet(player.getCurrentPlanetIndex()).getCurrentCrystal());
 		add(crystal, constraints);
+		crystal.setTextAsNum((int)player.getCurrentPlanet().getCurrentCrystal());
 		constraints.gridx = 4;
 		constraints.gridy = 0;
-		deiterium.setTextAsNum((int)player.getPlanet(player.getCurrentPlanetIndex()).getCurrentDeiterium());
 		add(deiterium, constraints);
+		deiterium.setTextAsNum((int)player.getCurrentPlanet().getCurrentDeiterium());
 		constraints.gridx = 5;
 		constraints.gridy = 0;
-		electricity.setTextAsNum((int)player.getPlanet(player.getCurrentPlanetIndex()).getCurrentElectricity());
+		electricity.setTextAsNum((int)player.getCurrentPlanet().getCurrentElectricity());
 		add(electricity, constraints);
 		constraints.gridx = 6;
 		constraints.gridy = 0;
@@ -130,13 +135,13 @@ public class OffGamePanel extends JPanel
 		constraints.gridy = 1;
 		constraints.gridwidth = 5;
 		constraints.gridheight = 2;
-		constraints.insets.left = 0;
+		constraints.insets.left = INFO_PANELS_LEFT_INSET;
 		for(int i = 0; i < scrolls.size(); i++)
 		{
 			add(scrolls.get(i), constraints);
 		}
 		//
-
+		constraints.insets.left = 0;
 	}
 	
 	public Player getPlayer()
@@ -155,9 +160,9 @@ public class OffGamePanel extends JPanel
 	
 	private void setResourcesToolTips()
 	{
-		metal.setToolTipText("<html><font size='4'>Металл<br>Вместимость: " + NumberFormat.getNumberInstance(Locale.US).format((int)player.getPlanet(player.getCurrentPlanetIndex()).getMetalCapacity()) + "</font></html>");
-		crystal.setToolTipText("<html><font size='4'>Кристалл<br>Вместимость: " + NumberFormat.getNumberInstance(Locale.US).format((int)player.getPlanet(player.getCurrentPlanetIndex()).getCrystalCapacity()) + "</font></html>");
-		deiterium.setToolTipText("<html><font size='4'>Дейтерий<br>Вместимость: " + NumberFormat.getNumberInstance(Locale.US).format((int)player.getPlanet(player.getCurrentPlanetIndex()).getDeiteriumCapacity()) + "</font></html>");
+		metal.setToolTipText("<html><font size='4'>РњРµС‚Р°Р»Р»<br>Р’РјРµСЃС‚РёРјРѕСЃС‚СЊ: " + NumberFormat.getNumberInstance(Locale.US).format((int)player.getPlanet(player.getCurrentPlanetIndex()).getMetalCapacity()) + "</font></html>");
+		crystal.setToolTipText("<html><font size='4'>РљСЂРёСЃС‚Р°Р»Р»<br>Р’РјРµСЃС‚РёРјРѕСЃС‚СЊ: " + NumberFormat.getNumberInstance(Locale.US).format((int)player.getPlanet(player.getCurrentPlanetIndex()).getCrystalCapacity()) + "</font></html>");
+		deiterium.setToolTipText("<html><font size='4'>Р”РµР№С‚РµСЂРёР№<br>Р’РјРµСЃС‚РёРјРѕСЃС‚СЊ: " + NumberFormat.getNumberInstance(Locale.US).format((int)player.getPlanet(player.getCurrentPlanetIndex()).getDeiteriumCapacity()) + "</font></html>");
 	}
 	
 	public void killClock()
@@ -218,8 +223,9 @@ public class OffGamePanel extends JPanel
 	private ArrayList<JScrollPane> scrolls;
 	private Player player;
 	private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-	private int topRowHeight = (int)(dim.height * 0.02);
+	private int topRowPadding = 15;
 	private int topRowCellWidth = 130;
 	private int currentActiveWindow;
 	private TimeProcessingThread clock;
+	private static final int INFO_PANELS_LEFT_INSET = 50; 
 }

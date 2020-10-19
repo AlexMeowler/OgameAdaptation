@@ -2,31 +2,26 @@ package offgame;
 
 public class EnergyTechnology extends Technology 
 {
-	public EnergyTechnology()
+	public EnergyTechnology(String name)
 	{
-		super();
+		super(name);
 		base_cost[0] = 0;
 		base_cost[1] = 800; 
 		base_cost[2] = 400;
 		required_buildings[Building.LABORATORY] = 1;
 	}
 	
-	public EnergyTechnology(int level)
+	public EnergyTechnology(int level, String name)
 	{
-		super(level);
+		super(level, name);
 		base_cost[0] = 0;
 		base_cost[1] = 800; 
 		base_cost[2] = 400;
 		required_buildings[Building.LABORATORY] = 1;
-	}
-	
-	public String generateHeader()
-	{
-		return "Энергетическая технология " + getCurrentLevelString();
 	}
 	
 	public String generateDescription(double[] current_resources)
 	{
-		return "Обладание различными видами энергии необходимо для многих новых технологий. Так же каждый уровень увеличивает выработку энергии на Термоядерных электростанциях.<br>" + super.generateDescription(current_resources);
+		return "РћР±Р»Р°РґР°РЅРёРµ СЂР°Р·Р»РёС‡РЅС‹РјРё РІРёРґР°РјРё СЌРЅРµСЂРіРёРё РЅРµРѕР±С…РѕРґРёРјРѕ РґР»СЏ РјРЅРѕРіРёС… РЅРѕРІС‹С… С‚РµС…РЅРѕР»РѕРіРёР№. РўР°Рє Р¶Рµ РєР°Р¶РґС‹Р№ СѓСЂРѕРІРµРЅСЊ СѓРІРµР»РёС‡РёРІР°РµС‚ РІС‹СЂР°Р±РѕС‚РєСѓ СЌРЅРµСЂРіРёРё РЅР° РўРµСЂРјРѕСЏРґРµСЂРЅС‹С… СЌР»РµРєС‚СЂРѕСЃС‚Р°РЅС†РёСЏС….<br>" + super.generateDescription(current_resources);
 	}
 }

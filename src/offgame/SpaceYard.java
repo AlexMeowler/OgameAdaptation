@@ -2,31 +2,25 @@ package offgame;
 
 public class SpaceYard extends Building 
 {
-	public SpaceYard()
+	public SpaceYard(String name)
 	{
-		super();
+		super(name);
 		base_cost[0] = 400;
 		base_cost[1] = 200;
 		base_cost[2] = 100;
 		required_buildings[Building.ROBOT_FACTORY] = 2;
 	}
 	
-	public SpaceYard(int level)
+	public SpaceYard(int level, String name)
 	{
-		super(level);
+		super(level, name);
 		base_cost[0] = 400;
 		base_cost[1] = 200;
 		base_cost[2] = 100;
 		required_buildings[Building.ROBOT_FACTORY] = 2;
 	}
-	
-	public String generateHeader()
-	{
-		return "Верфь " + getCurrentLevelString();
-	}
-	
 	public String generateDescription(double[] current_resources)
 	{
-		return "В строительной верфи производятся все виды кораблей и оборонительных сооружений. Увеличение уровня повышает скорость постройки кораблей и обороны.<br>" + super.generateDescription(current_resources);
+		return "Р’ СЃС‚СЂРѕРёС‚РµР»СЊРЅРѕР№ РІРµСЂС„Рё РїСЂРѕРёР·РІРѕРґСЏС‚СЃСЏ РІСЃРµ РІРёРґС‹ РєРѕСЂР°Р±Р»РµР№ Рё РѕР±РѕСЂРѕРЅРёС‚РµР»СЊРЅС‹С… СЃРѕРѕСЂСѓР¶РµРЅРёР№. РЈРІРµР»РёС‡РµРЅРёРµ СѓСЂРѕРІРЅСЏ РїРѕРІС‹С€Р°РµС‚ СЃРєРѕСЂРѕСЃС‚СЊ РїРѕСЃС‚СЂРѕР№РєРё РєРѕСЂР°Р±Р»РµР№ Рё РѕР±РѕСЂРѕРЅС‹.<br>" + super.generateDescription(current_resources);
 	}
 }

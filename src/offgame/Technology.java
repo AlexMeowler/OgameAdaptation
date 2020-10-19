@@ -6,17 +6,17 @@ import java.util.Date;
 
 public abstract class Technology extends Building
 {
-	public Technology()
+	public Technology(String name)
 	{
-		super();
+		super(name);
 	}
 	
-	public Technology(int level)
+	public Technology(int level, String name)
 	{
-		super(level);
+		super(level, name);
 	}
 	
-	public long calcBuildingTime(int laboratory) // ���������� � ��������
+	public long calcBuildingTime(int laboratory) // возвращает в секундах
 	{
 		double[] d = calcBuildingCost();
 		return (long)max(((d[0] + d[1]) / (1000 * (laboratory + 1)) * 15 * 60), 1);
@@ -30,23 +30,23 @@ public abstract class Technology extends Building
 	public static Technology[] createList()
 	{
 		Technology[] list = new Technology[17];
-		list[ESPIONAGE] = new Espionage();
-		list[ENERGY_TECHNOLOGY] = new EnergyTechnology();
-		list[REACTIVE_ENGINE] = new ReactiveEngine();
-		list[IMPULSE_ENGINE] = new ImpulseEngine();
-		list[COMPUTER_TECHNOLOGY] = new ComputerTechnology();
-		list[WEAPON_TECHNOLOGY] = new WeaponTechnology();
-		list[SHIELD_TECHNOLOGY] = new ShieldTechnology();
-		list[METALLURGY] = new Metallurgy();
-		list[COLONIZATION_TECHNOLOGY] = new ColonizationTechnology();
-		list[EXPEDITION_TECHNOLOGY] = new ExpeditionTechnology();
-		list[HYPERSPACE_TECHNOLOGY] = new HyperspaceTechnology();
-		list[HYPERSPACE_ENGINE] = new HyperspaceEngine();
-		list[LASER_TECHNOLOGY] = new LaserTechnology();
-		list[ION_TECHNOLOGY] = new IonTechnology();
-		list[PLASMA_TECHNOLOGY] = new PlasmaTechnology();
-		list[INTEGERGALACTICAL_RESEARCH_NETWORK] = new IntergalacticalResearchNetwork();
-		list[GRAVITY_TECHNOLOGY] = new GravityTechnology();
+		list[ESPIONAGE] = new Espionage("Шпионаж");
+		list[ENERGY_TECHNOLOGY] = new EnergyTechnology("Энергетическая технология");
+		list[REACTIVE_ENGINE] = new ReactiveEngine("Реактивный двигатель");
+		list[IMPULSE_ENGINE] = new ImpulseEngine("Импульсный двигатель");
+		list[COMPUTER_TECHNOLOGY] = new ComputerTechnology("Компьютерная технология");
+		list[WEAPON_TECHNOLOGY] = new WeaponTechnology("Оружейная технология");
+		list[SHIELD_TECHNOLOGY] = new ShieldTechnology("Щитовая технология");
+		list[METALLURGY] = new Metallurgy("Металлургия");
+		list[COLONIZATION_TECHNOLOGY] = new ColonizationTechnology("Колонизационная технология");
+		list[EXPEDITION_TECHNOLOGY] = new ExpeditionTechnology("Экспедиционная технология");
+		list[HYPERSPACE_TECHNOLOGY] = new HyperspaceTechnology("Гиперпространственная технология");
+		list[HYPERSPACE_ENGINE] = new HyperspaceEngine("Гиперпространственный двигатель");
+		list[LASER_TECHNOLOGY] = new LaserTechnology("Лазерная технология");
+		list[ION_TECHNOLOGY] = new IonTechnology("Ионная технология");
+		list[PLASMA_TECHNOLOGY] = new PlasmaTechnology("Плазменная технология");
+		list[INTEGERGALACTICAL_RESEARCH_NETWORK] = new IntergalacticalResearchNetwork("Межгалактическая исследовательская сеть");
+		list[GRAVITY_TECHNOLOGY] = new GravitationalTechnology("Гравитационная технология");
 		return list;
 	}
 	

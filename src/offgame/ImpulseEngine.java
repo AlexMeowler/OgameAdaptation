@@ -2,9 +2,9 @@ package offgame;
 
 public class ImpulseEngine extends Technology 
 {
-	public ImpulseEngine()
+	public ImpulseEngine(String name)
 	{
-		super();
+		super(name);
 		base_cost[0] = 2000;
 		base_cost[1] = 4000; 
 		base_cost[2] = 600;
@@ -12,23 +12,18 @@ public class ImpulseEngine extends Technology
 		required_technologies[Technology.ENERGY_TECHNOLOGY] = 2;
 	}
 	
-	public ImpulseEngine(int level)
+	public ImpulseEngine(int level, String name)
 	{
-		super(level);
+		super(level, name);
 		base_cost[0] = 2000;
 		base_cost[1] = 4000; 
 		base_cost[2] = 600;
 		required_buildings[Building.LABORATORY] = 1;
 		required_technologies[Technology.ENERGY_TECHNOLOGY] = 2;
-	}
-	
-	public String generateHeader()
-	{
-		return "Импульсный двигатель " + getCurrentLevelString();
 	}
 	
 	public String generateDescription(double[] current_resources)
 	{
-		return "Импульсный двигатель основывается на принципе отдачи. Дальнейшее развитие этих двигателей делает некоторые корабли быстрее, повышает скорость на 20% (относительно базовой скорости кораблей). Увеличивает дальность межпланетных ракет.<br>" + super.generateDescription(current_resources);
+		return "РРјРїСѓР»СЊСЃРЅС‹Р№ РґРІРёРіР°С‚РµР»СЊ РѕСЃРЅРѕРІС‹РІР°РµС‚СЃСЏ РЅР° РїСЂРёРЅС†РёРїРµ РѕС‚РґР°С‡Рё. Р”Р°Р»СЊРЅРµР№С€РµРµ СЂР°Р·РІРёС‚РёРµ СЌС‚РёС… РґРІРёРіР°С‚РµР»РµР№ РґРµР»Р°РµС‚ РЅРµРєРѕС‚РѕСЂС‹Рµ РєРѕСЂР°Р±Р»Рё Р±С‹СЃС‚СЂРµРµ, РїРѕРІС‹С€Р°РµС‚ СЃРєРѕСЂРѕСЃС‚СЊ РЅР° 20% (РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕ Р±Р°Р·РѕРІРѕР№ СЃРєРѕСЂРѕСЃС‚Рё РєРѕСЂР°Р±Р»РµР№). РЈРІРµР»РёС‡РёРІР°РµС‚ РґР°Р»СЊРЅРѕСЃС‚СЊ РјРµР¶РїР»Р°РЅРµС‚РЅС‹С… СЂР°РєРµС‚.<br>" + super.generateDescription(current_resources);
 	}
 }

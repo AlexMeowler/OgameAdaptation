@@ -2,9 +2,9 @@ package offgame;
 
 public class ShieldTechnology extends Technology
 {
-	public ShieldTechnology()
+	public ShieldTechnology(String name)
 	{
-		super();
+		super(name);
 		base_cost[0] = 200;
 		base_cost[1] = 600; 
 		base_cost[2] = 0;
@@ -12,23 +12,18 @@ public class ShieldTechnology extends Technology
 		required_technologies[Technology.ENERGY_TECHNOLOGY] = 3;
 	}
 	
-	public ShieldTechnology(int level)
+	public ShieldTechnology(int level, String name)
 	{
-		super(level);
+		super(level, name);
 		base_cost[0] = 200;
 		base_cost[1] = 600; 
 		base_cost[2] = 0;
 		required_buildings[Building.LABORATORY] = 6;
 		required_technologies[Technology.ENERGY_TECHNOLOGY] = 3;
-	}
-	
-	public String generateHeader()
-	{
-		return "Щитовая технология " + getCurrentLevelString();
 	}
 	
 	public String generateDescription(double[] current_resources)
 	{
-		return "Занимается изучением более новых возможностей большего энергоснабжения щитов, что делает их эффективней и устойчивей. Благодаря этому, с каждым уровнем эффективность щитов кораблей и обороны повышается на 10%.<br>" + super.generateDescription(current_resources);
+		return "Р—Р°РЅРёРјР°РµС‚СЃСЏ РёР·СѓС‡РµРЅРёРµРј Р±РѕР»РµРµ РЅРѕРІС‹С… РІРѕР·РјРѕР¶РЅРѕСЃС‚РµР№ Р±РѕР»СЊС€РµРіРѕ СЌРЅРµСЂРіРѕСЃРЅР°Р±Р¶РµРЅРёСЏ С‰РёС‚РѕРІ, С‡С‚Рѕ РґРµР»Р°РµС‚ РёС… СЌС„С„РµРєС‚РёРІРЅРµР№ Рё СѓСЃС‚РѕР№С‡РёРІРµР№. Р‘Р»Р°РіРѕРґР°СЂСЏ СЌС‚РѕРјСѓ, СЃ РєР°Р¶РґС‹Рј СѓСЂРѕРІРЅРµРј СЌС„С„РµРєС‚РёРІРЅРѕСЃС‚СЊ С‰РёС‚РѕРІ РєРѕСЂР°Р±Р»РµР№ Рё РѕР±РѕСЂРѕРЅС‹ РїРѕРІС‹С€Р°РµС‚СЃСЏ РЅР° 10%.<br>" + super.generateDescription(current_resources);
 	}
 }

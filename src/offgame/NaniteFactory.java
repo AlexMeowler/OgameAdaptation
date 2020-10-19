@@ -2,9 +2,9 @@ package offgame;
 
 public class NaniteFactory extends Building 
 {
-	public NaniteFactory()
+	public NaniteFactory(String name)
 	{
-		super();
+		super(name);
 		base_cost[0] = 1000000;
 		base_cost[1] = 500000;
 		base_cost[2] = 100000;
@@ -12,23 +12,18 @@ public class NaniteFactory extends Building
 		required_technologies[Technology.COMPUTER_TECHNOLOGY] = 10;
 	}
 	
-	public NaniteFactory(int level)
+	public NaniteFactory(int level, String name)
 	{
-		super(level);
+		super(level, name);
 		base_cost[0] = 1000000;
 		base_cost[1] = 500000;
 		base_cost[2] = 100000;
 		required_buildings[Building.ROBOT_FACTORY] = 10;
 		required_technologies[Technology.COMPUTER_TECHNOLOGY] = 10;
-	}
-	
-	public String generateHeader()
-	{
-		return "Фабрика нанитов " + getCurrentLevelString();
 	}
 	
 	public String generateDescription(double[] current_resources)
 	{
-		return "Фабрика нанитов производит специальных эволюционированных роботов - нанитов. Наниты - это роботы, которые в состоянии выполнять экстраординарные задания путём объединения. Каждый уровень в 2 раза ускоряет постройку зданий, кораблей и обороны.<br>" + super.generateDescription(current_resources);
+		return "Р¤Р°Р±СЂРёРєР° РЅР°РЅРёС‚РѕРІ РїСЂРѕРёР·РІРѕРґРёС‚ СЃРїРµС†РёР°Р»СЊРЅС‹С… СЌРІРѕР»СЋС†РёРѕРЅРёСЂРѕРІР°РЅРЅС‹С… СЂРѕР±РѕС‚РѕРІ - РЅР°РЅРёС‚РѕРІ. РќР°РЅРёС‚С‹ - СЌС‚Рѕ СЂРѕР±РѕС‚С‹, РєРѕС‚РѕСЂС‹Рµ РІ СЃРѕСЃС‚РѕСЏРЅРёРё РІС‹РїРѕР»РЅСЏС‚СЊ СЌРєСЃС‚СЂР°РѕСЂРґРёРЅР°СЂРЅС‹Рµ Р·Р°РґР°РЅРёСЏ РїСѓС‚С‘Рј РѕР±СЉРµРґРёРЅРµРЅРёСЏ. РљР°Р¶РґС‹Р№ СѓСЂРѕРІРµРЅСЊ РІ 2 СЂР°Р·Р° СѓСЃРєРѕСЂСЏРµС‚ РїРѕСЃС‚СЂРѕР№РєСѓ Р·РґР°РЅРёР№, РєРѕСЂР°Р±Р»РµР№ Рё РѕР±РѕСЂРѕРЅС‹.<br>" + super.generateDescription(current_resources);
 	}
 }

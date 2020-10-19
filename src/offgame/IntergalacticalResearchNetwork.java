@@ -1,10 +1,10 @@
 package offgame;
 
 public class IntergalacticalResearchNetwork extends Technology 
-{ // сделать чтобы работало
-	public IntergalacticalResearchNetwork()
+{ // СЃРґРµР»Р°С‚СЊ С‡С‚РѕР±С‹ СЂР°Р±РѕС‚Р°Р»Рѕ
+	public IntergalacticalResearchNetwork(String name)
 	{
-		super();
+		super(name);
 		base_cost[0] = 240000;
 		base_cost[1] = 400000; 
 		base_cost[2] = 160000;
@@ -13,24 +13,19 @@ public class IntergalacticalResearchNetwork extends Technology
 		required_technologies[Technology.HYPERSPACE_TECHNOLOGY] = 8;
 	}
 	
-	public IntergalacticalResearchNetwork(int level)
+	public IntergalacticalResearchNetwork(int level, String name)
 	{
-		super(level);
+		super(level, name);
 		base_cost[0] = 240000;
 		base_cost[1] = 400000; 
 		base_cost[2] = 160000;
 		required_buildings[Building.LABORATORY] = 10;
 		required_technologies[Technology.COMPUTER_TECHNOLOGY] = 8;
 		required_technologies[Technology.HYPERSPACE_TECHNOLOGY] = 8;
-	}
-	
-	public String generateHeader()
-	{
-		return "Межгалактическая исследовательская сеть " + getCurrentLevelString();
 	}
 	
 	public String generateDescription(double[] current_resources)
 	{
-		return "Эта сеть делает возможным общение учёных, работающих в исследовательских лабораториях разных планет. Каждый новый уровень позволяет присоединить к сети дополнительную лабораторию, что позволяет ускорить исследования.<br>" + super.generateDescription(current_resources);
+		return "Р­С‚Р° СЃРµС‚СЊ РґРµР»Р°РµС‚ РІРѕР·РјРѕР¶РЅС‹Рј РѕР±С‰РµРЅРёРµ СѓС‡С‘РЅС‹С…, СЂР°Р±РѕС‚Р°СЋС‰РёС… РІ РёСЃСЃР»РµРґРѕРІР°С‚РµР»СЊСЃРєРёС… Р»Р°Р±РѕСЂР°С‚РѕСЂРёСЏС… СЂР°Р·РЅС‹С… РїР»Р°РЅРµС‚. РљР°Р¶РґС‹Р№ РЅРѕРІС‹Р№ СѓСЂРѕРІРµРЅСЊ РїРѕР·РІРѕР»СЏРµС‚ РїСЂРёСЃРѕРµРґРёРЅРёС‚СЊ Рє СЃРµС‚Рё РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅСѓСЋ Р»Р°Р±РѕСЂР°С‚РѕСЂРёСЋ, С‡С‚Рѕ РїРѕР·РІРѕР»СЏРµС‚ СѓСЃРєРѕСЂРёС‚СЊ РёСЃСЃР»РµРґРѕРІР°РЅРёСЏ.<br>" + super.generateDescription(current_resources);
 	}
 }

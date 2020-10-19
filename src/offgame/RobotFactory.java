@@ -2,31 +2,26 @@ package offgame;
 
 public class RobotFactory extends Building
 {
-	public RobotFactory()
+	public RobotFactory(String name)
 	{
-		super();
+		super(name);
 		base_cost[0] = 400;
 		base_cost[1] = 120;
 		base_cost[2] = 200;
 		required_buildings[Building.DEITERIUM_MINES] = 2;
 	}
 	
-	public RobotFactory(int level)
+	public RobotFactory(int level, String name)
 	{
-		super(level);
+		super(level, name);
 		base_cost[0] = 400;
 		base_cost[1] = 120;
 		base_cost[2] = 200;
 		required_buildings[Building.DEITERIUM_MINES] = 2;
-	}
-	
-	public String generateHeader()
-	{
-		return "Фабрика роботов " + getCurrentLevelString();
 	}
 	
 	public String generateDescription(double[] current_resources)
 	{
-		return "Предоставляет простую рабочую силу, которую можно применять при строительстве планетарной инфраструктуры. Каждый уровень развития фабрики повышает скорость строительства зданий.<br>" + super.generateDescription(current_resources);
+		return "РџСЂРµРґРѕСЃС‚Р°РІР»СЏРµС‚ РїСЂРѕСЃС‚СѓСЋ СЂР°Р±РѕС‡СѓСЋ СЃРёР»Сѓ, РєРѕС‚РѕСЂСѓСЋ РјРѕР¶РЅРѕ РїСЂРёРјРµРЅСЏС‚СЊ РїСЂРё СЃС‚СЂРѕРёС‚РµР»СЊСЃС‚РІРµ РїР»Р°РЅРµС‚Р°СЂРЅРѕР№ РёРЅС„СЂР°СЃС‚СЂСѓРєС‚СѓСЂС‹. РљР°Р¶РґС‹Р№ СѓСЂРѕРІРµРЅСЊ СЂР°Р·РІРёС‚РёСЏ С„Р°Р±СЂРёРєРё РїРѕРІС‹С€Р°РµС‚ СЃРєРѕСЂРѕСЃС‚СЊ СЃС‚СЂРѕРёС‚РµР»СЊСЃС‚РІР° Р·РґР°РЅРёР№.<br>" + super.generateDescription(current_resources);
 	}
 }

@@ -7,18 +7,18 @@ import java.util.Locale;
 
 public class MetalStorage extends Building 
 {
-	public MetalStorage()
+	public MetalStorage(String name)
 	{
-		super();
+		super(name);
 		base_cost[0] = 2000;
 		base_cost[1] = 0;
 		base_cost[2] = 0;
 		required_buildings[Building.METAL_MINES] = 4;
 	}
 	
-	public MetalStorage(int level)
+	public MetalStorage(int level, String name)
 	{
-		super(level);
+		super(level, name);
 		base_cost[0] = 2000;
 		base_cost[1] = 0;
 		base_cost[2] = 0;
@@ -49,13 +49,8 @@ public class MetalStorage extends Building
 		}
 	}
 	
-	public String generateHeader()
-	{
-		return "Хранилище металла " + getCurrentLevelString();
-	}
-	
 	public String generateDescription(double[] current_resources)
 	{
-		return "Хранилище для необработанных руд металлов до их дальнейшей переработки.<br>Вместимость на следующем уровне: <font color='lime'>" + NumberFormat.getNumberInstance(Locale.US).format((int)calcGathering(level + 1)) + "</font><br>" + super.generateDescription(current_resources);
+		return "РҐСЂР°РЅРёР»РёС‰Рµ РґР»СЏ РЅРµРѕР±СЂР°Р±РѕС‚Р°РЅРЅС‹С… СЂСѓРґ РјРµС‚Р°Р»Р»РѕРІ РґРѕ РёС… РґР°Р»СЊРЅРµР№С€РµР№ РїРµСЂРµСЂР°Р±РѕС‚РєРё.<br>Р’РјРµСЃС‚РёРјРѕСЃС‚СЊ РЅР° СЃР»РµРґСѓСЋС‰РµРј СѓСЂРѕРІРЅРµ: <font color='lime'>" + NumberFormat.getNumberInstance(Locale.US).format((int)calcGathering(level + 1)) + "</font><br>" + super.generateDescription(current_resources);
 	}
 }

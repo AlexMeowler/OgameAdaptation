@@ -4,16 +4,16 @@ import static java.lang.Math.pow;
 
 public class DeiteriumMines extends Building
 {
-	public DeiteriumMines()
+	public DeiteriumMines(String name)
 	{
-		super();
+		super(name);
 		required_buildings[Building.METAL_MINES] = 4;
 		required_buildings[Building.CRYSTAL_MINES] = 2;
 	}
 	
-	public DeiteriumMines(int level)
+	public DeiteriumMines(int level, String name)
 	{
-		super(level);
+		super(level, name);
 		required_buildings[Building.METAL_MINES] = 4;
 		required_buildings[Building.CRYSTAL_MINES] = 2;
 	}
@@ -62,16 +62,11 @@ public class DeiteriumMines extends Building
 	
 	public String generateEnergyChange()
 	{
-		return " (<font color='red'>-" + (int)calcDifference(level, level + 1) + " Энергия</font>)";
-	}
-	
-	public String generateHeader()
-	{
-		return "Синтезатор дейтерия " + getCurrentLevelString();
+		return " (<font color='red'>-" + (int)calcDifference(level, level + 1) + " Р­РЅРµСЂРіРёСЏ</font>)";
 	}
 	
 	public String generateDescription(double[] current_resources)
 	{
-		return "Извлекает из воды на планете незначительную долю дейтерия.<br>" + super.generateDescription(current_resources);
+		return "РР·РІР»РµРєР°РµС‚ РёР· РІРѕРґС‹ РЅР° РїР»Р°РЅРµС‚Рµ РЅРµР·РЅР°С‡РёС‚РµР»СЊРЅСѓСЋ РґРѕР»СЋ РґРµР№С‚РµСЂРёСЏ.<br>" + super.generateDescription(current_resources);
 	}
 }

@@ -2,31 +2,26 @@ package offgame;
 
 public class Espionage extends Technology
 {
-	public Espionage()
+	public Espionage(String name)
 	{
-		super();
+		super(name);
 		base_cost[0] = 200;
 		base_cost[1] = 1000; 
 		base_cost[2] = 200;
 		required_buildings[Building.LABORATORY] = 3;
 	}
 	
-	public Espionage(int level)
+	public Espionage(int level, String name)
 	{
-		super(level);
+		super(level, name);
 		base_cost[0] = 200;
 		base_cost[1] = 1000; 
 		base_cost[2] = 200;
 		required_buildings[Building.LABORATORY] = 3;
-	}
-	
-	public String generateHeader()
-	{
-		return "Шпионаж " + getCurrentLevelString();
 	}
 	
 	public String generateDescription(double[] current_resources)
 	{
-		return "С помощью этой технологии добываются данные о чужих планетах. Влияет на информацию о нападающих вражеских флотах, на шанс обнаружения шпионских зондов.<br>" + super.generateDescription(current_resources);
+		return "РЎ РїРѕРјРѕС‰СЊСЋ СЌС‚РѕР№ С‚РµС…РЅРѕР»РѕРіРёРё РґРѕР±С‹РІР°СЋС‚СЃСЏ РґР°РЅРЅС‹Рµ Рѕ С‡СѓР¶РёС… РїР»Р°РЅРµС‚Р°С…. Р’Р»РёСЏРµС‚ РЅР° РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ РЅР°РїР°РґР°СЋС‰РёС… РІСЂР°Р¶РµСЃРєРёС… С„Р»РѕС‚Р°С…, РЅР° С€Р°РЅСЃ РѕР±РЅР°СЂСѓР¶РµРЅРёСЏ С€РїРёРѕРЅСЃРєРёС… Р·РѕРЅРґРѕРІ.<br>" + super.generateDescription(current_resources);
 	}
 }

@@ -66,15 +66,18 @@ public class BuildingPanel extends InfoPanel
 		constraints.insets.right = 3;
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.NORTH;
+		constraints.weightx = 0.0f;
 		add(new TextLabel("<div style='text-align: center'>Занятость полей</div>", "" + constraints.gridx + "." +constraints.gridy, false), constraints);
 		constraints.gridx = 1;
 		constraints.gridwidth = 1;
 		constraints.gridheight = 1;
+		constraints.weightx = 1.0f;
 		add(new TextLabel(createFieldInfoString(),  "" + constraints.gridx + "." +constraints.gridy, false), constraints);
 		constraints.gridx = 2;
 		constraints.gridwidth = 1;
 		constraints.gridheight = 1;
 		constraints.insets.right = 0;
+		constraints.weightx = 0.0f;
 		add(new TextLabel("<div style='text-align: center'>" + current_planet.getMinTemperature() + " — " + current_planet.getMaxTemperature() + "°C</div>",  "" + constraints.gridx + "." +constraints.gridy, false), constraints);
 		y_offset = Planet.MAX_BUILD_QUEUE + 1;
 		requirements_panels = new RequirementsPanel[14];
@@ -200,8 +203,7 @@ public class BuildingPanel extends InfoPanel
 							switch(coords[0])
 							{
 								case 0:
-									String header = current_planet.getBuildings()[current_planet.getQueueElem(coords[1])].generateHeader();
-									int index = header.indexOf("(Уровень");
+									String header = current_planet.getBuildings()[current_planet.getQueueElem(coords[1])].generateHeaderWithoutLevel();
 									int level = current_planet.getBuildings()[current_planet.getQueueElem(coords[1])].getLevel() + 1;
 									for(int j = 0; j < coords[1]; j++)
 									{
@@ -210,14 +212,7 @@ public class BuildingPanel extends InfoPanel
 											level++;
 										}
 									}
-									if(current_planet.getBuildings()[current_planet.getQueueElem(coords[1])].getLevel() != 0)
-									{
-										((TextLabel)list[i]).setText(header.substring(0, index) + level);
-									}
-									else
-									{
-										((TextLabel)list[i]).setText(header + level);
-									}
+									((TextLabel)list[i]).setText(header + " " + level);
 									break;
 								case 2:
 									if (coords[1] == 0)
@@ -345,7 +340,7 @@ public class BuildingPanel extends InfoPanel
 		public void setText(String text)
 		{
 			real_text = text;
-			super.setText("<html><body width='" + getWidth() + "'><font size=\"3\" color= \"white\">"+ text +"</font></body></html>");
+			super.setText("<html><body width='" + getWidth() + "'><font size=\"3\" color= \"white\">" + text +"</font></body></html>");
 		}
 		
 		public void componentResized(ComponentEvent e) 

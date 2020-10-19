@@ -16,14 +16,15 @@ public class ResourcePanel extends JPanel
 		label = new ResourceLabel(path);
 		setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
-		constraints.weightx = 1.0f;
+		constraints.weightx = 0.5f;
 		constraints.weighty = 1.0f;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.gridwidth = 1;
 		constraints.gridheight = 1;
 		constraints.insets.left = 10;
-		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.fill = GridBagConstraints.NONE;
 		add(label, constraints);
 	}
 	public void paintComponent(Graphics g)
@@ -37,15 +38,26 @@ public class ResourcePanel extends JPanel
         g2d.drawRect(0, 0, getWidth(), getHeight());
 	}
 	
+	private String getHTMLWrappedString(String text)
+	{
+		String decoy = "";
+		for(int i = 0; i < LABEL_CHAR_WIDTH; i++)
+		{
+			decoy += "0";
+		}
+		int width = getFontMetrics(getFont()).stringWidth(decoy);
+		return "<html><body width='" + width + "'>" + text + "</body></html>";
+	}
+	
 	protected void setTextAsNum(int num)
 	{
-		label.setText(NumberFormat.getNumberInstance(Locale.US).format(num));
+		label.setText(getHTMLWrappedString(NumberFormat.getNumberInstance(Locale.US).format(num)));
 		revalidate();
 	}
 	
 	protected void setTextAsMail(int num)
 	{
-		label.setText("[" + num + "]");
+		label.setText(getHTMLWrappedString("[" + num + "]"));
 		revalidate();
 	}
 	
@@ -62,4 +74,5 @@ public class ResourcePanel extends JPanel
 			
 		}
 	}
+	private static final int LABEL_CHAR_WIDTH = ("" + Integer.MAX_VALUE).length();
 }

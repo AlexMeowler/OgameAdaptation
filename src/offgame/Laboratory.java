@@ -2,31 +2,26 @@ package offgame;
 
 public class Laboratory extends Building 
 {
-	public Laboratory()
+	public Laboratory(String name)
 	{
-		super();
+		super(name);
 		base_cost[0] = 200;
 		base_cost[1] = 400;
 		base_cost[2] = 200;
 		required_buildings[Building.POWER_STATION] = 3;
 	}
 	
-	public Laboratory(int level)
+	public Laboratory(int level, String name)
 	{
-		super(level);
+		super(level, name);
 		base_cost[0] = 200;
 		base_cost[1] = 400;
 		base_cost[2] = 200;
 		required_buildings[Building.POWER_STATION] = 3;
-	}
-	
-	public String generateHeader()
-	{
-		return "Исследовательская лаборатория " + getCurrentLevelString();
 	}
 	
 	public String generateDescription(double[] current_resources)
 	{
-		return "Необходима для исследования новых технологий. Увеличение уровня повышает скорость исследований.<br>" + super.generateDescription(current_resources);
+		return "РќРµРѕР±С…РѕРґРёРјР° РґР»СЏ РёСЃСЃР»РµРґРѕРІР°РЅРёСЏ РЅРѕРІС‹С… С‚РµС…РЅРѕР»РѕРіРёР№. РЈРІРµР»РёС‡РµРЅРёРµ СѓСЂРѕРІРЅСЏ РїРѕРІС‹С€Р°РµС‚ СЃРєРѕСЂРѕСЃС‚СЊ РёСЃСЃР»РµРґРѕРІР°РЅРёР№.<br>" + super.generateDescription(current_resources);
 	}
 }

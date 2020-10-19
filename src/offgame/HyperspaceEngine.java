@@ -2,9 +2,9 @@ package offgame;
 
 public class HyperspaceEngine extends Technology 
 {
-	public HyperspaceEngine()
+	public HyperspaceEngine(String name)
 	{
-		super();
+		super(name);
 		base_cost[0] = 10000;
 		base_cost[1] = 20000; 
 		base_cost[2] = 6000;
@@ -12,23 +12,18 @@ public class HyperspaceEngine extends Technology
 		required_technologies[Technology.HYPERSPACE_TECHNOLOGY] = 3;
 	}
 	
-	public HyperspaceEngine(int level)
+	public HyperspaceEngine(int level, String name)
 	{
-		super(level);
+		super(level, name);
 		base_cost[0] = 10000;
 		base_cost[1] = 20000; 
 		base_cost[2] = 6000;
 		required_buildings[Building.LABORATORY] = 7;
 		required_technologies[Technology.HYPERSPACE_TECHNOLOGY] = 3;
-	}
-	
-	public String generateHeader()
-	{
-		return "Гиперпространственный двигатель " + getCurrentLevelString();
 	}
 	
 	public String generateDescription(double[] current_resources)
 	{
-		return "Благодаря пространственно-временному изгибу в непосредственном окружении корабля пространство сжимается, чем быстрее преодолеваются далёкие расстояния. Чем выше развит гиперпростраственный привод, тем выше сжатие пространства, благодаря чему с каждым уровнем скорость кораблей повышается на 30% (относительно базовой скорости кораблей).<br>" + super.generateDescription(current_resources);
+		return "Р‘Р»Р°РіРѕРґР°СЂСЏ РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІРµРЅРЅРѕ-РІСЂРµРјРµРЅРЅРѕРјСѓ РёР·РіРёР±Сѓ РІ РЅРµРїРѕСЃСЂРµРґСЃС‚РІРµРЅРЅРѕРј РѕРєСЂСѓР¶РµРЅРёРё РєРѕСЂР°Р±Р»СЏ РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІРѕ СЃР¶РёРјР°РµС‚СЃСЏ, С‡РµРј Р±С‹СЃС‚СЂРµРµ РїСЂРµРѕРґРѕР»РµРІР°СЋС‚СЃСЏ РґР°Р»С‘РєРёРµ СЂР°СЃСЃС‚РѕСЏРЅРёСЏ. Р§РµРј РІС‹С€Рµ СЂР°Р·РІРёС‚ РіРёРїРµСЂРїСЂРѕСЃС‚СЂР°СЃС‚РІРµРЅРЅС‹Р№ РїСЂРёРІРѕРґ, С‚РµРј РІС‹С€Рµ СЃР¶Р°С‚РёРµ РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІР°, Р±Р»Р°РіРѕРґР°СЂСЏ С‡РµРјСѓ СЃ РєР°Р¶РґС‹Рј СѓСЂРѕРІРЅРµРј СЃРєРѕСЂРѕСЃС‚СЊ РєРѕСЂР°Р±Р»РµР№ РїРѕРІС‹С€Р°РµС‚СЃСЏ РЅР° 30% (РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕ Р±Р°Р·РѕРІРѕР№ СЃРєРѕСЂРѕСЃС‚Рё РєРѕСЂР°Р±Р»РµР№).<br>" + super.generateDescription(current_resources);
 	}
 }

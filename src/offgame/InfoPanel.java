@@ -29,7 +29,7 @@ public class InfoPanel extends JPanel  implements MouseWheelListener, MouseListe
 	protected String createTimeString(int code)
 	{
 		int[] time_digits = getBuildingTimeArray(code);
-		return String.format("Время строительства: %02d дн. %02d ч. %02d мин. %02d с.", time_digits[0], time_digits[1], time_digits[2], time_digits[3]);
+		return String.format("Р’СЂРµРјСЏ СЃС‚СЂРѕРёС‚РµР»СЊСЃС‚РІР°: %02d РґРЅ. %02d С‡. %02d РјРёРЅ. %02d СЃ.", time_digits[0], time_digits[1], time_digits[2], time_digits[3]);
 	}
 	
 	protected int[] getRemainingTime(int code, Date date)

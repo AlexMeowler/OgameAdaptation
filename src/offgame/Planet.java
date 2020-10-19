@@ -26,7 +26,7 @@ public class Planet
 		coords[1] = system;
 		coords[2] = pos;
 		img = ImageIO.read(this.getClass().getResourceAsStream("/pl/" + img_num + ".jpg"));
-		building_list = Building.createList();
+		building_list = Building.createListForPlanet();
 		metal_capacity = (int) building_list[Building.METAL_STORAGE].calcGathering();
 		crystal_capacity = (int) building_list[Building.CRYSTAL_STORAGE].calcGathering();
 		deiterium_capacity = (int) building_list[Building.DEITERIUM_STORAGE].calcGathering();
@@ -74,7 +74,7 @@ public class Planet
 	
 	public Building[] getBuildings()
 	{
-		return building_list; //сделать clone()
+		return building_list; //СЃРґРµР»Р°С‚СЊ clone()
 	}
 	
 	public int getQueueElem(int i)
@@ -156,7 +156,7 @@ public class Planet
 	
 	public void updateElectricity()
 	{
-		electricity_current = getBuildings()[Building.POWER_STATION].calcGathering() + getBuildings()[Building.NUCLEAR_STATION].calcGathering() - getBuildings()[Building.METAL_MINES].calcConsuming() - getBuildings()[Building.CRYSTAL_MINES].calcConsuming() - getBuildings()[Building.DEITERIUM_MINES].calcConsuming(); // еще спутники
+		electricity_current = getBuildings()[Building.POWER_STATION].calcGathering() + getBuildings()[Building.NUCLEAR_STATION].calcGathering() - getBuildings()[Building.METAL_MINES].calcConsuming() - getBuildings()[Building.CRYSTAL_MINES].calcConsuming() - getBuildings()[Building.DEITERIUM_MINES].calcConsuming(); // РµС‰Рµ СЃРїСѓС‚РЅРёРєРё
 	}
 	
 	public boolean isBuildable(int code)
@@ -217,7 +217,7 @@ public class Planet
 				break;
 			case FLEET:
 				break;
-			case DEFENCE:
+			case DEFENSE:
 				break;
 		}
 		return f;

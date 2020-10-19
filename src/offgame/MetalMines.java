@@ -4,15 +4,15 @@ import static java.lang.Math.*;
 
 public class MetalMines extends Building 
 {
-	public MetalMines()
+	public MetalMines(String name)
 	{
-		super();
+		super(name);
 		required_buildings[Building.POWER_STATION] = 1;
 	}
 	
-	public MetalMines(int level)
+	public MetalMines(int level, String name)
 	{
-		super(level);
+		super(level, name);
 		required_buildings[Building.POWER_STATION] = 1;
 	}
 	
@@ -49,16 +49,11 @@ public class MetalMines extends Building
 	
 	public String generateEnergyChange()
 	{
-		return " (<font color='red'>-" + (int)calcDifference(level, level + 1) + " Энергия</font>)";
-	}
-	
-	public String generateHeader()
-	{
-		return "Рудник по добыче металла " + getCurrentLevelString();
+		return " (<font color='red'>-" + (int)calcDifference(level, level + 1) + " Р­РЅРµСЂРіРёСЏ</font>)";
 	}
 	
 	public String generateDescription(double[] current_resources)
 	{
-		return "Основной поставщик сырья для строительства несущих структур построек и кораблей.<br>" + super.generateDescription(current_resources);
+		return "РћСЃРЅРѕРІРЅРѕР№ РїРѕСЃС‚Р°РІС‰РёРє СЃС‹СЂСЊСЏ РґР»СЏ СЃС‚СЂРѕРёС‚РµР»СЊСЃС‚РІР° РЅРµСЃСѓС‰РёС… СЃС‚СЂСѓРєС‚СѓСЂ РїРѕСЃС‚СЂРѕРµРє Рё РєРѕСЂР°Р±Р»РµР№.<br>" + super.generateDescription(current_resources);
 	}
 }

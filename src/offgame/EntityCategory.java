@@ -5,5 +5,6 @@ public enum EntityCategory
 	BUILDING,
 	RESEARCH,
 	FLEET,
-	DEFENCE
+	DEFENSE,
+	NO_CATEGORY
 }

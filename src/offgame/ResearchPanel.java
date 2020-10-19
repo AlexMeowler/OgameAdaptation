@@ -15,62 +15,6 @@ public class ResearchPanel extends InfoPanel
 		setOpaque(false);
 		constraints.weightx = 0.0f;
 		constraints.weighty = 0.0f;
-		String text;
-		/*for(int i = 0; i < Planet.MAX_BUILD_QUEUE; i++)
-		{
-			constraints.gridx = 0;
-			constraints.gridy = i;
-			constraints.gridwidth = 2;
-			constraints.gridheight = 1;
-			constraints.insets.bottom = 3;
-			constraints.insets.right = 3;
-			constraints.fill = GridBagConstraints.BOTH;
-			constraints.anchor = GridBagConstraints.NORTH;
-			try
-			{
-				text = current_planet.getBuildings()[current_planet.getQueueElem(i)].generateHeader();
-			}
-			catch(IndexOutOfBoundsException e)
-			{
-				text = "";
-			}
-			add(new TextLabel(text, "" + constraints.gridx + "." +constraints.gridy, false), constraints);
-			constraints.gridx = 2;
-			constraints.gridwidth = 1;
-			constraints.gridheight = 1;
-			constraints.insets.right = 0;
-			try
-			{
-				if (i == 0)
-				{
-					int[] digits = getBuildingTimeArray(current_planet.getQueueElem(i));
-					text = String.format("%02d:%02d:%02d:%02d", digits[0], digits[1], digits[2], digits[3]);
-				}
-			}
-			catch(IndexOutOfBoundsException e)
-			{
-				text = "";
-			}
-			add(new TextLabel("<div style='text-align: center'>" + text +"</div>",  "" + constraints.gridx + "." +constraints.gridy, false), constraints);
-		}
-		constraints.gridx = 0;
-		constraints.gridy = Planet.MAX_BUILD_QUEUE;
-		constraints.gridwidth = 1;
-		constraints.gridheight = 1;
-		constraints.insets.bottom = 3;
-		constraints.insets.right = 3;
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.anchor = GridBagConstraints.NORTH;
-		add(new TextLabel("<div style='text-align: center'>Занятость полей</div>", "" + constraints.gridx + "." +constraints.gridy, false), constraints);
-		constraints.gridx = 1;
-		constraints.gridwidth = 1;
-		constraints.gridheight = 1;
-		add(new TextLabel(createFieldInfoString(),  "" + constraints.gridx + "." +constraints.gridy, false), constraints);
-		constraints.gridx = 2;
-		constraints.gridwidth = 1;
-		constraints.gridheight = 1;
-		constraints.insets.right = 0;
-		add(new TextLabel("<div style='text-align: center'>" + current_planet.getMinTemperature() + " — " + current_planet.getMaxTemperature() + "°C</div>",  "" + constraints.gridx + "." +constraints.gridy, false), constraints);*/
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.insets.bottom = 3;
 		y_offset = 0;
@@ -100,7 +44,7 @@ public class ResearchPanel extends InfoPanel
 		String header = player.getTechs()[code].generateHeader();
 		double[] resources = {current_planet.getCurrentMetal(), current_planet.getCurrentCrystal(), current_planet.getCurrentDeiterium(), current_planet.getCurrentElectricity()};
 		String description = player.getTechs()[code].generateDescription(resources);
-		// добавить остаток ресурсов
+		// РґРѕР±Р°РІРёС‚СЊ РѕСЃС‚Р°С‚РѕРє СЂРµСЃСѓСЂСЃРѕРІ
 		constraints.anchor = GridBagConstraints.NORTH;
 		constraints.gridx = 0;
 		constraints.gridy = row;
@@ -143,7 +87,7 @@ public class ResearchPanel extends InfoPanel
 		int[] answer = {day, hours, minutes, seconds};
 		return answer;
 	}
-	// можно вызывать только для активного ислледования 
+	// РјРѕР¶РЅРѕ РІС‹Р·С‹РІР°С‚СЊ С‚РѕР»СЊРєРѕ РґР»СЏ Р°РєС‚РёРІРЅРѕРіРѕ РёСЃР»Р»РµРґРѕРІР°РЅРёСЏ 
 	protected int[] getRemainingTime(int code, Date date)
 	{
 		long total = (player.getTechs()[code].getBuildDate().getTime() - date.getTime()) / 1000;
@@ -165,11 +109,11 @@ public class ResearchPanel extends InfoPanel
 			{
 				if(current_planet.isResearchable(row))
 				{
-					s += "<font color='lime'><u>Исследовать уровень " + (player.getTechs()[row].getLevel() + 1) + "</u></font>";
+					s += "<font color='lime'><u>РСЃСЃР»РµРґРѕРІР°С‚СЊ СѓСЂРѕРІРµРЅСЊ " + (player.getTechs()[row].getLevel() + 1) + "</u></font>";
 				}
 				else
 				{
-					s += "<font color='red'>Исследовать уровень " + (player.getTechs()[row].getLevel() + 1) + "</font>";
+					s += "<font color='red'>РСЃСЃР»РµРґРѕРІР°С‚СЊ СѓСЂРѕРІРµРЅСЊ " + (player.getTechs()[row].getLevel() + 1) + "</font>";
 				}
 			}
 			else
@@ -288,7 +232,7 @@ public class ResearchPanel extends InfoPanel
 		public void setText(String text)
 		{
 			real_text = text;
-			super.setText("<html><body width='" + getWidth() + "'><font size=\"3\" color= \"white\">"+ text +"</font></body></html>");
+			super.setText("<html><body width='" + getWidth() + "'><font size=\"3\" color= \"white\">" + text +"</font></body></html>");
 		}
 		
 		public void componentResized(ComponentEvent e) 

@@ -2,9 +2,9 @@ package offgame;
 
 public class IonTechnology extends Technology
 {
-	public IonTechnology()
+	public IonTechnology(String name)
 	{
-		super();
+		super(name);
 		base_cost[0] = 1000;
 		base_cost[1] = 300; 
 		base_cost[2] = 100;
@@ -13,24 +13,19 @@ public class IonTechnology extends Technology
 		required_technologies[Technology.ENERGY_TECHNOLOGY] = 4;
 	}
 	
-	public IonTechnology(int level)
+	public IonTechnology(int level, String name)
 	{
-		super(level);
+		super(level, name);
 		base_cost[0] = 1000;
 		base_cost[1] = 300; 
 		base_cost[2] = 100;
 		required_buildings[Building.LABORATORY] = 4;
 		required_technologies[Technology.LASER_TECHNOLOGY] = 5;
 		required_technologies[Technology.ENERGY_TECHNOLOGY] = 4;
-	}
-	
-	public String generateHeader()
-	{
-		return "Ионная технология " + getCurrentLevelString();
 	}
 	
 	public String generateDescription(double[] current_resources)
 	{
-		return "Поистине смертоносный наводимый луч из ускоренных ионов. При попадании на какой-либо объект они наносят огромный ущерб.<br>" + super.generateDescription(current_resources);
+		return "РџРѕРёСЃС‚РёРЅРµ СЃРјРµСЂС‚РѕРЅРѕСЃРЅС‹Р№ РЅР°РІРѕРґРёРјС‹Р№ Р»СѓС‡ РёР· СѓСЃРєРѕСЂРµРЅРЅС‹С… РёРѕРЅРѕРІ. РџСЂРё РїРѕРїР°РґР°РЅРёРё РЅР° РєР°РєРѕР№-Р»РёР±Рѕ РѕР±СЉРµРєС‚ РѕРЅРё РЅР°РЅРѕСЃСЏС‚ РѕРіСЂРѕРјРЅС‹Р№ СѓС‰РµСЂР±.<br>" + super.generateDescription(current_resources);
 	}
 }

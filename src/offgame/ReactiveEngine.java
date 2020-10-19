@@ -2,9 +2,9 @@ package offgame;
 
 public class ReactiveEngine extends Technology
 {
-	public ReactiveEngine()
+	public ReactiveEngine(String name)
 	{
-		super();
+		super(name);
 		base_cost[0] = 0;
 		base_cost[1] = 400; 
 		base_cost[2] = 600;
@@ -12,23 +12,18 @@ public class ReactiveEngine extends Technology
 		required_technologies[Technology.ENERGY_TECHNOLOGY] = 1;
 	}
 	
-	public ReactiveEngine(int level)
+	public ReactiveEngine(int level, String name)
 	{
-		super(level);
+		super(level, name);
 		base_cost[0] = 0;
 		base_cost[1] = 400; 
 		base_cost[2] = 600;
 		required_buildings[Building.LABORATORY] = 1;
 		required_technologies[Technology.ENERGY_TECHNOLOGY] = 1;
-	}
-	
-	public String generateHeader()
-	{
-		return "Реактивный двигатель " + getCurrentLevelString();
 	}
 	
 	public String generateDescription(double[] current_resources)
 	{
-		return "Дальнейшее развитие этих двигателей делает некоторые корабли быстрее, однако каждый уровень повышает скорость лишь на 10% (относительно базовой скорости кораблей).<br>" + super.generateDescription(current_resources);
+		return "Р”Р°Р»СЊРЅРµР№С€РµРµ СЂР°Р·РІРёС‚РёРµ СЌС‚РёС… РґРІРёРіР°С‚РµР»РµР№ РґРµР»Р°РµС‚ РЅРµРєРѕС‚РѕСЂС‹Рµ РєРѕСЂР°Р±Р»Рё Р±С‹СЃС‚СЂРµРµ, РѕРґРЅР°РєРѕ РєР°Р¶РґС‹Р№ СѓСЂРѕРІРµРЅСЊ РїРѕРІС‹С€Р°РµС‚ СЃРєРѕСЂРѕСЃС‚СЊ Р»РёС€СЊ РЅР° 10% (РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕ Р±Р°Р·РѕРІРѕР№ СЃРєРѕСЂРѕСЃС‚Рё РєРѕСЂР°Р±Р»РµР№).<br>" + super.generateDescription(current_resources);
 	}
 }
