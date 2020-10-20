@@ -200,6 +200,7 @@ public abstract class Building
 	protected int[] required_buildings;
 	protected int[] required_technologies;
 	protected String name;
+	public static final int RESOURCE_PRODUCTION_MULTIPLIER = 4;
 	public static final int POWER_STATION = 0;
 	public static final int METAL_MINES = 1;
 	public static final int CRYSTAL_MINES = 2;

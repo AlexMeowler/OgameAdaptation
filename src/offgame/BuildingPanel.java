@@ -182,7 +182,7 @@ public class BuildingPanel extends InfoPanel
 				if(coords[1] >= y_offset)
 				{
 					String header = current_planet.getBuildings()[coords[1] - y_offset].generateHeader() + " " + current_planet.getBuildings()[coords[1] - y_offset].generateEnergyChange();
-					double[] resources = {current_planet.getCurrentMetal(), current_planet.getCurrentCrystal(), current_planet.getCurrentDeiterium(), current_planet.getCurrentElectricity()};
+					double[] resources = {current_planet.getCurrentMetal(), current_planet.getCurrentCrystal(), current_planet.getCurrentDeiterium(), current_planet.getCurrentEnergy()};
 					String description = current_planet.getBuildings()[coords[1] - y_offset].generateDescription(resources);
 					switch(coords[0])
 					{

@@ -20,7 +20,7 @@ public class DeiteriumMines extends Building
 	
 	public double calcGathering(int temp)
 	{
-		return 10 * level * pow(1.1, level) * (-0.002 * temp + 1.28);
+		return 10 * level * pow(1.1, level) * (-0.002 * temp + 1.28) * RESOURCE_PRODUCTION_MULTIPLIER;
 	}
 	
 	public double calcConsuming()

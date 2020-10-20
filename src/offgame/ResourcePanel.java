@@ -35,7 +35,7 @@ public class ResourcePanel extends JPanel
         g2d.setPaint(gp);
         g2d.fillRect(0, 0, getWidth(), getHeight());
         g2d.setColor(Color.BLACK);
-        g2d.drawRect(0, 0, getWidth(), getHeight());
+        g2d.drawRect(0, 0, getWidth(), getHeight() - 1);
 	}
 	
 	private String getHTMLWrappedString(String text)

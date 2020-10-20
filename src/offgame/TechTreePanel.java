@@ -223,5 +223,4 @@ public class TechTreePanel extends InfoPanel
 	private int y_offset_research;
 	private int y_offset_fleet;
 	private int y_offset_defense;
-	private static final Color CATEGORY_BACKGROUND_COLOR= new Color(109, 150, 184);
 }

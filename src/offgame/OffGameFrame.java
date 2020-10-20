@@ -16,7 +16,7 @@ public class OffGameFrame extends JFrame
 		setSize(dim.width, dim.height);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setExtendedState(Frame.MAXIMIZED_BOTH);
-		setUndecorated(true);
+		//setUndecorated(true);
 		OffGamePanel main_panel = new OffGamePanel();
 		main_panel.setBounds(new Rectangle(0, 0, dim.width, dim.height));
 		add(main_panel);

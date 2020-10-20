@@ -35,6 +35,7 @@ public class Planet
 		deiterium_current = 1000000;
 		electricity_current = 0;
 		building_queue = new ArrayList<>();
+		updateResourcesProduction();
 	}
 	
 	public Image getImg()
@@ -133,11 +134,6 @@ public class Planet
 		return deiterium_capacity;
 	}
 	
-	public double getCurrentElectricity() 
-	{
-		return electricity_current;
-	}
-	
 	public void updateResources()
 	{
 		if(metal_current < metal_capacity)
@@ -154,9 +150,27 @@ public class Planet
 		}
 	}
 	
-	public void updateElectricity()
+	public void updateResourcesProduction()
 	{
+		metal_production = METAL_DEFAULT_PRODUCTION + building_list[Building.METAL_MINES].calcGathering();
+		crystal_production = CRYSTAL_DEFAULT_PRODUCTION + building_list[Building.CRYSTAL_MINES].calcGathering();
+		deiterium_production = DEITERIUM_DEFAULT_PRODUCTION + building_list[Building.DEITERIUM_MINES].calcGathering(temperature_max);
 		electricity_current = getBuildings()[Building.POWER_STATION].calcGathering() + getBuildings()[Building.NUCLEAR_STATION].calcGathering() - getBuildings()[Building.METAL_MINES].calcConsuming() - getBuildings()[Building.CRYSTAL_MINES].calcConsuming() - getBuildings()[Building.DEITERIUM_MINES].calcConsuming(); // еще спутники
+	}
+	
+	public double getMetalProduction()
+	{
+		return metal_production;
+	}
+	
+	public double getCrystalProduction()
+	{
+		return crystal_production;
+	}
+	
+	public double getDeiteriumProduction()
+	{
+		return deiterium_production;
 	}
 	
 	public boolean isBuildable(int code)
@@ -241,7 +255,7 @@ public class Planet
 					case Building.METAL_MINES:
 					case Building.CRYSTAL_MINES:
 					case Building.DEITERIUM_MINES:
-						updateElectricity();
+						updateResourcesProduction();
 						break;
 				}
 				building_queue.remove(0);

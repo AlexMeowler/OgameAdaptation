@@ -18,7 +18,7 @@ public class CrystalMines extends Building
 	
 	public double calcGathering()
 	{
-		return 20 * level * pow(1.1, level);
+		return 20 * level * pow(1.1, level) * RESOURCE_PRODUCTION_MULTIPLIER;
 	}
 	
 	public double calcConsuming()

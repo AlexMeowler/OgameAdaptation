@@ -42,7 +42,7 @@ public class ResearchPanel extends InfoPanel
 	{
 		int code = row;
 		String header = player.getTechs()[code].generateHeader();
-		double[] resources = {current_planet.getCurrentMetal(), current_planet.getCurrentCrystal(), current_planet.getCurrentDeiterium(), current_planet.getCurrentElectricity()};
+		double[] resources = {current_planet.getCurrentMetal(), current_planet.getCurrentCrystal(), current_planet.getCurrentDeiterium(), current_planet.getCurrentEnergy()};
 		String description = player.getTechs()[code].generateDescription(resources);
 		// добавить остаток ресурсов
 		constraints.anchor = GridBagConstraints.NORTH;
@@ -150,7 +150,7 @@ public class ResearchPanel extends InfoPanel
 				if(coords[1] >= y_offset)
 				{
 					String header = player.getTechs()[coords[1]].generateHeader() + " " + player.getTechs()[coords[1]].generateEnergyChange();
-					double[] resources = {current_planet.getCurrentMetal(), current_planet.getCurrentCrystal(), current_planet.getCurrentDeiterium(), current_planet.getCurrentElectricity()};
+					double[] resources = {current_planet.getCurrentMetal(), current_planet.getCurrentCrystal(), current_planet.getCurrentDeiterium(), current_planet.getCurrentEnergy()};
 					String description = player.getTechs()[coords[1]].generateDescription(resources);
 					switch(coords[0])
 					{

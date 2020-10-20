@@ -18,7 +18,7 @@ public class MetalMines extends Building
 	
 	public double calcGathering()
 	{
-		return 30 * level * pow(1.1, level);
+		return 30 * level * pow(1.1, level) * RESOURCE_PRODUCTION_MULTIPLIER;
 	}
 	
 	public double calcConsuming()
