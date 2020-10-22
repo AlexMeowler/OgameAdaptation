@@ -2,6 +2,8 @@ package adaptogame.core;
 
 import java.io.IOException;
 
+import adaptogame.core.technologies.Technology;
+
 public class Player 
 {
 	public Player() throws IOException

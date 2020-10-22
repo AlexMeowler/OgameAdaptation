@@ -7,10 +7,10 @@ import java.util.Date;
 
 import javax.swing.*;
 
-import adaptogame.core.Building;
 import adaptogame.core.EntityCategory;
 import adaptogame.core.Player;
-import adaptogame.core.Technology;
+import adaptogame.core.buildings.Building;
+import adaptogame.core.technologies.Technology;
 
 public class ResearchPanel extends InfoPanel 
 {
@@ -24,23 +24,10 @@ public class ResearchPanel extends InfoPanel
 		constraints.insets.bottom = 3;
 		y_offset = 0;
 		requirements_panels = new RequirementsPanel[17];
-		addRow(Technology.ESPIONAGE + y_offset);
-		addRow(Technology.ENERGY_TECHNOLOGY + y_offset);
-		addRow(Technology.REACTIVE_ENGINE + y_offset);
-		addRow(Technology.IMPULSE_ENGINE + y_offset);
-		addRow(Technology.COMPUTER_TECHNOLOGY + y_offset);
-		addRow(Technology.WEAPON_TECHNOLOGY + y_offset);
-		addRow(Technology.SHIELD_TECHNOLOGY + y_offset);
-		addRow(Technology.METALLURGY + y_offset);
-		addRow(Technology.COLONIZATION_TECHNOLOGY + y_offset);
-		addRow(Technology.EXPEDITION_TECHNOLOGY + y_offset);
-		addRow(Technology.HYPERSPACE_TECHNOLOGY + y_offset);
-		addRow(Technology.HYPERSPACE_ENGINE + y_offset);
-		addRow(Technology.LASER_TECHNOLOGY + y_offset);
-		addRow(Technology.ION_TECHNOLOGY + y_offset);
-		addRow(Technology.PLASMA_TECHNOLOGY + y_offset);
-		addRow(Technology.INTEGERGALACTICAL_RESEARCH_NETWORK + y_offset);
-		addRow(Technology.GRAVITY_TECHNOLOGY + y_offset);
+		for(int i = 0; i < Technology.RESEARCHES_AMOUNT; i++)
+		{
+			addRow(Technology.ESPIONAGE + i + y_offset);
+		}
 	}
 	
 	private void addRow(int row) throws IOException

@@ -12,10 +12,10 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.html.*;
 
-import adaptogame.core.Building;
 import adaptogame.core.EntityCategory;
 import adaptogame.core.Planet;
 import adaptogame.core.Player;
+import adaptogame.core.buildings.Building;
 
 public class BuildingPanel extends InfoPanel 
 {
@@ -86,20 +86,10 @@ public class BuildingPanel extends InfoPanel
 		add(new TextLabel("<div style='text-align: center'>" + current_planet.getMinTemperature() + " — " + current_planet.getMaxTemperature() + "°C</div>",  "" + constraints.gridx + "." +constraints.gridy, false), constraints);
 		y_offset = Planet.MAX_BUILD_QUEUE + 1;
 		requirements_panels = new RequirementsPanel[14];
-		addRow(Building.POWER_STATION + y_offset);
-		addRow(Building.METAL_MINES + y_offset);
-		addRow(Building.CRYSTAL_MINES + y_offset);
-		addRow(Building.DEITERIUM_MINES + y_offset);
-		addRow(Building.ROBOT_FACTORY + y_offset);
-		addRow(Building.SPACE_YARD + y_offset);
-		addRow(Building.LABORATORY + y_offset);
-		addRow(Building.METAL_STORAGE + y_offset);
-		addRow(Building.CRYSTAL_STORAGE + y_offset);
-		addRow(Building.DEITERIUM_STORAGE + y_offset);
-		addRow(Building.NUCLEAR_STATION + y_offset);
-		addRow(Building.NANITE_FACTORY + y_offset);
-		addRow(Building.TERRAFORMER + y_offset);
-		addRow(Building.ROCKET_SHAFT + y_offset);
+		for(int i = 0; i < Building.BUILDINGS_AMOUNT; i++)
+		{
+			addRow(Building.POWER_STATION + i + y_offset);
+		}
 	}
 	
 	private void addRow(int row) throws IOException
@@ -267,7 +257,7 @@ public class BuildingPanel extends InfoPanel
 		{
 			if(current_planet.getQueueSize() == 0)
 			{
-				if(current_planet.isBuildable(row))
+				if(current_planet.isBuildingBuildable(row))
 				{
 					s += "<font color='lime'><u>Построить<br>следующий<br>уровень " + (current_planet.getBuildings()[row].getLevel() + 1) + "</u></font>";
 				}

@@ -10,6 +10,9 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import adaptogame.core.buildings.Building;
+import adaptogame.core.units.Unit;
+
 public class Planet 
 {
 	public Planet(String planet_name, int diameter, int temp_min, int temp_max, int gal, int system, int pos, int img_num, Player owner) throws IOException
@@ -27,6 +30,7 @@ public class Planet
 		coords[2] = pos;
 		img = ImageIO.read(this.getClass().getResourceAsStream("/pl/" + img_num + ".jpg"));
 		building_list = Building.createListForPlanet(temperature_max);
+		space_yard_list = Unit.createList();
 		metal_capacity = (int) building_list[Building.METAL_STORAGE].calcGathering();
 		crystal_capacity = (int) building_list[Building.CRYSTAL_STORAGE].calcGathering();
 		deiterium_capacity = (int) building_list[Building.DEITERIUM_STORAGE].calcGathering();
@@ -36,6 +40,10 @@ public class Planet
 		//building_list[Building.METAL_MINES] = new MetalMines(30, "шахта");
 		//building_list[Building.POWER_STATION] = new PowerStation(30, "солярка");
 		electricity_current = 0;
+		for(int i = 0; i < building_list.length; i++)
+		{
+			fields_taken += building_list[i].getLevel();
+		}
 		building_queue = new ArrayList<>();
 		updateResourcesProduction();
 	}
@@ -78,6 +86,11 @@ public class Planet
 	public Building[] getBuildings()
 	{
 		return building_list; //сделать clone()
+	}
+	
+	public Unit[] getUnits()
+	{
+		return space_yard_list; //сделать clone()
 	}
 	
 	public int getQueueElem(int i)
@@ -182,7 +195,7 @@ public class Planet
 		return resource_mining_efficiency;
 	}
 	
-	public boolean isBuildable(int code)
+	public boolean isBuildingBuildable(int code)
 	{
 		double[] current = {metal_current, crystal_current, deiterium_current};
 		double[] required = building_list[code].calcBuildingCost();
@@ -193,6 +206,7 @@ public class Planet
 		}
 		return f && (fields_taken < fields);
 	}
+	// fleet
 	
 	public boolean isResearchable(int code)
 	{
@@ -270,7 +284,7 @@ public class Planet
 				building_queue.remove(0);
 				while(building_queue.size() > 0)
 				{
-					if(isBuildable(building_queue.get(0)))
+					if(isBuildingBuildable(building_queue.get(0)))
 					{
 						startBuilding(building_queue.get(0));
 						break;
@@ -358,6 +372,7 @@ public class Planet
 	private String planet_name;
 	private BufferedImage img;
 	private Building[] building_list;
+	private Unit[] space_yard_list;
 	private ArrayList<Integer> building_queue;
 	private Player owner;
 	public int[] coords;

@@ -7,6 +7,9 @@ import javax.swing.*;
 
 import adaptogame.core.EntityCategory;
 import adaptogame.core.Player;
+import adaptogame.core.buildings.Building;
+import adaptogame.core.technologies.Technology;
+import adaptogame.core.units.Unit;
 
 public class TechTreePanel extends InfoPanel 
 {
@@ -69,6 +72,31 @@ public class TechTreePanel extends InfoPanel
 			constraints.insets.right = 0;
 			add(new TextLabel(type, false, i, generateRequirementsText(type, i), "" + constraints.gridx + "." +constraints.gridy, null), constraints);
 		}
+		constraints.gridx = 0;
+		constraints.gridy = y_offset_research + player.getTechs().length;
+		constraints.insets.bottom = 3;
+		constraints.insets.right = 3;
+		constraints.weightx = 0.4f;
+		type = EntityCategory.NO_CATEGORY;
+		add(new TextLabel(type, false, -1, "Флот", "" + constraints.gridx + "." +constraints.gridy, CATEGORY_BACKGROUND_COLOR), constraints);
+		constraints.weightx = 0.6f;
+		constraints.gridx = 1;
+		constraints.insets.right = 0;
+		add(new TextLabel(type, false, -1, "Требования", "" + constraints.gridx + "." +constraints.gridy, CATEGORY_BACKGROUND_COLOR), constraints);
+		y_offset_fleet = y_offset_research + player.getTechs().length + 1;
+		type = EntityCategory.FLEET;
+		for(int i = 0; i < current_planet.getUnits().length; i++)
+		{
+			constraints.gridx = 0;
+			constraints.gridy = i + y_offset_fleet;
+			constraints.weightx = 0.4f;
+			constraints.insets.right = 3;
+			add(new TextLabel(type, true, i, current_planet.getUnits()[i].generateHeaderWithoutLevel(), "" + constraints.gridx + "." +constraints.gridy, null), constraints);
+			constraints.gridx = 1;
+			constraints.weightx = 0.6f;
+			constraints.insets.right = 0;
+			add(new TextLabel(type, false, i, generateRequirementsText(type, i), "" + constraints.gridx + "." +constraints.gridy, null), constraints);
+		}
 	}
 	
 	private String generateRequirementsText(EntityCategory type, int index)
@@ -87,6 +115,8 @@ public class TechTreePanel extends InfoPanel
 				required_techs = player.getTechs()[index].getRequiredTechnologies();
 				break;
 			case FLEET:
+				required_buildings = current_planet.getUnits()[index].getRequiredBuildings();
+				required_techs = current_planet.getUnits()[index].getRequiredTechnologies();
 				break;
 			case DEFENSE:
 				break;
@@ -140,9 +170,13 @@ public class TechTreePanel extends InfoPanel
 			{
 				((TextLabel)list[i]).setText(generateRequirementsText(EntityCategory.BUILDING, coords[1] - y_offset_buildings));
 			}
-			if((coords[0] == 1) && (coords[1] >= y_offset_research))
+			if((coords[0] == 1) && (coords[1] >= y_offset_research) && (coords[1] < y_offset_research + player.getTechs().length))
 			{
 				((TextLabel)list[i]).setText(generateRequirementsText(EntityCategory.RESEARCH, coords[1] - y_offset_research));
+			}
+			if((coords[0] == 1) && (coords[1] >= y_offset_fleet))
+			{
+				((TextLabel)list[i]).setText(generateRequirementsText(EntityCategory.FLEET, coords[1] - y_offset_fleet));
 			}
 		}
 	}
@@ -152,13 +186,40 @@ public class TechTreePanel extends InfoPanel
 		public TextLabel(EntityCategory type, boolean hasImage, int code, String text, String name, Color bgc)
 		{
 			String folder = "/";
+			int param = Image.SCALE_SMOOTH;
 			switch(type)
 			{
 				case BUILDING:
 					folder += "bl/";
+					switch(code)
+					{
+						case Building.TERRAFORMER:
+							param = Image.SCALE_REPLICATE;
+							break;
+					}
 					break;
 				case RESEARCH:
 					folder += "rs/";
+					switch(code)
+					{
+						case Technology.EXPEDITION_TECHNOLOGY:
+						case Technology.INTEGERGALACTICAL_RESEARCH_NETWORK:
+						case Technology.GRAVITY_TECHNOLOGY:
+							param = Image.SCALE_REPLICATE;
+							break;
+					}
+					break;
+				case FLEET:
+					folder += "fl/";
+					switch(code)
+					{
+						case Unit.PROCESSOR:
+						case Unit.DEATH_STAR:
+							param = Image.SCALE_REPLICATE;
+							break;
+					}
+					break;
+				case DEFENSE:
 					break;
 				default:
 					break;
@@ -166,7 +227,7 @@ public class TechTreePanel extends InfoPanel
 			if(hasImage)
 			{
 				ImageIcon img = new ImageIcon(getClass().getResource(folder + code + ".gif"));
-				setIcon(new ImageIcon(img.getImage().getScaledInstance(40, 40, Image.SCALE_REPLICATE)));
+				setIcon(new ImageIcon(img.getImage().getScaledInstance(40, 40, param)));
 			}
 			setName(name);
 			addComponentListener(this);

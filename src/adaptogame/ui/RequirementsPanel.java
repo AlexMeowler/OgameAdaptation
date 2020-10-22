@@ -6,9 +6,9 @@ import java.io.IOException;
 
 import javax.swing.*;
 
-import adaptogame.core.Building;
 import adaptogame.core.EntityCategory;
-import adaptogame.core.Technology;
+import adaptogame.core.buildings.Building;
+import adaptogame.core.technologies.Technology;
 
 public class RequirementsPanel extends JPanel
 {
@@ -76,21 +76,38 @@ public class RequirementsPanel extends JPanel
 		public RequirementsImg(EntityCategory type, int code, String text) throws IOException 
 		{
 			String folder = "/";
+			int param = Image.SCALE_SMOOTH;
 			this.type = type;
 			this.code = code;
 			switch(this.type)
 			{
 				case BUILDING:
 					folder += "bl/";
+					switch(code)
+					{
+						case Building.TERRAFORMER:
+							param = Image.SCALE_REPLICATE;
+							break;
+					}
 					break;
 				case RESEARCH:
 					folder += "rs/";
+					switch(code)
+					{
+						case Technology.EXPEDITION_TECHNOLOGY:
+						case Technology.INTEGERGALACTICAL_RESEARCH_NETWORK:
+						case Technology.GRAVITY_TECHNOLOGY:
+							param = Image.SCALE_REPLICATE;
+							break;
+					}
 					break;
 				default:
 					break;
 			}
 			ImageIcon img = new ImageIcon(getClass().getResource(folder + code + ".gif"));
-			setIcon(new ImageIcon(img.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
+			
+			
+			setIcon(new ImageIcon(img.getImage().getScaledInstance(32, 32, param)));
 			setText(text);
 			real_text = text;
 			setBackground(InfoPanel.BACKGROUND_COLOR);

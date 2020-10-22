@@ -7,9 +7,9 @@ import java.util.Locale;
 
 import javax.swing.*;
 
-import adaptogame.core.Building;
 import adaptogame.core.Planet;
 import adaptogame.core.Player;
+import adaptogame.core.buildings.Building;
 
 public class ResourcesOverviewPanel extends InfoPanel 
 {
