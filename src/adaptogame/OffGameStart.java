@@ -1,8 +1,8 @@
-package adaptogame.ui;
+package adaptogame;
 
 import java.io.IOException;
 
-import adaptogame.core.*;
+import adaptogame.ui.OffGameFrame;
 
 public class OffGameStart 
 {

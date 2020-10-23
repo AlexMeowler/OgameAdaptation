@@ -18,7 +18,7 @@ public class SpaceYardPanel extends InfoPanel
 		setOpaque(false);
 		constraints.weightx = 0.0f;
 		constraints.weighty = 0.0f;
-		constraints.fill = GridBagConstraints.BOTH;
+		
 		constraints.insets.bottom = 3;
 		y_offset = 0;
 		requirements_panels = new RequirementsPanel[16];
@@ -26,6 +26,10 @@ public class SpaceYardPanel extends InfoPanel
 		{
 			addRow(Unit.SOLAR_SATELLITE + i + y_offset);
 		}
+		y_offset_after = y_offset + Unit.SHIPS_AMOUNT;
+		constraints.gridx = 1;
+		constraints.gridy = y_offset_after;
+		constraints.fill = GridBagConstraints.VERTICAL;
 		
 	}
 	
@@ -64,7 +68,8 @@ public class SpaceYardPanel extends InfoPanel
 		add(requirements_panels[code], constraints);
 		//
 		constraints.fill = GridBagConstraints.BOTH;
-		add(new TextLabel("РЕЗЕРВ",  "" + constraints.gridx + "." +constraints.gridy, false), constraints);
+		
+		add(new BuildAndInputField("" + constraints.gridx + "." +constraints.gridy), constraints);
 		add(Box.createHorizontalStrut(80), constraints);
 	}
 	
@@ -77,6 +82,54 @@ public class SpaceYardPanel extends InfoPanel
 		int seconds = (int)(total % 60);
 		int[] answer = {day, hours, minutes, seconds};
 		return answer;
+	}
+	
+	public void updatePanelUI()
+	{
+		Component[] list = getComponents();
+		for(int i = 0; i < list.length; i++)
+		{
+			if(list[i] instanceof TextLabel)
+			{
+				String[] s = list[i].getName().split("\\.");
+				int[] coords = {Integer.parseInt(s[0]), Integer.parseInt(s[1])};
+				if(coords[1] >= y_offset)
+				{
+					String header = current_planet.getUnits()[coords[1] - y_offset].generateHeader();
+					double[] resources = {current_planet.getCurrentMetal(), current_planet.getCurrentCrystal(), current_planet.getCurrentDeiterium(), current_planet.getCurrentEnergy()};
+					String description = current_planet.getUnits()[coords[1] - y_offset].generateDescription(resources);
+					if(coords[0] == 1)
+					{
+						((TextLabel)list[i]).setText(header + "<br>" + description + createTimeString(coords[1] - y_offset));
+					}
+				}
+			}
+			else
+			{
+				if(list[i] instanceof BuildAndInputField)
+				{
+					String[] s = list[i].getName().split("\\.");
+					int[] coords = {Integer.parseInt(s[0]), Integer.parseInt(s[1])};
+					Component[] components = ((BuildAndInputField)list[i]).getComponents();
+					boolean flag = current_planet.requirementsMet(EntityCategory.FLEET, coords[1]);
+					for(int j = 0; j < components.length; j++)
+					{
+						components[j].setVisible(flag);
+						components[j].setEnabled(flag);
+					}
+				}
+			}
+		}
+		for(int i = 0; i < requirements_panels.length; i++)
+		{
+			int[] buildings_required = current_planet.getUnits()[i].getRequiredBuildings();
+			int[] technologies_required = current_planet.getUnits()[i].getRequiredTechnologies();
+			requirements_panels[i].updatePanelUI(buildings_required, technologies_required, current_planet.getBuildings(), player.getTechs());
+			if(current_planet.requirementsMet(EntityCategory.FLEET, i))
+			{
+				requirements_panels[i].setVisible(false);
+			}
+		}
 	}
 	
 	private class BuildingImg extends JLabel
@@ -137,5 +190,68 @@ public class SpaceYardPanel extends InfoPanel
 		private String real_text;
 	}
 	
+	private class BuildAndInputField extends JPanel implements ActionListener, KeyListener
+	{
+		public BuildAndInputField(String name) 
+		{
+			setName(name);
+			setOpaque(true);
+			setBackground(BACKGROUND_COLOR);
+			build_button = new JButton("Заказ");
+			build_button.setBorder(BorderFactory.createLineBorder(new Color(60, 100, 134)));
+			build_button.setBackground(new Color(102, 102, 102));
+			build_button.setForeground(Color.WHITE);
+			build_button.addActionListener(this);
+			amount_field = new JTextField("0", 7);
+			amount_field.setHorizontalAlignment(JTextField.CENTER);
+			amount_field.setBorder(BorderFactory.createLineBorder(new Color(60, 100, 134)));
+			amount_field.setBackground(new Color(102, 102, 102));
+			amount_field.setForeground(Color.WHITE);
+			amount_field.addKeyListener(this);;
+			setLayout(new GridBagLayout());
+			GridBagConstraints constraints = new GridBagConstraints();
+			constraints.gridx = 0;
+			constraints.gridwidth = 1;
+			constraints.gridheight = 1;
+			constraints.weightx = 0.0f;
+			constraints.weighty = 0.5f;
+			constraints.anchor = GridBagConstraints.CENTER;
+			constraints.fill = GridBagConstraints.NONE;
+			add(build_button, constraints);
+			constraints.gridy = 1;
+			add(amount_field, constraints);
+		}
+		
+		public void actionPerformed(ActionEvent e)
+		{
+			int i = 0;
+			i++;
+		}
+		
+		public void keyTyped(KeyEvent e) 
+		{
+			
+		}
+
+		public void keyPressed(KeyEvent e) 
+		{
+			if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
+			{
+				requestFocusInWindow();
+			}
+		}
+
+		public void keyReleased(KeyEvent e) 
+		{
+			
+		}
+		
+		private JButton build_button;
+		private JTextField amount_field;
+	}
+	
 	private RequirementsPanel[] requirements_panels;
+	private int y_offset_after;
+	private JTextArea build_queue;
+	private TextLabel current_building;
 }

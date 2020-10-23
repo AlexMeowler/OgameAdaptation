@@ -10,8 +10,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import adaptogame.core.buildings.Building;
-import adaptogame.core.units.Unit;
+import adaptogame.core.buildings.*;
+import adaptogame.core.units.*;
 
 public class Planet 
 {
@@ -30,15 +30,15 @@ public class Planet
 		coords[2] = pos;
 		img = ImageIO.read(this.getClass().getResourceAsStream("/pl/" + img_num + ".jpg"));
 		building_list = Building.createListForPlanet(temperature_max);
-		space_yard_list = Unit.createList();
+		fleet_list = Unit.createList();
 		metal_capacity = (int) building_list[Building.METAL_STORAGE].calcGathering();
 		crystal_capacity = (int) building_list[Building.CRYSTAL_STORAGE].calcGathering();
 		deiterium_capacity = (int) building_list[Building.DEITERIUM_STORAGE].calcGathering();
-		metal_current = 3000;
-		crystal_current = 3000;
-		deiterium_current = 3000;
+		metal_current = 7000;
+		crystal_current = 7000;
+		deiterium_current = 7000;
 		//building_list[Building.METAL_MINES] = new MetalMines(30, "шахта");
-		//building_list[Building.POWER_STATION] = new PowerStation(30, "солярка");
+		building_list[Building.SPACE_YARD] = new SpaceYard(10, "Верфь");
 		electricity_current = 0;
 		for(int i = 0; i < building_list.length; i++)
 		{
@@ -90,7 +90,7 @@ public class Planet
 	
 	public Unit[] getUnits()
 	{
-		return space_yard_list; //сделать clone()
+		return fleet_list; //сделать clone()
 	}
 	
 	public int getQueueElem(int i)
@@ -224,38 +224,34 @@ public class Planet
 	public boolean requirementsMet(EntityCategory type, int code)
 	{
 		boolean f = true;
-		int[] buildings_required;
-		int[] technologires_required;
+		int[] buildings_required = null;
+		int[] technologires_required = null;
 		switch(type)
 		{
 			case BUILDING:
 				buildings_required = building_list[code].getRequiredBuildings();
 				technologires_required = building_list[code].getRequiredTechnologies();
-				for(int i = 0; i < buildings_required.length; i++)
-				{
-					f = f && (building_list[i].getLevel() >= buildings_required[i]);
-				}
-				for(int i = 0; i < technologires_required.length; i++)
-				{
-					f = f && (owner.getTechs()[i].getLevel() >= technologires_required[i]);
-				}
 				break;
 			case RESEARCH:
 				buildings_required = owner.getTechs()[code].getRequiredBuildings();
 				technologires_required = owner.getTechs()[code].getRequiredTechnologies();
-				for(int i = 0; i < buildings_required.length; i++)
-				{
-					f = f && (building_list[i].getLevel() >= buildings_required[i]);
-				}
-				for(int i = 0; i < technologires_required.length; i++)
-				{
-					f = f && (owner.getTechs()[i].getLevel() >= technologires_required[i]);
-				}
 				break;
 			case FLEET:
+				buildings_required = fleet_list[code].getRequiredBuildings();
+				technologires_required = fleet_list[code].getRequiredTechnologies();
 				break;
 			case DEFENSE:
 				break;
+			default:
+				break;
+		}
+		for(int i = 0; i < buildings_required.length; i++)
+		{
+			f = f && (building_list[i].getLevel() >= buildings_required[i]);
+		}
+		for(int i = 0; i < technologires_required.length; i++)
+		{
+			f = f && (owner.getTechs()[i].getLevel() >= technologires_required[i]);
 		}
 		return f;
 	}
@@ -372,7 +368,8 @@ public class Planet
 	private String planet_name;
 	private BufferedImage img;
 	private Building[] building_list;
-	private Unit[] space_yard_list;
+	private Unit[] fleet_list;
+	private Unit[] defence_list;
 	private ArrayList<Integer> building_queue;
 	private Player owner;
 	public int[] coords;

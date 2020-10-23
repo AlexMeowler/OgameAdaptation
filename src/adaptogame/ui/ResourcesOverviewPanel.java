@@ -360,7 +360,7 @@ public class ResourcesOverviewPanel extends InfoPanel
 			amount = 0;
 			if(list[i] instanceof TextLabel)
 			{
-				String[] s = ((TextLabel)list[i]).getName().split("\\.");
+				String[] s = list[i].getName().split("\\.");
 				int[] coords = {Integer.parseInt(s[0]), Integer.parseInt(s[1])};
 				switch(coords[1])
 				{

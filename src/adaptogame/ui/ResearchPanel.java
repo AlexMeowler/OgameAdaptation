@@ -137,7 +137,7 @@ public class ResearchPanel extends InfoPanel
 		{
 			if(list[i] instanceof TextLabel)
 			{
-				String[] s = ((TextLabel)list[i]).getName().split("\\.");
+				String[] s = list[i].getName().split("\\.");
 				int[] coords = {Integer.parseInt(s[0]), Integer.parseInt(s[1])};
 				if(coords[1] >= y_offset)
 				{
@@ -177,7 +177,7 @@ public class ResearchPanel extends InfoPanel
 			{
 				if(list[i] instanceof TextLabel)
 				{
-					String[] s = ((TextLabel)list[i]).getName().split("\\.");
+					String[] s = list[i].getName().split("\\.");
 					int[] coords = {Integer.parseInt(s[0]), Integer.parseInt(s[1])};
 					if((coords[1] >= y_offset) && (coords[0] == 2) && (!requirements_panels[coords[1] - y_offset].isVisible()))
 					{

@@ -164,7 +164,7 @@ public class TechTreePanel extends InfoPanel
 		Component[] list = getComponents();
 		for(int i = 0; i < list.length; i++)
 		{
-			String[] s = ((TextLabel)list[i]).getName().split("\\.");
+			String[] s = list[i].getName().split("\\.");
 			int[] coords = {Integer.parseInt(s[0]), Integer.parseInt(s[1])};
 			if((coords[0] == 1) && (coords[1] >= y_offset_buildings) && (coords[1] < y_offset_buildings + current_planet.getBuildings().length))
 			{
