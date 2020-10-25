@@ -24,6 +24,11 @@ public class InfoPanel extends JPanel  implements MouseWheelListener, MouseListe
 		
 	}
 	
+	public void updateCurrentPlanet()
+	{
+		current_planet = player.getPlanet(player.getCurrentPlanetIndex());
+	}
+	
 	protected int[] getBuildingTimeArray(int code)
 	{
 		return null;

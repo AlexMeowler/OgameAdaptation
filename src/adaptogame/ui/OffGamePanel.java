@@ -135,7 +135,7 @@ public class OffGamePanel extends JPanel
 		constraints.gridy = 1;
 		constraints.gridwidth = 1;
 		constraints.gridheight = 2;
-		add(new PlanetMenuContainer(player.getPlanets()), constraints);
+		add(new PlanetMenuContainer(player), constraints);
 		//
 		constraints.weighty = 1.0f;
 		constraints.fill = GridBagConstraints.BOTH;
@@ -221,6 +221,21 @@ public class OffGamePanel extends JPanel
 		((InfoPanel)((JViewport) p.getComponents()[0]).getView()).addMouseListener((InfoPanel)((JViewport) p.getComponents()[0]).getView());
 	}
 	
+	public void checkPlanetChange()
+	{
+		if(player.isPlanetChanged())
+		{
+			int size = windows.size();
+			for(int i = 0; i < size; i++)
+			{
+				InfoPanel p = windows.get(i);
+				p.updateCurrentPlanet();
+				p.updatePanelUI();
+			}
+			player.planetChangeHandled();
+		}
+	}
+	
 	private BufferedImage background;
 	private ResourcePanel metal = new ResourcePanel("m.png");
 	private ResourcePanel crystal = new ResourcePanel("k.png");
@@ -232,7 +247,6 @@ public class OffGamePanel extends JPanel
 	private Player player;
 	private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 	private int topRowPadding = 15;
-	private int topRowCellWidth = 130;
 	private int currentActiveWindow;
 	private TimeProcessingThread clock;
 	private static final int INFO_PANELS_LEFT_INSET = 50; 

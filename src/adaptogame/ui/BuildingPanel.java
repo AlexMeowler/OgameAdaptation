@@ -38,11 +38,21 @@ public class BuildingPanel extends InfoPanel
 			constraints.anchor = GridBagConstraints.NORTH;
 			try
 			{
-				text = current_planet.getBuildings()[current_planet.getBuildingsQueueElem(i)].generateHeader();
+				text = current_planet.getBuildings()[current_planet.getBuildingsQueueElem(i)].generateHeaderWithoutLevel();
+				int level = current_planet.getBuildings()[current_planet.getBuildingsQueueElem(i)].getLevel() + 1;
+				for(int j = 0; j < i; j++)
+				{
+					if(current_planet.getBuildingsQueueElem(j) == current_planet.getBuildingsQueueElem(i))
+					{
+						level++;
+					}
+				}
+				text += " " + level;
 			}
 			catch(IndexOutOfBoundsException e)
 			{
 				text = "";
+				
 			}
 			add(new TextLabel(text, "" + constraints.gridx + "." +constraints.gridy, false), constraints);
 			constraints.gridx = 2;
@@ -243,10 +253,7 @@ public class BuildingPanel extends InfoPanel
 			int[] buildings_required = current_planet.getBuildings()[i].getRequiredBuildings();
 			int[] technologies_required = current_planet.getBuildings()[i].getRequiredTechnologies();
 			requirements_panels[i].updatePanelUI(buildings_required, technologies_required, current_planet.getBuildings(), player.getTechs());
-			if(current_planet.requirementsMet(EntityCategory.BUILDING, i))
-			{
-				requirements_panels[i].setVisible(false);
-			}
+			requirements_panels[i].setVisible(!current_planet.requirementsMet(EntityCategory.BUILDING, i));
 		}
 	}
 	

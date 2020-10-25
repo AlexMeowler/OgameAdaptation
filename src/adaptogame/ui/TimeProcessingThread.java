@@ -22,9 +22,10 @@ public class TimeProcessingThread extends Thread
 				panel.getCurrentWindow().updatePanelUI();
 			}
 			panel.updateResourceBar();
+			panel.checkPlanetChange();
 			try 
 			{
-				Thread.sleep(1000);
+				Thread.sleep(SLEEP_DURATION);
 			} 
 			catch (InterruptedException e) 
 			{
@@ -33,5 +34,6 @@ public class TimeProcessingThread extends Thread
 		}
 	}
 	
+	public static final int SLEEP_DURATION = 300;
 	private OffGamePanel panel;
 }

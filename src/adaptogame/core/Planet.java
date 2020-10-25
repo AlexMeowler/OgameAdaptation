@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 import adaptogame.core.buildings.*;
 import adaptogame.core.units.*;
 import adaptogame.core.units.fleet.SolarSatellite;
+import adaptogame.ui.TimeProcessingThread;
 
 public class Planet 
 {
@@ -119,7 +120,13 @@ public class Planet
 	public static Planet generateStartPlanet(Player owner) throws IOException
 	{
 		Random r = new Random();
-		return new Planet("Planet", 12247, -6, 0, 1, 1, 1, r.nextInt(31)+1, owner);
+		return new Planet("Main", 12247, -6, 0, 1, 1, 1, r.nextInt(31)+1, owner);
+	}
+	
+	public static Planet generatePlanet(Player owner, int pos) throws IOException
+	{
+		Random r = new Random();
+		return new Planet("Colony " + pos, r.nextInt(13000) + 8000, -r.nextInt(20), r.nextInt(30), 1, 1, pos, r.nextInt(31)+1, owner);
 	}
 	
 	public String getName()
@@ -166,15 +173,15 @@ public class Planet
 	{
 		if(metal_current < metal_capacity)
 		{
-			metal_current = metal_current + (METAL_DEFAULT_PRODUCTION + metal_production) / 3600;
+			metal_current = metal_current + ((METAL_DEFAULT_PRODUCTION + metal_production) / 3600) * ((double)TimeProcessingThread.SLEEP_DURATION / 1000);
 		}
 		if(crystal_current < crystal_capacity)
 		{
-			crystal_current = crystal_current + (CRYSTAL_DEFAULT_PRODUCTION + crystal_production) / 3600;
+			crystal_current = crystal_current + ((CRYSTAL_DEFAULT_PRODUCTION + crystal_production) / 3600) * ((double)TimeProcessingThread.SLEEP_DURATION / 1000);
 		}
 		if(deiterium_current < deiterium_capacity)
 		{
-			deiterium_current = deiterium_current + (DEITERIUM_DEFAULT_PRODUCTION + deiterium_production) / 3600;
+			deiterium_current = deiterium_current + ((DEITERIUM_DEFAULT_PRODUCTION + deiterium_production) / 3600) * ((double)TimeProcessingThread.SLEEP_DURATION / 1000);
 		}
 	}
 	

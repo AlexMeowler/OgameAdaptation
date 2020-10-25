@@ -219,10 +219,7 @@ public class SpaceYardFleetPanel extends InfoPanel
 			int[] buildings_required = current_planet.getUnits()[i].getRequiredBuildings();
 			int[] technologies_required = current_planet.getUnits()[i].getRequiredTechnologies();
 			requirements_panels[i].updatePanelUI(buildings_required, technologies_required, current_planet.getBuildings(), player.getTechs());
-			if(current_planet.requirementsMet(EntityCategory.FLEET, i))
-			{
-				requirements_panels[i].setVisible(false);
-			}
+			requirements_panels[i].setVisible(!current_planet.requirementsMet(EntityCategory.FLEET, i));
 		}
 	}
 	

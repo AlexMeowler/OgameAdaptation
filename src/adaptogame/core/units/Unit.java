@@ -116,6 +116,11 @@ public abstract class Unit
 		return amount;
 	}
 	
+	public String getName()
+	{
+		return name;
+	}
+	
 	public long calcBuildingTime(int space_yard, int nanite_factory) // возвращает в секундах
 	{
 		return (long)max(( ((cost[0] + cost[1]) / 2500) * (1.0 / (space_yard + 1)) * pow(0.5, nanite_factory) * 15 * 60), 1);

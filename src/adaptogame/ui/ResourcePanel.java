@@ -29,7 +29,7 @@ public class ResourcePanel extends JPanel
 	}
 	public void paintComponent(Graphics g)
 	{
-		super.paintComponents(g);
+		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
 		GradientPaint gp = new GradientPaint(0, 0, new Color(111, 153, 188), 0, getHeight(), new Color(46, 70, 101));
         g2d.setPaint(gp);

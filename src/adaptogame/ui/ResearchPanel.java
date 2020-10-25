@@ -170,10 +170,7 @@ public class ResearchPanel extends InfoPanel
 			int[] buildings_required = player.getTechs()[i].getRequiredBuildings();
 			int[] technologies_required = player.getTechs()[i].getRequiredTechnologies();
 			requirements_panels[i].updatePanelUI(buildings_required, technologies_required, current_planet.getBuildings(), player.getTechs());
-			if(current_planet.requirementsMet(EntityCategory.RESEARCH, i))
-			{
-				requirements_panels[i].setVisible(false);
-			}
+			requirements_panels[i].setVisible(!current_planet.requirementsMet(EntityCategory.RESEARCH, i));
 		}
 	}
 	

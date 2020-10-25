@@ -218,10 +218,7 @@ public class SpaceYardDefensePanel extends InfoPanel
 			int[] buildings_required = current_planet.getUnits()[Unit.ROCKET_LAUNCHER + i].getRequiredBuildings();
 			int[] technologies_required = current_planet.getUnits()[Unit.ROCKET_LAUNCHER + i].getRequiredTechnologies();
 			requirements_panels[i].updatePanelUI(buildings_required, technologies_required, current_planet.getBuildings(), player.getTechs());
-			if(current_planet.requirementsMet(EntityCategory.DEFENSE, i))
-			{
-				requirements_panels[i].setVisible(false);
-			}
+			requirements_panels[i].setVisible(!current_planet.requirementsMet(EntityCategory.DEFENSE, i));
 		}
 	}
 	
