@@ -205,7 +205,7 @@ public class ResearchPanel extends InfoPanel
 	
 	private class TextLabel extends JLabel implements ComponentListener
 	{
-		public TextLabel(String text, String name, boolean VerticallyAtTop)
+		public TextLabel(String text, String name, boolean verticallyAtTop)
 		{	
 			setName(name);
 			addComponentListener(this);
@@ -215,7 +215,7 @@ public class ResearchPanel extends InfoPanel
 			setBackground(BACKGROUND_COLOR);
 			setOpaque(true);
 			setVisible(true);
-			if(VerticallyAtTop)
+			if(verticallyAtTop)
 			{
 				setVerticalAlignment(SwingConstants.NORTH);
 			}

@@ -1,5 +1,7 @@
 package adaptogame.ui;
 
+import adaptogame.core.Planet;
+
 public class TimeProcessingThread extends Thread 
 {
 	public TimeProcessingThread(OffGamePanel panel)
@@ -12,9 +14,11 @@ public class TimeProcessingThread extends Thread
 		{
 			for(int i = 0; i < panel.getPlayer().getPlanetAmount(); i++)
 			{
-				panel.getPlayer().getPlanet(i).updateResources();
-				panel.getPlayer().getPlanet(i).updateBuildingsProduction();
-				panel.getPlayer().getPlanet(i).updateResearchProcess();
+				Planet planet = panel.getPlayer().getPlanet(i);
+				planet.updateResources();
+				planet.updateBuildingsProduction();
+				planet.updateResearchProcess();
+				planet.updateUnitsProduction();
 				panel.getCurrentWindow().updatePanelUI();
 			}
 			panel.updateResourceBar();

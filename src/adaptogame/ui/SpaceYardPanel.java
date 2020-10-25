@@ -3,12 +3,14 @@ package adaptogame.ui;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.util.Date;
 
 import javax.swing.*;
 
 import adaptogame.core.*;
 import adaptogame.core.buildings.Building;
 import adaptogame.core.units.Unit;
+import adaptogame.core.units.UnitBuildQueueElement;
 
 public class SpaceYardPanel extends InfoPanel 
 {
@@ -18,10 +20,10 @@ public class SpaceYardPanel extends InfoPanel
 		setOpaque(false);
 		constraints.weightx = 0.0f;
 		constraints.weighty = 0.0f;
-		
+		constraints.fill = GridBagConstraints.BOTH;
 		constraints.insets.bottom = 3;
 		y_offset = 0;
-		requirements_panels = new RequirementsPanel[16];
+		requirements_panels = new RequirementsPanel[Unit.SHIPS_AMOUNT];
 		for(int i = 0; i < Unit.SHIPS_AMOUNT; i++)
 		{
 			addRow(Unit.SOLAR_SATELLITE + i + y_offset);
@@ -29,8 +31,16 @@ public class SpaceYardPanel extends InfoPanel
 		y_offset_after = y_offset + Unit.SHIPS_AMOUNT;
 		constraints.gridx = 1;
 		constraints.gridy = y_offset_after;
+		constraints.fill = GridBagConstraints.BOTH;
+		add(new TextLabel("", "" + constraints.gridx + "." +constraints.gridy, false), constraints);
+		constraints.gridy = y_offset_after + 1;
 		constraints.fill = GridBagConstraints.VERTICAL;
-		
+		add(new BuildQueueList(5, 25), constraints);
+		// кнопка отмены
+		constraints.gridx = 1;
+		constraints.gridy = y_offset_after + 3;
+		constraints.fill = GridBagConstraints.BOTH;
+		add(new TextLabel("", "" + constraints.gridx + "." +constraints.gridy, false), constraints);
 	}
 	
 	private void addRow(int row) throws IOException
@@ -40,6 +50,7 @@ public class SpaceYardPanel extends InfoPanel
 		double[] resources = {current_planet.getCurrentMetal(), current_planet.getCurrentCrystal(), current_planet.getCurrentDeiterium(), current_planet.getCurrentEnergy()};
 		String description = current_planet.getUnits()[code].generateDescription(resources);
 		// добавить остаток ресурсов
+		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.NORTH;
 		constraints.gridx = 0;
 		constraints.gridy = row;
@@ -75,7 +86,7 @@ public class SpaceYardPanel extends InfoPanel
 	
 	protected int[] getBuildingTimeArray(int code)
 	{
-		long total = current_planet.getUnits()[code].calcBuildingTime(current_planet.getBuildings()[Building.ROBOT_FACTORY].getLevel(), current_planet.getBuildings()[Building.NANITE_FACTORY].getLevel());
+		long total = current_planet.getUnits()[code].calcBuildingTime(current_planet.getBuildings()[Building.SPACE_YARD].getLevel(), current_planet.getBuildings()[Building.NANITE_FACTORY].getLevel());
 		int day = (int)(total / 86400);
 		int hours = (int)((total % 86400) / 3600);
 		int minutes = (int)((total % 3600) / 60);
@@ -83,6 +94,36 @@ public class SpaceYardPanel extends InfoPanel
 		int[] answer = {day, hours, minutes, seconds};
 		return answer;
 	}
+	
+	// можно вызывать только для строящегося юнита 
+	protected int[] getRemainingTime(int code, Date date)
+	{
+		long total = (current_planet.getUnits()[code].getBuildDate().getTime() - date.getTime()) / 1000;
+		int day = (int)(total / 86400);
+		int hours = (int)((total % 86400) / 3600);
+		int minutes = (int)((total % 3600) / 60);
+		int seconds = (int)(total % 60);
+		int[] answer = {day, hours, minutes, seconds};
+		return answer;
+	}
+	
+	// возвращает суммарное время строительства всей очереди
+	// нельзя вызывать, не проверив, есть ли в очереди хотя бы один элемент
+	protected int[] getFullRemainingTime(Date date)
+	{
+		long total = (current_planet.getUnits()[current_planet.getUnitQueueElem(0).getCode()].getBuildDate().getTime() - date.getTime()) / 1000 + current_planet.getUnits()[current_planet.getUnitQueueElem(0).getCode()].calcBuildingTime(current_planet.getBuildings()[Building.SPACE_YARD].getLevel(), current_planet.getBuildings()[Building.NANITE_FACTORY].getLevel()) * (current_planet.getUnitQueueElem(0).getAmount() - 1);
+		int size = current_planet.getUnitQueueSize();
+		for(int i = 1; i < size; i++)
+		{
+			total += current_planet.getUnits()[current_planet.getUnitQueueElem(i).getCode()].calcBuildingTime(current_planet.getBuildings()[Building.SPACE_YARD].getLevel(), current_planet.getBuildings()[Building.NANITE_FACTORY].getLevel()) * current_planet.getUnitQueueElem(i).getAmount();
+		}
+		int day = (int)(total / 86400);
+		int hours = (int)((total % 86400) / 3600);
+		int minutes = (int)((total % 3600) / 60);
+		int seconds = (int)(total % 60);
+		int[] answer = {day, hours, minutes, seconds};
+		return answer;
+	}	
 	
 	public void updatePanelUI()
 	{
@@ -93,7 +134,7 @@ public class SpaceYardPanel extends InfoPanel
 			{
 				String[] s = list[i].getName().split("\\.");
 				int[] coords = {Integer.parseInt(s[0]), Integer.parseInt(s[1])};
-				if(coords[1] >= y_offset)
+				if((coords[1] >= y_offset) && (coords[1] < y_offset_after))
 				{
 					String header = current_planet.getUnits()[coords[1] - y_offset].generateHeader();
 					double[] resources = {current_planet.getCurrentMetal(), current_planet.getCurrentCrystal(), current_planet.getCurrentDeiterium(), current_planet.getCurrentEnergy()};
@@ -102,6 +143,29 @@ public class SpaceYardPanel extends InfoPanel
 					{
 						((TextLabel)list[i]).setText(header + "<br>" + description + createTimeString(coords[1] - y_offset));
 					}
+				}
+				if(coords[1] >= y_offset_after)
+				{
+					String text = "";
+					switch(coords[1] - y_offset_after)
+					{
+						case 0:
+							if(current_planet.getUnitQueueSize() > 0)
+							{
+								int[] digits = getRemainingTime(current_planet.getUnitQueueElem(0).getCode(), new Date());
+								text = "<div style='text-align:center;'>Сейчас производится:<br>" + current_planet.getUnits()[current_planet.getUnitQueueElem(0).getCode()].generateHeaderWithoutLevel() + " " + String.format("%02d:%02d:%02d:%02d", digits[0], digits[1], digits[2], digits[3]) + "</div>";
+								
+							}
+							break;
+						case 3:
+							if(current_planet.getUnitQueueSize() > 0)
+							{
+								int[] digits = getFullRemainingTime(new Date());
+								text = "<div style='text-align:center;'>Оставшееся время " + String.format("%02d дн. %02d ч. %02d мин. %02d сек.", digits[0], digits[1], digits[2], digits[3]) + "</div>";
+							}
+							break;
+					}
+					((TextLabel)list[i]).setText(text);
 				}
 			}
 			else
@@ -118,6 +182,26 @@ public class SpaceYardPanel extends InfoPanel
 						components[j].setEnabled(flag);
 					}
 				}
+			}
+			if(list[i] instanceof BuildQueueList)
+			{
+				int length = current_planet.getUnitQueueSize();
+				String text = "";
+				for(int j = 0; j < length; j++)
+				{
+					UnitBuildQueueElement elem = current_planet.getUnitQueueElem(j);
+					text += elem.getAmount() + " \"" + current_planet.getUnits()[elem.getCode()].generateHeaderWithoutLevel() + "\"";
+					if(j != 0)
+					{
+						text += "\n";
+					}
+					else
+					{
+						text += " (Производится)\n";
+					}
+				}
+				((JTextArea)((BuildQueueList)list[i]).getViewport().getComponent(0)).setText(text);
+				list[i].setVisible(length != 0);
 			}
 		}
 		for(int i = 0; i < requirements_panels.length; i++)
@@ -145,7 +229,7 @@ public class SpaceYardPanel extends InfoPanel
 	
 	private class TextLabel extends JLabel implements ComponentListener
 	{
-		public TextLabel(String text, String name, boolean VerticallyAtTop)
+		public TextLabel(String text, String name, boolean verticallyAtTop)
 		{	
 			setName(name);
 			addComponentListener(this);
@@ -155,7 +239,7 @@ public class SpaceYardPanel extends InfoPanel
 			setBackground(BACKGROUND_COLOR);
 			setOpaque(true);
 			setVisible(true);
-			if(VerticallyAtTop)
+			if(verticallyAtTop)
 			{
 				setVerticalAlignment(SwingConstants.NORTH);
 			}
@@ -187,7 +271,7 @@ public class SpaceYardPanel extends InfoPanel
 			
 		}
 		
-		private String real_text;
+		protected String real_text;
 	}
 	
 	private class BuildAndInputField extends JPanel implements ActionListener, KeyListener
@@ -224,8 +308,19 @@ public class SpaceYardPanel extends InfoPanel
 		
 		public void actionPerformed(ActionEvent e)
 		{
-			int i = 0;
-			i++;
+			String[] s = getName().split("\\.");
+			int code = Integer.parseInt(s[1]) - y_offset;
+			try
+			{
+				int amount = Integer.parseInt(amount_field.getText());
+				current_planet.addUnitBuildingQueue(code, amount);
+			}
+			catch(NumberFormatException ex)
+			{
+				
+			}
+			amount_field.setText("");
+			requestFocusInWindow();
 		}
 		
 		public void keyTyped(KeyEvent e) 
@@ -250,8 +345,23 @@ public class SpaceYardPanel extends InfoPanel
 		private JTextField amount_field;
 	}
 	
+	private class BuildQueueList extends JScrollPane
+	{
+		public BuildQueueList(int rows, int columns)
+		{
+			JTextArea area = new JTextArea(rows, columns);
+			setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_ALWAYS);
+			setWheelScrollingEnabled(false);
+			area.setBackground(new Color(102, 102, 102));
+			area.setForeground(Color.WHITE);
+			area.setFocusable(false);
+			area.setEditable(false);
+			add(area);
+			setViewportView(area);
+		}
+	}
+	
 	private RequirementsPanel[] requirements_panels;
 	private int y_offset_after;
-	private JTextArea build_queue;
-	private TextLabel current_building;
+	private static final int LABEL_CHAR_WIDTH = 40;
 }

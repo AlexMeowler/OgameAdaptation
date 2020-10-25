@@ -13,10 +13,10 @@ import javax.swing.*;
 import adaptogame.core.Planet;
 import adaptogame.core.Player;
 
-public class OverviewPanel extends InfoPanel
+public class PlanetOverviewPanel extends InfoPanel
 {
 
-	public OverviewPanel(String name, Player player) 
+	public PlanetOverviewPanel(String name, Player player) 
 	{
 		super(name, player);
 		setOpaque(false);

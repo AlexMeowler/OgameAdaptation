@@ -3,6 +3,7 @@ package adaptogame.core.units;
 import static java.lang.Math.*;
 
 import java.text.NumberFormat;
+import java.util.Date;
 import java.util.Locale;
 
 import adaptogame.core.EngineCategory;
@@ -18,6 +19,9 @@ public class Unit
 		required_buildings = new int[Building.BUILDINGS_AMOUNT];
 		required_technologies = new int[Technology.RESEARCHES_AMOUNT];
 		cost = new double[4];
+		building_amount = 0;
+		build_end_time = null;
+		build_total_time = null;
 	}
 	
 	public Unit(String name, int amount)
@@ -30,10 +34,10 @@ public class Unit
 		cost = new double[4];
 	}
 	
-	public static Unit[] createList()
+	public static Unit[] createFleetList(int planet_max_temperature)
 	{
 		Unit[] list = new Unit[SHIPS_AMOUNT];
-		list[0] = new SolarSatellite("Солнечный спутник");
+		list[0] = new SolarSatellite("Солнечный спутник", planet_max_temperature);
 		list[1] = new SpyProbe("Шпионский зонд");
 		list[2] = new LightFighter("Легкий истребитель");
 		list[3] = new SmallTransport("Малый транспорт");
@@ -62,10 +66,40 @@ public class Unit
 		return required_technologies;
 	}
 	
+	public double[] getCost()
+	{
+		return cost;
+	}
+	
+	public void startBuilding(int space_yard, int nanite_factory)
+	{
+		build_end_time = new Date(new Date().getTime() + calcBuildingTime(space_yard, nanite_factory) * 1000); 
+	}
+	
+	public void stopBuilding()
+	{
+		build_end_time = null;
+	}
+	
+	public Date getBuildDate()
+	{
+		return build_end_time;
+	}
+	
+	public void updateAmount()
+	{
+		amount++;
+	}
+	
+	public int getAmount()
+	{
+		return amount;
+	}
+	
 	public long calcBuildingTime(int space_yard, int nanite_factory) // возвращает в секундах
 	{
-		return (long)max(( ((cost[0] + cost[1]) / 2500) * (1 / (space_yard + 1)) * pow(0.5, nanite_factory) * 15 * 60), 1);
-		//return 2;
+		return (long)max(( ((cost[0] + cost[1]) / 2500) * (1.0 / (space_yard + 1)) * pow(0.5, nanite_factory) * 15 * 60), 1);
+		//return 10;
 	}
 	
 	public String generateHeader()
@@ -130,6 +164,9 @@ public class Unit
 	protected int[] required_buildings;
 	protected int[] required_technologies;
 	protected double[] cost;
+	protected int building_amount;
+	protected Date build_end_time;
+	protected Date build_total_time;
 	public static final int SOLAR_SATELLITE = 0;
 	public static final int SPY_PROBE = 1;
 	public static final int LIGHT_FIGHTER = 2;

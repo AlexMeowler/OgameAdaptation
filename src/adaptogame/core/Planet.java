@@ -30,7 +30,7 @@ public class Planet
 		coords[2] = pos;
 		img = ImageIO.read(this.getClass().getResourceAsStream("/pl/" + img_num + ".jpg"));
 		building_list = Building.createListForPlanet(temperature_max);
-		fleet_list = Unit.createList();
+		unit_list = Unit.createFleetList(temperature_max);
 		metal_capacity = (int) building_list[Building.METAL_STORAGE].calcGathering();
 		crystal_capacity = (int) building_list[Building.CRYSTAL_STORAGE].calcGathering();
 		deiterium_capacity = (int) building_list[Building.DEITERIUM_STORAGE].calcGathering();
@@ -38,13 +38,14 @@ public class Planet
 		crystal_current = 7000;
 		deiterium_current = 7000;
 		//building_list[Building.METAL_MINES] = new MetalMines(30, "шахта");
-		building_list[Building.SPACE_YARD] = new SpaceYard(10, "Верфь");
+		//building_list[Building.SPACE_YARD] = new SpaceYard(10, "Верфь");
 		electricity_current = 0;
 		for(int i = 0; i < building_list.length; i++)
 		{
 			fields_taken += building_list[i].getLevel();
 		}
 		building_queue = new ArrayList<>();
+		space_yard_building_queue = new  ArrayList<>();
 		updateResourcesProduction();
 	}
 	
@@ -90,17 +91,27 @@ public class Planet
 	
 	public Unit[] getUnits()
 	{
-		return fleet_list; //сделать clone()
+		return unit_list; //сделать clone()
 	}
 	
-	public int getQueueElem(int i)
+	public int getBuildingsQueueElem(int i)
 	{
 		return building_queue.get(i);
 	}
 	
-	public int getQueueSize()
+	public int getBuildingsQueueSize()
 	{
 		return building_queue.size();
+	}
+	
+	public UnitBuildQueueElement getUnitQueueElem(int i)
+	{
+		return space_yard_building_queue.get(i);
+	}
+	
+	public int getUnitQueueSize()
+	{
+		return space_yard_building_queue.size();
 	}
 	
 	public static Planet generateStartPlanet(Player owner) throws IOException
@@ -167,7 +178,7 @@ public class Planet
 	
 	public void updateResourcesProduction()
 	{
-		electricity_current = getBuildings()[Building.POWER_STATION].calcGathering() + getBuildings()[Building.NUCLEAR_STATION].calcGathering() - getBuildings()[Building.METAL_MINES].calcConsuming() - getBuildings()[Building.CRYSTAL_MINES].calcConsuming() - getBuildings()[Building.DEITERIUM_MINES].calcConsuming(); // еще спутники
+		electricity_current = getBuildings()[Building.POWER_STATION].calcGathering() + getBuildings()[Building.NUCLEAR_STATION].calcGathering() + ((SolarSatellite)getUnits()[Unit.SOLAR_SATELLITE]).calcElectricityProduction() * getUnits()[Unit.SOLAR_SATELLITE].getAmount() - getBuildings()[Building.METAL_MINES].calcConsuming() - getBuildings()[Building.CRYSTAL_MINES].calcConsuming() - getBuildings()[Building.DEITERIUM_MINES].calcConsuming();
 		double total_electricity = max(1, getBuildings()[Building.POWER_STATION].calcGathering() + getBuildings()[Building.NUCLEAR_STATION].calcGathering());
 		resource_mining_efficiency = max(0, max(signum(electricity_current), 1 - abs(electricity_current) / total_electricity));
 		metal_production = METAL_DEFAULT_PRODUCTION + building_list[Building.METAL_MINES].calcGathering() * resource_mining_efficiency;
@@ -237,8 +248,8 @@ public class Planet
 				technologires_required = owner.getTechs()[code].getRequiredTechnologies();
 				break;
 			case FLEET:
-				buildings_required = fleet_list[code].getRequiredBuildings();
-				technologires_required = fleet_list[code].getRequiredTechnologies();
+				buildings_required = unit_list[code].getRequiredBuildings();
+				technologires_required = unit_list[code].getRequiredTechnologies();
 				break;
 			case DEFENSE:
 				break;
@@ -317,6 +328,39 @@ public class Planet
 		}
 	}
 	
+	public void updateUnitsProduction()
+	{
+		try
+		{
+			Date now = new Date();
+			UnitBuildQueueElement elem = space_yard_building_queue.get(0);
+			int code = elem.getCode();
+			if (!unit_list[code].getBuildDate().after(now))
+			{
+				unit_list[code].stopBuilding();
+				unit_list[code].updateAmount();
+				if(code == Unit.SOLAR_SATELLITE)
+				{
+					updateResourcesProduction();
+				}
+				elem.updateAmount();
+				if(elem.getAmount() > 0)
+				{
+					startUnitBuilding(elem.getCode());
+				}
+				else
+				{
+					space_yard_building_queue.remove(0);
+				}
+				startUnitBuilding(space_yard_building_queue.get(0).getCode());
+			}
+		}
+		catch(IndexOutOfBoundsException e)
+		{
+			
+		}
+	}
+	
 	public void addBuildingQueue(int code)
 	{
 		int size = building_queue.size();
@@ -330,13 +374,33 @@ public class Planet
 		}
 	}
 	
-	public void startBuilding(int code)
+	public void addUnitBuildingQueue(int code, int amount)
+	{
+		int size = space_yard_building_queue.size();
+		double[] cost = getUnits()[code].getCost();
+		amount = (int)min(amount, min(metal_current / cost[0], min(crystal_current / cost[1], deiterium_current / cost[2])));
+		metal_current -= cost[0] * amount;
+		crystal_current -= cost[1] * amount;
+		deiterium_current -= cost[2] * amount;
+		space_yard_building_queue.add(new UnitBuildQueueElement(code, amount));
+		if (size == 0)
+		{
+			startUnitBuilding(code);
+		}
+	}
+	
+	private void startBuilding(int code)
 	{
 		double[] cost = getBuildings()[code].calcBuildingCost();
 		metal_current -= cost[0];
 		crystal_current -= cost[1];
 		deiterium_current -= cost[2];
 		getBuildings()[code].startBuilding(getBuildings()[Building.ROBOT_FACTORY].getLevel(), getBuildings()[Building.NANITE_FACTORY].getLevel());	
+	}
+	
+	private void startUnitBuilding(int code)
+	{
+		getUnits()[code].startBuilding(getBuildings()[Building.SPACE_YARD].getLevel(), getBuildings()[Building.NANITE_FACTORY].getLevel());	
 	}
 	
 	public void startResearching(int code)
@@ -368,9 +432,9 @@ public class Planet
 	private String planet_name;
 	private BufferedImage img;
 	private Building[] building_list;
-	private Unit[] fleet_list;
-	private Unit[] defence_list;
+	private Unit[] unit_list;
 	private ArrayList<Integer> building_queue;
+	private ArrayList<UnitBuildQueueElement> space_yard_building_queue;
 	private Player owner;
 	public int[] coords;
 	public static final double METAL_DEFAULT_PRODUCTION = 1200;

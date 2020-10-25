@@ -80,8 +80,7 @@ public abstract class Building
 	public long calcBuildingTime(int robotics_factory, int nanite_factory) // возвращает в секундах
 	{
 		double[] d = calcBuildingCost();
-		//return (long)max(( ((d[0] + d[1]) / 2500) * (1 / (robotics_factory + 1)) * pow(0.5, nanite_factory) * 15 * 60), 1);
-		return 2;
+		return (long)max(( ((d[0] + d[1]) / 2500) * (1.0 / (robotics_factory + 1)) * pow(0.5, nanite_factory) * 15 * 60), 1);
 	}
 	
 	public int getLevel()

@@ -38,7 +38,7 @@ public class BuildingPanel extends InfoPanel
 			constraints.anchor = GridBagConstraints.NORTH;
 			try
 			{
-				text = current_planet.getBuildings()[current_planet.getQueueElem(i)].generateHeader();
+				text = current_planet.getBuildings()[current_planet.getBuildingsQueueElem(i)].generateHeader();
 			}
 			catch(IndexOutOfBoundsException e)
 			{
@@ -53,7 +53,7 @@ public class BuildingPanel extends InfoPanel
 			{
 				if (i == 0)
 				{
-					int[] digits = getBuildingTimeArray(current_planet.getQueueElem(i));
+					int[] digits = getBuildingTimeArray(current_planet.getBuildingsQueueElem(i));
 					text = String.format("%02d:%02d:%02d:%02d", digits[0], digits[1], digits[2], digits[3]);
 				}
 			}
@@ -198,11 +198,11 @@ public class BuildingPanel extends InfoPanel
 							switch(coords[0])
 							{
 								case 0:
-									String header = current_planet.getBuildings()[current_planet.getQueueElem(coords[1])].generateHeaderWithoutLevel();
-									int level = current_planet.getBuildings()[current_planet.getQueueElem(coords[1])].getLevel() + 1;
+									String header = current_planet.getBuildings()[current_planet.getBuildingsQueueElem(coords[1])].generateHeaderWithoutLevel();
+									int level = current_planet.getBuildings()[current_planet.getBuildingsQueueElem(coords[1])].getLevel() + 1;
 									for(int j = 0; j < coords[1]; j++)
 									{
-										if(current_planet.getQueueElem(j) == current_planet.getQueueElem(coords[1]))
+										if(current_planet.getBuildingsQueueElem(j) == current_planet.getBuildingsQueueElem(coords[1]))
 										{
 											level++;
 										}
@@ -212,8 +212,8 @@ public class BuildingPanel extends InfoPanel
 								case 2:
 									if (coords[1] == 0)
 									{
-										int[] digits = getRemainingTime(current_planet.getQueueElem(coords[1]), new Date());
-										((TextLabel)list[i]).setText("<div style='text-align: center'>" + String.format("%02d:%02d:%02d:%02d", digits[0], digits[1], digits[2], digits[3]) + "<br><font color='lime'>" + new SimpleDateFormat("dd/MM kk:mm:ss").format(current_planet.getBuildings()[current_planet.getQueueElem(coords[1])].getBuildDate()) +"</font></div>");
+										int[] digits = getRemainingTime(current_planet.getBuildingsQueueElem(coords[1]), new Date());
+										((TextLabel)list[i]).setText("<div style='text-align: center'>" + String.format("%02d:%02d:%02d:%02d", digits[0], digits[1], digits[2], digits[3]) + "<br><font color='lime'>" + new SimpleDateFormat("dd/MM kk:mm:ss").format(current_planet.getBuildings()[current_planet.getBuildingsQueueElem(coords[1])].getBuildDate()) +"</font></div>");
 									}
 									else
 									{
@@ -255,7 +255,7 @@ public class BuildingPanel extends InfoPanel
 		String s = "<div style='text-align: center'>";
 		if(current_planet.requirementsMet(EntityCategory.BUILDING, row))
 		{
-			if(current_planet.getQueueSize() == 0)
+			if(current_planet.getBuildingsQueueSize() == 0)
 			{
 				if(current_planet.isBuildingBuildable(row))
 				{
@@ -316,7 +316,7 @@ public class BuildingPanel extends InfoPanel
 	
 	private class TextLabel extends JLabel implements ComponentListener
 	{
-		public TextLabel(String text, String name, boolean VerticallyAtTop)
+		public TextLabel(String text, String name, boolean verticallyAtTop)
 		{	
 			setName(name);
 			addComponentListener(this);
@@ -326,7 +326,7 @@ public class BuildingPanel extends InfoPanel
 			setBackground(BACKGROUND_COLOR);
 			setOpaque(true);
 			setVisible(true);
-			if(VerticallyAtTop)
+			if(verticallyAtTop)
 			{
 				setVerticalAlignment(SwingConstants.NORTH);
 			}

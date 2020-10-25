@@ -32,22 +32,22 @@ public class OffGamePanel extends JPanel
 		scrolls = new ArrayList<>();
 		windows.add(new TechTreePanel("tech_tree", player));
 		scrolls.add(new JScrollPane(windows.get(MenuContainer.TECH_TREE)));
-		prepareScrollBar(scrolls.get(MenuContainer.TECH_TREE));
-		windows.add(new OverviewPanel("overview", player));
+		prepareScrollName(scrolls.get(MenuContainer.TECH_TREE));
+		windows.add(new PlanetOverviewPanel("overview", player));
 		scrolls.add(new JScrollPane(windows.get(MenuContainer.OVERVIEW)));
-		prepareScrollBar(scrolls.get(MenuContainer.OVERVIEW));
+		prepareScrollName(scrolls.get(MenuContainer.OVERVIEW));
 		windows.add(new ResourcesOverviewPanel("resources", player));
 		scrolls.add(new JScrollPane(windows.get(MenuContainer.RESOURCES)));
-		prepareScrollBar(scrolls.get(MenuContainer.RESOURCES));
+		prepareScrollName(scrolls.get(MenuContainer.RESOURCES));
 		windows.add(new BuildingPanel("buildings", player));
 		scrolls.add(new JScrollPane(windows.get(MenuContainer.BUILDINGS)));
-		prepareScrollBar(scrolls.get(MenuContainer.BUILDINGS));
+		prepareScrollName(scrolls.get(MenuContainer.BUILDINGS));
 		windows.add(new ResearchPanel("research", player));
 		scrolls.add(new JScrollPane(windows.get(MenuContainer.RESEARCH)));
-		prepareScrollBar(scrolls.get(MenuContainer.RESEARCH));
+		prepareScrollName(scrolls.get(MenuContainer.RESEARCH));
 		windows.add(new SpaceYardPanel("space_yard", player));
 		scrolls.add(new JScrollPane(windows.get(MenuContainer.SPACE_YARD)));
-		prepareScrollBar(scrolls.get(MenuContainer.SPACE_YARD));
+		prepareScrollName(scrolls.get(MenuContainer.SPACE_YARD));
 		//
 		currentActiveWindow = MenuContainer.OVERVIEW;
 		setWindowActive(scrolls.get(MenuContainer.OVERVIEW));
@@ -188,7 +188,7 @@ public class OffGamePanel extends JPanel
 		currentActiveWindow = i;
 	}
 	
-	private void prepareScrollBar(JScrollPane p)
+	private void prepareScrollName(JScrollPane p)
 	{
 		p.setOpaque(false);
 		p.getViewport().setOpaque(false);

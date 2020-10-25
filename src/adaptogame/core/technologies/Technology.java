@@ -21,7 +21,7 @@ public abstract class Technology extends Building
 	public long calcBuildingTime(int laboratory) // возвращает в секундах
 	{
 		double[] d = calcBuildingCost();
-		return (long)max(((d[0] + d[1]) / (1000 * (laboratory + 1)) * 15 * 60), 1);
+		return (long)max(((d[0] + d[1]) / (1000.0 * (laboratory + 1)) * 15 * 60), 1);
 	}
 	
 	public void startBuilding(int laboratory)
