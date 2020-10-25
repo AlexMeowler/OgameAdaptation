@@ -45,9 +45,12 @@ public class OffGamePanel extends JPanel
 		windows.add(new ResearchPanel("research", player));
 		scrolls.add(new JScrollPane(windows.get(MenuContainer.RESEARCH)));
 		prepareScrollName(scrolls.get(MenuContainer.RESEARCH));
-		windows.add(new SpaceYardPanel("space_yard", player));
+		windows.add(new SpaceYardFleetPanel("space_yard", player));
 		scrolls.add(new JScrollPane(windows.get(MenuContainer.SPACE_YARD)));
 		prepareScrollName(scrolls.get(MenuContainer.SPACE_YARD));
+		windows.add(new SpaceYardDefensePanel("space_yard_defence", player));
+		scrolls.add(new JScrollPane(windows.get(MenuContainer.DEFENCE)));
+		prepareScrollName(scrolls.get(MenuContainer.DEFENCE));
 		//
 		currentActiveWindow = MenuContainer.OVERVIEW;
 		setWindowActive(scrolls.get(MenuContainer.OVERVIEW));

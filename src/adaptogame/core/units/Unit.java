@@ -9,34 +9,45 @@ import java.util.Locale;
 import adaptogame.core.EngineCategory;
 import adaptogame.core.buildings.Building;
 import adaptogame.core.technologies.Technology;
+import adaptogame.core.units.defenses.*;
+import adaptogame.core.units.fleet.*;
 
-public class Unit 
+public abstract class Unit 
 {
 	public Unit(String name)
 	{
 		this.name = name;
-		rapid_fire = new int[SHIPS_AMOUNT + DEFENCE_AMOUNT];
+		rapid_fire = new int[SHIPS_AMOUNT + DEFENSE_AMOUNT];
 		required_buildings = new int[Building.BUILDINGS_AMOUNT];
 		required_technologies = new int[Technology.RESEARCHES_AMOUNT];
 		cost = new double[4];
 		building_amount = 0;
 		build_end_time = null;
-		build_total_time = null;
+		cargo_volume = 0;
+		engine_type = EngineCategory.NO_ENGINE;
+		speed = 0;
+		fuel_consumption = 0;
 	}
 	
 	public Unit(String name, int amount)
 	{
 		this.name = name;
 		this.amount = amount;
-		rapid_fire = new int[SHIPS_AMOUNT + DEFENCE_AMOUNT];
+		rapid_fire = new int[SHIPS_AMOUNT + DEFENSE_AMOUNT];
 		required_buildings = new int[Building.BUILDINGS_AMOUNT];
 		required_technologies = new int[Technology.RESEARCHES_AMOUNT];
 		cost = new double[4];
+		building_amount = 0;
+		build_end_time = null;
+		cargo_volume = 0;
+		engine_type = EngineCategory.NO_ENGINE;
+		speed = 0;
+		fuel_consumption = 0;
 	}
 	
 	public static Unit[] createFleetList(int planet_max_temperature)
 	{
-		Unit[] list = new Unit[SHIPS_AMOUNT];
+		Unit[] list = new Unit[SHIPS_AMOUNT + DEFENSE_AMOUNT];
 		list[0] = new SolarSatellite("Солнечный спутник", planet_max_temperature);
 		list[1] = new SpyProbe("Шпионский зонд");
 		list[2] = new LightFighter("Легкий истребитель");
@@ -53,6 +64,15 @@ public class Unit
 		list[13] = new Obliterator("Уничтожитель");
 		list[14] = new DeathStar("Звезда Смерти");
 		list[15] = new Supernova("Сверхновая звезда");
+		list[16] = new RocketLauncher("Ракетная установка");
+		list[17] = new LightLaser("Легкий лазер");
+		list[18] = new HeavyLaser("Тяжелый лазер");
+		list[19] = new GaussCannon("Пушка Гаусса");
+		list[20] = new IonCannon("Ионная пушка");
+		list[21] = new PlasmaCannon("Плазменная пушка");
+		list[22] = new LightPlanetaryShield("Малый щитовой купол");
+		list[23] = new HeavyPlanetaryShield("Большой щитовой купол");
+		list[24] = new PlanetaryDefense("Планетарная защита");
 		return list;
 	}
 	
@@ -156,17 +176,16 @@ public class Unit
 	protected int structure;
 	protected int shields;
 	protected int attack_power;
-	protected int cargo_volume;
+	protected int cargo_volume = 0;
 	protected EngineCategory engine_type = EngineCategory.NO_ENGINE;
-	protected int speed;
-	protected int fuel_consumption;
+	protected int speed = 0;
+	protected int fuel_consumption = 0;
 	protected String name;
 	protected int[] required_buildings;
 	protected int[] required_technologies;
 	protected double[] cost;
 	protected int building_amount;
 	protected Date build_end_time;
-	protected Date build_total_time;
 	public static final int SOLAR_SATELLITE = 0;
 	public static final int SPY_PROBE = 1;
 	public static final int LIGHT_FIGHTER = 2;
@@ -191,7 +210,7 @@ public class Unit
 	public static final int PLASMA_CANNON = 21;
 	public static final int LIGHT_PLANETARY_SHIELD = 22;
 	public static final int HEAVY_PLANETARY_SHIELD = 23;
-	public static final int PLANETARY_DEFENCE = 24;
+	public static final int PLANETARY_DEFENSE = 24;
 	public static final int SHIPS_AMOUNT = 16;
-	public static final int DEFENCE_AMOUNT = 9;
+	public static final int DEFENSE_AMOUNT = 9;
 }

@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 
 import adaptogame.core.buildings.*;
 import adaptogame.core.units.*;
+import adaptogame.core.units.fleet.SolarSatellite;
 
 public class Planet 
 {
@@ -39,6 +40,7 @@ public class Planet
 		deiterium_current = 7000;
 		//building_list[Building.METAL_MINES] = new MetalMines(30, "шахта");
 		//building_list[Building.SPACE_YARD] = new SpaceYard(10, "Верфь");
+		building_list[Building.ROBOT_FACTORY] = new RobotFactory(2, "Фабрика роботов");
 		electricity_current = 0;
 		for(int i = 0; i < building_list.length; i++)
 		{
@@ -232,6 +234,17 @@ public class Planet
 		return f;
 	}
 	
+	public boolean isBuildingInBuildingQueue(int code)
+	{
+		boolean f = false;
+		int size = building_queue.size();
+		for(int i = 0; i < size; i++)
+		{
+			f = f || (code == building_queue.get(i)); 
+		}
+		return f;
+	}
+	
 	public boolean requirementsMet(EntityCategory type, int code)
 	{
 		boolean f = true;
@@ -248,10 +261,9 @@ public class Planet
 				technologires_required = owner.getTechs()[code].getRequiredTechnologies();
 				break;
 			case FLEET:
+			case DEFENSE:
 				buildings_required = unit_list[code].getRequiredBuildings();
 				technologires_required = unit_list[code].getRequiredTechnologies();
-				break;
-			case DEFENSE:
 				break;
 			default:
 				break;

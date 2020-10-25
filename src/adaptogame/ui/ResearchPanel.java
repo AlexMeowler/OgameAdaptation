@@ -18,11 +18,16 @@ public class ResearchPanel extends InfoPanel
 	{
 		super(name, player);
 		setOpaque(false);
-		constraints.weightx = 0.0f;
+		constraints.weightx = 1.0f;
 		constraints.weighty = 0.0f;
+		constraints.gridx = 1;
+		constraints.gridy = 0;
+		constraints.anchor = GridBagConstraints.NORTH;
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.insets.bottom = 3;
-		y_offset = 0;
+		add(new TextLabel("<div style='text-align:center;'><font color='red'>Нельзя проводить исследования, пока ведутся строительные работы, или идет подготовка к ним!</font></div>", constraints.gridx + "." + constraints.gridy, false), constraints);
+		constraints.weightx = 0.0f;
+		y_offset = 1;
 		requirements_panels = new RequirementsPanel[17];
 		for(int i = 0; i < Technology.RESEARCHES_AMOUNT; i++)
 		{
@@ -32,7 +37,7 @@ public class ResearchPanel extends InfoPanel
 	
 	private void addRow(int row) throws IOException
 	{
-		int code = row;
+		int code = row - y_offset;
 		String header = player.getTechs()[code].generateHeader();
 		double[] resources = {current_planet.getCurrentMetal(), current_planet.getCurrentCrystal(), current_planet.getCurrentDeiterium(), current_planet.getCurrentEnergy()};
 		String description = player.getTechs()[code].generateDescription(resources);
@@ -99,7 +104,7 @@ public class ResearchPanel extends InfoPanel
 			int active = player.getActiveResearch();
 			if(active == -1)
 			{
-				if(current_planet.isResearchable(row))
+				if(current_planet.isResearchable(row) && !current_planet.isBuildingInBuildingQueue(Building.LABORATORY))
 				{
 					s += "<font color='lime'><u>Исследовать уровень " + (player.getTechs()[row].getLevel() + 1) + "</u></font>";
 				}
@@ -139,15 +144,19 @@ public class ResearchPanel extends InfoPanel
 			{
 				String[] s = list[i].getName().split("\\.");
 				int[] coords = {Integer.parseInt(s[0]), Integer.parseInt(s[1])};
+				if(coords[1] == 0)
+				{
+					list[i].setVisible(current_planet.isBuildingInBuildingQueue(Building.LABORATORY));
+				}
 				if(coords[1] >= y_offset)
 				{
-					String header = player.getTechs()[coords[1]].generateHeader() + " " + player.getTechs()[coords[1]].generateEnergyChange();
+					String header = player.getTechs()[coords[1] - y_offset].generateHeader() + " " + player.getTechs()[coords[1] - y_offset].generateEnergyChange();
 					double[] resources = {current_planet.getCurrentMetal(), current_planet.getCurrentCrystal(), current_planet.getCurrentDeiterium(), current_planet.getCurrentEnergy()};
-					String description = player.getTechs()[coords[1]].generateDescription(resources);
+					String description = player.getTechs()[coords[1] - y_offset].generateDescription(resources);
 					switch(coords[0])
 					{
 						case 1:
-							((TextLabel)list[i]).setText(header + "<br>" + description + createTimeString(coords[1]));
+							((TextLabel)list[i]).setText(header + "<br>" + description + createTimeString(coords[1] - y_offset));
 							break;
 						case 2:
 							((TextLabel)list[i]).setText(generateButtonText(coords[1] - y_offset));

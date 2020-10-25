@@ -85,7 +85,7 @@ public class TechTreePanel extends InfoPanel
 		add(new TextLabel(type, false, -1, "Требования", "" + constraints.gridx + "." +constraints.gridy, CATEGORY_BACKGROUND_COLOR), constraints);
 		y_offset_fleet = y_offset_research + player.getTechs().length + 1;
 		type = EntityCategory.FLEET;
-		for(int i = 0; i < current_planet.getUnits().length; i++)
+		for(int i = 0; i < Unit.SHIPS_AMOUNT; i++)
 		{
 			constraints.gridx = 0;
 			constraints.gridy = i + y_offset_fleet;
@@ -96,6 +96,31 @@ public class TechTreePanel extends InfoPanel
 			constraints.weightx = 0.6f;
 			constraints.insets.right = 0;
 			add(new TextLabel(type, false, i, generateRequirementsText(type, i), "" + constraints.gridx + "." +constraints.gridy, null), constraints);
+		}
+		constraints.gridx = 0;
+		constraints.gridy = y_offset_fleet + Unit.SHIPS_AMOUNT;
+		constraints.insets.bottom = 3;
+		constraints.insets.right = 3;
+		constraints.weightx = 0.4f;
+		type = EntityCategory.NO_CATEGORY;
+		add(new TextLabel(type, false, -1, "Оборона", "" + constraints.gridx + "." +constraints.gridy, CATEGORY_BACKGROUND_COLOR), constraints);
+		constraints.weightx = 0.6f;
+		constraints.gridx = 1;
+		constraints.insets.right = 0;
+		add(new TextLabel(type, false, -1, "Требования", "" + constraints.gridx + "." +constraints.gridy, CATEGORY_BACKGROUND_COLOR), constraints);
+		y_offset_defense = y_offset_fleet + Unit.SHIPS_AMOUNT + 1;
+		type = EntityCategory.DEFENSE;
+		for(int i = 0; i < Unit.DEFENSE_AMOUNT; i++)
+		{
+			constraints.gridx = 0;
+			constraints.gridy = i + y_offset_defense;
+			constraints.weightx = 0.4f;
+			constraints.insets.right = 3;
+			add(new TextLabel(type, true, Unit.ROCKET_LAUNCHER + i, current_planet.getUnits()[Unit.ROCKET_LAUNCHER + i].generateHeaderWithoutLevel(), "" + constraints.gridx + "." +constraints.gridy, null), constraints);
+			constraints.gridx = 1;
+			constraints.weightx = 0.6f;
+			constraints.insets.right = 0;
+			add(new TextLabel(type, false, Unit.ROCKET_LAUNCHER + i, generateRequirementsText(type, Unit.ROCKET_LAUNCHER + i), "" + constraints.gridx + "." +constraints.gridy, null), constraints);
 		}
 	}
 	
@@ -115,10 +140,9 @@ public class TechTreePanel extends InfoPanel
 				required_techs = player.getTechs()[index].getRequiredTechnologies();
 				break;
 			case FLEET:
+			case DEFENSE:
 				required_buildings = current_planet.getUnits()[index].getRequiredBuildings();
 				required_techs = current_planet.getUnits()[index].getRequiredTechnologies();
-				break;
-			case DEFENSE:
 				break;
 			case NO_CATEGORY:
 				break;
@@ -166,17 +190,21 @@ public class TechTreePanel extends InfoPanel
 		{
 			String[] s = list[i].getName().split("\\.");
 			int[] coords = {Integer.parseInt(s[0]), Integer.parseInt(s[1])};
-			if((coords[0] == 1) && (coords[1] >= y_offset_buildings) && (coords[1] < y_offset_buildings + current_planet.getBuildings().length))
+			if((coords[0] == 1) && (coords[1] >= y_offset_buildings) && (coords[1] < y_offset_research - 1))
 			{
 				((TextLabel)list[i]).setText(generateRequirementsText(EntityCategory.BUILDING, coords[1] - y_offset_buildings));
 			}
-			if((coords[0] == 1) && (coords[1] >= y_offset_research) && (coords[1] < y_offset_research + player.getTechs().length))
+			if((coords[0] == 1) && (coords[1] >= y_offset_research) && (coords[1] < y_offset_fleet - 1))
 			{
 				((TextLabel)list[i]).setText(generateRequirementsText(EntityCategory.RESEARCH, coords[1] - y_offset_research));
 			}
-			if((coords[0] == 1) && (coords[1] >= y_offset_fleet))
+			if((coords[0] == 1) && (coords[1] >= y_offset_fleet) && (coords[1] < y_offset_defense - 1))
 			{
 				((TextLabel)list[i]).setText(generateRequirementsText(EntityCategory.FLEET, coords[1] - y_offset_fleet));
+			}
+			if((coords[0] == 1) && (coords[1] >= y_offset_defense))
+			{
+				((TextLabel)list[i]).setText(generateRequirementsText(EntityCategory.DEFENSE, Unit.ROCKET_LAUNCHER + coords[1] - y_offset_defense));
 			}
 		}
 	}
@@ -210,16 +238,18 @@ public class TechTreePanel extends InfoPanel
 					}
 					break;
 				case FLEET:
-					folder += "fl/";
+				case DEFENSE:
+					folder += "un/";
 					switch(code)
 					{
 						case Unit.PROCESSOR:
 						case Unit.DEATH_STAR:
+						case Unit.PLASMA_CANNON:
+						case Unit.LIGHT_PLANETARY_SHIELD:
+						case Unit.HEAVY_PLANETARY_SHIELD:
 							param = Image.SCALE_REPLICATE;
 							break;
 					}
-					break;
-				case DEFENSE:
 					break;
 				default:
 					break;
