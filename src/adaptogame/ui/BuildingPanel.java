@@ -288,6 +288,7 @@ public class BuildingPanel extends InfoPanel
 	
 	public void mouseClicked(MouseEvent e)
 	{
+		super.mouseClicked(e);
 		if(e.getSource() instanceof BuildingPanel)
 		{
 			Component[] list = ((BuildingPanel)e.getSource()).getComponents();

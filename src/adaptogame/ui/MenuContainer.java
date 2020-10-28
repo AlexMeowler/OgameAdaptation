@@ -119,6 +119,7 @@ public class MenuContainer extends JPanel implements MouseListener, MouseMotionL
 
 	public void mouseClicked(MouseEvent e) 
 	{
+		requestFocusInWindow();
 		if(e.getSource() instanceof MenuContainer)
 		{
 			Component[] list = ((MenuContainer)e.getSource()).getComponents();

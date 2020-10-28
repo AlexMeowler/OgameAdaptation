@@ -2,6 +2,7 @@ package adaptogame.core.units;
 
 import static java.lang.Math.*;
 
+import java.lang.reflect.InvocationTargetException;
 import java.text.NumberFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -12,7 +13,7 @@ import adaptogame.core.technologies.Technology;
 import adaptogame.core.units.defenses.*;
 import adaptogame.core.units.fleet.*;
 
-public abstract class Unit 
+public abstract class Unit implements Cloneable
 {
 	public Unit(String name)
 	{
@@ -174,6 +175,40 @@ public abstract class Unit
 		}
 		
 		return "Необходимые ресурсы: " + names[0] + " " + names[1] + " " + names[2] + " " + names[3] + "<br>";
+	}
+	
+	public Unit clone()
+	{
+		Unit u = null;
+		try 
+		{
+			u = getClass().getConstructor(String.class).newInstance(new Object[] {name});
+		} 
+		catch (Exception e)
+		{
+			
+		}
+		u.rapid_fire = rapid_fire;
+		u.amount = amount;
+		u.structure = structure;
+		u.shields = shields;
+		u.attack_power = attack_power;
+		u.cargo_volume = cargo_volume;
+		u.engine_type = engine_type;
+		u.speed = speed;
+		u.fuel_consumption = fuel_consumption;
+		u.name = name;
+		u.required_buildings = required_buildings;
+		u.required_technologies = required_technologies;
+		u.cost = cost;
+		u.building_amount = building_amount;
+		u.build_end_time = build_end_time;
+		return u;
+	}
+	
+	public int getSpeed()
+	{
+		return speed;
 	}
 	
 	protected int[] rapid_fire;

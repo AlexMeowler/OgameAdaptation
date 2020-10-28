@@ -10,6 +10,8 @@ import javax.swing.*;
 import adaptogame.core.Planet;
 import adaptogame.core.Player;
 import adaptogame.core.buildings.Building;
+import adaptogame.core.units.*;
+import adaptogame.core.units.fleet.*;
 
 public class ResourcesOverviewPanel extends InfoPanel 
 {
@@ -20,9 +22,9 @@ public class ResourcesOverviewPanel extends InfoPanel
 		constraints.insets.top = 0;
 		addPlanetaryProductionUI(0);
 		constraints.insets.top = CELL_HEIGHT;
-		addProductionInfoUI(9);
+		addProductionInfoUI(10);
 		constraints.insets.top = CELL_HEIGHT;
-		addStorageInfo(14);
+		addStorageInfo(15);
 	}
 	
 	private void addPlanetaryProductionUI(int offset)
@@ -137,6 +139,19 @@ public class ResourcesOverviewPanel extends InfoPanel
 		add(new TextLabel("<font color='lime'>" + NumberFormat.getNumberInstance(Locale.US).format((int)current_planet.getBuildings()[Building.NUCLEAR_STATION].calcGathering()) + "</font>", constraints.gridx + "." + constraints.gridy, false, true, null), constraints);
 		constraints.gridx = 0;
 		constraints.gridy = 8 + offset;
+		constraints.insets.right = 5;
+		add(new TextLabel(current_planet.getUnits()[Unit.SOLAR_SATELLITE].generateHeader(), constraints.gridx + "." + constraints.gridy, false, true, null), constraints);
+		constraints.gridx = 1;
+		add(new TextLabel("0", constraints.gridx + "." + constraints.gridy, false, true, null), constraints);
+		constraints.gridx = 2;
+		add(new TextLabel("0", constraints.gridx + "." + constraints.gridy, false, true, null), constraints);
+		constraints.gridx = 3;
+		add(new TextLabel("0", constraints.gridx + "." + constraints.gridy, false, true, null), constraints);
+		constraints.gridx = 4;
+		constraints.insets.right = 0;
+		add(new TextLabel("<font color='lime'>" + NumberFormat.getNumberInstance(Locale.US).format((int)((SolarSatellite)current_planet.getUnits()[Unit.SOLAR_SATELLITE]).calcElectricityProduction() * current_planet.getUnits()[Unit.SOLAR_SATELLITE].getAmount()) + "</font>", constraints.gridx + "." + constraints.gridy, false, true, null), constraints);
+		constraints.gridx = 0;
+		constraints.gridy = 9 + offset;
 		constraints.insets.right = 5;
 		add(new TextLabel("Общая выработка <font color='lime'>в час</font>", constraints.gridx + "." + constraints.gridy, false, true, null), constraints);
 		constraints.gridx = 1;
@@ -340,12 +355,11 @@ public class ResourcesOverviewPanel extends InfoPanel
 		{
 			return "Хранилище переполнено!";
 		}
-		int day = (int)(seconds_total / 86400);
-		int hours = (int)((seconds_total % 86400) / 3600);
+		int hours = (int)(seconds_total / 3600);
 		int minutes = (int)((seconds_total % 3600) / 60);
 		int seconds = (int)(seconds_total % 60);
-		int[] time_digits = {day, hours, minutes, seconds};
-		return String.format("%02d:%02d:%02d:%02d", time_digits[0], time_digits[1], time_digits[2], time_digits[3]);
+		int[] time_digits = {hours, minutes, seconds};
+		return String.format("%02d:%02d:%02d", time_digits[0], time_digits[1], time_digits[2]);
 	}
 	
 	public void updatePanelUI()
@@ -364,6 +378,9 @@ public class ResourcesOverviewPanel extends InfoPanel
 				int[] coords = {Integer.parseInt(s[0]), Integer.parseInt(s[1])};
 				switch(coords[1])
 				{
+					case 0:
+						((TextLabel)list[i]).setText("Производство на планете \"" + current_planet.getName() + "\"");
+						break;
 					case 3:
 					case 4:
 					case 5:
@@ -384,21 +401,26 @@ public class ResourcesOverviewPanel extends InfoPanel
 						break;
 					case 6:
 					case 7:
+					case 8:
 						if(coords[0] == 4)
 						{
-							int index;
-							if (coords[1] == 6)
+							double gathering = 0;
+							switch(coords[1])
 							{
-								index = Building.POWER_STATION;
+								case 6:
+									gathering = current_planet.getBuildings()[Building.POWER_STATION].calcGathering();
+									break;
+								case 7:
+									gathering = current_planet.getBuildings()[Building.NUCLEAR_STATION].calcGathering();
+									break;
+								case 8:
+									gathering = ((SolarSatellite)current_planet.getUnits()[Unit.SOLAR_SATELLITE]).calcElectricityProduction() * current_planet.getUnits()[Unit.SOLAR_SATELLITE].getAmount();
+									break;
 							}
-							else
-							{
-								index = Building.NUCLEAR_STATION;
-							}
-							((TextLabel)list[i]).setCenteredText("<font color='lime'>" + NumberFormat.getNumberInstance(Locale.US).format((int)current_planet.getBuildings()[index].calcGathering()) + "</font>");
+							((TextLabel)list[i]).setCenteredText("<font color='lime'>" + NumberFormat.getNumberInstance(Locale.US).format((int)gathering) + "</font>");
 						}
 						break;
-					case 8:
+					case 9:
 						switch(coords[0])
 						{
 							case 1:
@@ -420,7 +442,7 @@ public class ResourcesOverviewPanel extends InfoPanel
 								break;
 						}
 						break;
-					case 11:
+					case 12:
 						isRightCell = false;
 						switch(coords[0])
 						{
@@ -442,7 +464,7 @@ public class ResourcesOverviewPanel extends InfoPanel
 							((TextLabel)list[i]).setCenteredText("<font color='lime'>" + NumberFormat.getNumberInstance(Locale.US).format(amount) + "</font>");
 						}
 						break;
-					case 12:
+					case 13:
 						isRightCell = false;
 						switch(coords[0])
 						{
@@ -464,7 +486,7 @@ public class ResourcesOverviewPanel extends InfoPanel
 							((TextLabel)list[i]).setCenteredText("<font color='lime'>" + NumberFormat.getNumberInstance(Locale.US).format(amount) + "</font>");
 						}
 						break;
-					case 13:
+					case 14:
 						isRightCell = false;
 						switch(coords[0])
 						{
@@ -486,7 +508,7 @@ public class ResourcesOverviewPanel extends InfoPanel
 							((TextLabel)list[i]).setCenteredText("<font color='lime'>" + NumberFormat.getNumberInstance(Locale.US).format(amount) + "</font>");
 						}
 						break;
-					case 15:
+					case 16:
 						percentage = (int)(current_planet.getCurrentMetal() / current_planet.getMetalCapacity() * 100);
 						color_status = generateColor(percentage, true);
 						switch(coords[0])
@@ -499,7 +521,7 @@ public class ResourcesOverviewPanel extends InfoPanel
 								break;
 						}
 						break;
-					case 16:
+					case 17:
 						percentage = (int)(current_planet.getCurrentCrystal() / current_planet.getCrystalCapacity() * 100);
 						color_status = generateColor(percentage, true);
 						switch(coords[0])
@@ -512,7 +534,7 @@ public class ResourcesOverviewPanel extends InfoPanel
 								break;
 						}
 						break;
-					case 17:
+					case 18:
 						percentage = (int)(current_planet.getCurrentDeiterium() / current_planet.getDeiteriumCapacity() * 100);
 						color_status = generateColor(percentage, true);
 						switch(coords[0])
@@ -525,7 +547,7 @@ public class ResourcesOverviewPanel extends InfoPanel
 								break;
 						}
 						break;
-					case 18:
+					case 19:
 						if(coords[0] == 2)
 						{
 							percentage = (int)(current_planet.getProductionEfficiency() * 100);

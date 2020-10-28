@@ -1,6 +1,6 @@
-package adaptogame.ui;
+package adaptogame.core;
 
-import adaptogame.core.Planet;
+import adaptogame.ui.OffGamePanel;
 
 public class TimeProcessingThread extends Thread 
 {

@@ -51,6 +51,7 @@ public class PlanetMenuContainer extends JPanel
 
 		public void mouseClicked(MouseEvent e) 
 		{
+			requestFocusInWindow();
 			player.setCurrentPlanet(num);
 			setBorder(BorderFactory.createLineBorder(Color.GREEN));
 			current_planet.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));

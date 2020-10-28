@@ -62,7 +62,7 @@ public class InfoPanel extends JPanel  implements MouseWheelListener, MouseListe
 	
 	public void mouseClicked(MouseEvent e) 
 	{
-		
+		requestFocusInWindow();
 	}
 
 	public void mousePressed(MouseEvent e) 

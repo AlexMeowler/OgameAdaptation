@@ -1,8 +1,11 @@
 package adaptogame.core;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import adaptogame.core.technologies.Technology;
+import adaptogame.core.units.Unit;
+import adaptogame.core.units.fleet.LargeTransport;
 
 public class Player 
 {
@@ -15,9 +18,11 @@ public class Player
 			planets[i] = Planet.generatePlanet(this, i + 1);
 		}
 		techs = Technology.createList();
+		fleets = new ArrayList<>();
 		current_planet_index = 0;
 		active_research = NO_ACTIVE_RESEARCH;
 		planet_changed = false;
+		fleets.add(new Fleet(new Unit[] {new LargeTransport("Большой транспорт", 1)}, MissionCategory.LEAVE, new int[] {1, 1, 2}, new int[] {1, 1, 1}));
 	}
 	
 	public int getCurrentPlanetIndex()
@@ -76,10 +81,27 @@ public class Player
 		active_research = code;
 	}
 	
+	public int getFleetsSize()
+	{
+		return fleets.size();
+	}
+	
+	public Fleet getFleet(int index)
+	{
+		return fleets.get(index);
+	}
+	
+	public int getMaxFleetsAvailable()
+	{
+		return 1 + getTechs()[Technology.COMPUTER_TECHNOLOGY].getLevel();
+	}
+	
 	private Planet[] planets;
+	private ArrayList<Fleet> fleets;
 	private int current_planet_index;
 	private Technology[] techs;
 	private int active_research;
 	private boolean planet_changed;
 	public static final int NO_ACTIVE_RESEARCH = -1;
+	public static final int MAX_FLEET_AMOUNT = 100;
 }

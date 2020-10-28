@@ -176,6 +176,7 @@ public class ResearchPanel extends InfoPanel
 	
 	public void mouseClicked(MouseEvent e)
 	{
+		super.mouseClicked(e);
 		if(e.getSource() instanceof ResearchPanel)
 		{
 			Component[] list = ((ResearchPanel)e.getSource()).getComponents();

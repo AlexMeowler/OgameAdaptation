@@ -13,7 +13,6 @@ import javax.imageio.ImageIO;
 import adaptogame.core.buildings.*;
 import adaptogame.core.units.*;
 import adaptogame.core.units.fleet.SolarSatellite;
-import adaptogame.ui.TimeProcessingThread;
 
 public class Planet 
 {
@@ -50,6 +49,7 @@ public class Planet
 		building_queue = new ArrayList<>();
 		space_yard_building_queue = new  ArrayList<>();
 		updateResourcesProduction();
+		unit_list[Unit.SPY_PROBE].updateAmount();
 	}
 	
 	public Image getImg()
@@ -432,6 +432,11 @@ public class Planet
 		owner.getTechs()[code].startBuilding(getBuildings()[Building.LABORATORY].getLevel());	
 	}
 	
+	public static String coordinatesToString(int[] coords)
+	{
+		return "[" + coords[0] + ":" + coords[1] + ":" + coords[2] + "]";
+	}
+	
 	private int diameter;
 	private int fields;
 	private int fields_taken;
@@ -455,7 +460,7 @@ public class Planet
 	private ArrayList<Integer> building_queue;
 	private ArrayList<UnitBuildQueueElement> space_yard_building_queue;
 	private Player owner;
-	public int[] coords;
+	private int[] coords;
 	public static final double METAL_DEFAULT_PRODUCTION = 1200;
 	public static final double CRYSTAL_DEFAULT_PRODUCTION = 600;
 	public static final double DEITERIUM_DEFAULT_PRODUCTION = 300;

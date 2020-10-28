@@ -90,7 +90,7 @@ public class PlanetOverviewPanel extends InfoPanel
 		constraints.gridy = 6;
 		constraints.gridwidth = 2;
 		constraints.gridheight = 1;
-		add(new TextLabel("" + NumberFormat.getNumberInstance(Locale.US).format(current_planet.getDiameter()) + " км (" + current_planet.getTakenFields() + " / " + current_planet.getFields() + "Поля )", constraints.gridx + "." + constraints.gridy, true), constraints);
+		add(new TextLabel("" + NumberFormat.getNumberInstance(Locale.US).format(current_planet.getDiameter()) + " км (" + current_planet.getTakenFields() + " / " + current_planet.getFields() + " Поля)", constraints.gridx + "." + constraints.gridy, true), constraints);
 		constraints.insets.right = 5;
 		constraints.gridx = 0;
 		constraints.gridy = 7;
@@ -192,7 +192,7 @@ public class PlanetOverviewPanel extends InfoPanel
 		constraints.gridy = 12;
 		constraints.gridwidth = 2;
 		constraints.gridheight = 1;
-		add(new TextLabel("[" + player.getCurrentPlanet().getCoords()[0] + ":" + player.getCurrentPlanet().getCoords()[1] + ":" + player.getCurrentPlanet().getCoords()[2] + "]", constraints.gridx + "." + constraints.gridy, true), constraints);
+		add(new TextLabel(Planet.coordinatesToString(player.getCurrentPlanet().getCoords()), constraints.gridx + "." + constraints.gridy, true), constraints);
 		constraints.insets.right = 5;
 		constraints.gridx = 0;
 		constraints.gridy = 13;
@@ -290,7 +290,7 @@ public class PlanetOverviewPanel extends InfoPanel
 					switch(coords[1])
 					{
 						case 6:
-							((TextLabel)list[i]).setText("" + NumberFormat.getNumberInstance(Locale.US).format(current_planet.getDiameter()) + " км (" + current_planet.getTakenFields() + " / " + current_planet.getFields() + "Поля )");
+							((TextLabel)list[i]).setText("" + NumberFormat.getNumberInstance(Locale.US).format(current_planet.getDiameter()) + " км (" + current_planet.getTakenFields() + " / " + current_planet.getFields() + " Поля)");
 							break;
 						case 8:
 							try

@@ -281,7 +281,7 @@ public class SpaceYardFleetPanel extends InfoPanel
 		protected String real_text;
 	}
 	
-	private class BuildAndInputField extends JPanel implements ActionListener, KeyListener
+	private class BuildAndInputField extends JPanel implements ActionListener, KeyListener, FocusListener
 	{
 		public BuildAndInputField(String name) 
 		{
@@ -298,7 +298,8 @@ public class SpaceYardFleetPanel extends InfoPanel
 			amount_field.setBorder(BorderFactory.createLineBorder(new Color(60, 100, 134)));
 			amount_field.setBackground(new Color(102, 102, 102));
 			amount_field.setForeground(Color.WHITE);
-			amount_field.addKeyListener(this);;
+			amount_field.addKeyListener(this);
+			amount_field.addFocusListener(this);
 			setLayout(new GridBagLayout());
 			GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = 0;
@@ -326,7 +327,7 @@ public class SpaceYardFleetPanel extends InfoPanel
 			{
 				
 			}
-			amount_field.setText("");
+			amount_field.setText("0");
 			requestFocusInWindow();
 		}
 		
@@ -340,12 +341,26 @@ public class SpaceYardFleetPanel extends InfoPanel
 			if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
 			{
 				requestFocusInWindow();
+				amount_field.setText("0");
 			}
 		}
 
 		public void keyReleased(KeyEvent e) 
 		{
 			
+		}
+		
+		public void focusGained(FocusEvent e) 
+		{
+			amount_field.setText("");
+		}
+
+		public void focusLost(FocusEvent e) 
+		{
+			if(!build_button.isRequestFocusEnabled())
+			{
+				amount_field.setText("0");
+			}
 		}
 		
 		private JButton build_button;
