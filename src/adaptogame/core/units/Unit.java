@@ -46,7 +46,7 @@ public abstract class Unit implements Cloneable
 		fuel_consumption = 0;
 	}
 	
-	public static Unit[] createFleetList(int planet_max_temperature)
+	public static Unit[] createFullUnitList(int planet_max_temperature)
 	{
 		Unit[] list = new Unit[SHIPS_AMOUNT + DEFENSE_AMOUNT];
 		list[0] = new SolarSatellite("Солнечный спутник", planet_max_temperature);
@@ -75,6 +75,48 @@ public abstract class Unit implements Cloneable
 		list[23] = new HeavyPlanetaryShield("Большой щитовой купол");
 		list[24] = new PlanetaryDefense("Планетарная защита");
 		return list;
+	}
+	
+	public static Unit[] createFleetList(int[] amounts)
+	{
+		Unit[] list = new Unit[SHIPS_AMOUNT];
+		list[0] = new SolarSatellite("Солнечный спутник", amounts[0], 0);
+		list[1] = new SpyProbe("Шпионский зонд", amounts[1]);
+		list[2] = new LightFighter("Легкий истребитель", amounts[2]);
+		list[3] = new SmallTransport("Малый транспорт", amounts[3]);
+		list[4] = new HeavyFighter("Тяжёлый истребитель", amounts[4]);
+		list[5] = new Colonizer("Колонизатор", amounts[5]);
+		list[6] = new Cruiser("Крейсер", amounts[6]);
+		list[7] = new LargeTransport("Большой транспорт", amounts[7]);
+		list[8] = new Processor("Переработчик", amounts[8]);
+		list[9] = new Battleship("Линкор", amounts[9]);
+		list[10] = new Battlecruiser("Линейный крейсер", amounts[10]);
+		list[11] = new Bomber("Бомбардировщик", amounts[11]);
+		list[12] = new Destroyer("Эсминец", amounts[12]);
+		list[13] = new Obliterator("Уничтожитель", amounts[13]);
+		list[14] = new DeathStar("Звезда Смерти", amounts[14]);
+		list[15] = new Supernova("Сверхновая звезда", amounts[15]);
+		return list;
+	}
+	
+	public static int findMaxFleetSpeed(Unit[] list)
+	{
+		int max_fleet_speed = Integer.MAX_VALUE;
+		for(int i = 1; i < list.length; i++)
+		{
+			if((max_fleet_speed) > list[i].getSpeed())
+			{
+				max_fleet_speed = list[i].getSpeed();
+			}
+		}
+		return max_fleet_speed;
+	}
+	
+	public double calcFuelConsumption(long clean_duration, int distance, int speed_percentage)
+	{
+		clean_duration -= 10;
+		double spd = 35000.0 / clean_duration * sqrt((double)distance * 10 / ((double)speed * speed_percentage / 100));
+		return (double)fuel_consumption * distance / 35000 * pow((spd / 10 + 1), 2);
 	}
 	
 	public int[] getRequiredBuildings()

@@ -31,7 +31,7 @@ public class Planet
 		coords[2] = pos;
 		img = ImageIO.read(this.getClass().getResourceAsStream("/pl/" + img_num + ".jpg"));
 		building_list = Building.createListForPlanet(temperature_max);
-		unit_list = Unit.createFleetList(temperature_max);
+		unit_list = Unit.createFullUnitList(temperature_max);
 		metal_capacity = (int) building_list[Building.METAL_STORAGE].calcGathering();
 		crystal_capacity = (int) building_list[Building.CRYSTAL_STORAGE].calcGathering();
 		deiterium_capacity = (int) building_list[Building.DEITERIUM_STORAGE].calcGathering();

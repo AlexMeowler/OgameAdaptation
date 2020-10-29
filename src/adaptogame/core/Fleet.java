@@ -11,7 +11,7 @@ public class Fleet
 	public Fleet(Unit[] units, MissionCategory mission, int[] coords_from, int[] coords_to)
 	{
 		fleet_ships = new Unit[units.length];
-		int max_fleet_speed = Integer.MAX_VALUE;
+		max_fleet_speed = Integer.MAX_VALUE;
 		for(int i = 0; i < fleet_ships.length; i++)
 		{
 			fleet_ships[i] = units[i].clone();
@@ -52,7 +52,15 @@ public class Fleet
 		{
 			if(coords_from[1] == coords_to[1])
 			{
-				return abs(coords_from[2] - coords_to[2]) * 5 + 1000;
+				if(coords_from[2] == coords_to[2])
+				{
+					return 5;
+				}
+				else 
+				{
+					return abs(coords_from[2] - coords_to[2]) * 5 + 1000;
+					
+				}
 			}
 			else
 			{
@@ -83,6 +91,23 @@ public class Fleet
 		}
 	}
 	
+	public static int calcTotalFuelConsumption(Unit[] ships, int distance, int speed_percent)
+	{
+		int cons = 0;
+		for(int i = 1; i < ships.length; i++)
+		{
+			try
+			{
+				cons += ships[i].getAmount() * ships[i].calcFuelConsumption(calcCleanDuration(distance, Unit.findMaxFleetSpeed(ships), speed_percent), distance, speed_percent);
+			}
+			catch(NullPointerException e)
+			{
+				return 0;
+			}
+		}
+		return max(cons, 1);
+	}
+	
 	public int[] getTarget()
 	{
 		return target_coords;
@@ -110,6 +135,7 @@ public class Fleet
 	
 	private int[] target_coords;
 	private int[] base_coords;
+	private int max_fleet_speed;
 	private MissionCategory mission;
 	private Unit[] fleet_ships;
 	private Date starting_up_date;
