@@ -16,6 +16,7 @@ public class SpyProbe extends Unit
 		engine_type = EngineCategory.REACTIVE;
 		speed = 100000000;
 		fuel_consumption = 1;
+		cargo_volume = 5;
 		required_buildings[Building.SPACE_YARD] = 3;
 		required_technologies[Technology.REACTIVE_ENGINE] = 3;
 		required_technologies[Technology.ESPIONAGE] = 2;
@@ -30,6 +31,7 @@ public class SpyProbe extends Unit
 		engine_type = EngineCategory.REACTIVE;
 		speed = 100000000;
 		fuel_consumption = 1;
+		cargo_volume = 5;
 		required_buildings[Building.SPACE_YARD] = 3;
 		required_technologies[Technology.REACTIVE_ENGINE] = 3;
 		required_technologies[Technology.ESPIONAGE] = 2;

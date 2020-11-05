@@ -7,6 +7,18 @@ import static java.lang.Math.min;
 
 public class SolarSatellite extends Unit 
 {
+	public SolarSatellite(String name) 
+	{
+		super(name);
+		planet_max_temperature = 0;
+		cost[1] = 2000;
+		cost[2] = 500;
+		structure = 200;
+		shields = 10;
+		attack_power = 1;
+		required_buildings[Building.SPACE_YARD] = 1;
+	}
+	
 	public SolarSatellite(String name, int planet_max_temperature) 
 	{
 		super(name);

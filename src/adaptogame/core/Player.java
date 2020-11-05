@@ -22,7 +22,7 @@ public class Player
 		current_planet_index = 0;
 		active_research = NO_ACTIVE_RESEARCH;
 		planet_changed = false;
-		fleets.add(new Fleet(new Unit[] {new LargeTransport("Большой транспорт", 1)}, MissionCategory.LEAVE, new int[] {1, 1, 2}, new int[] {1, 1, 1}));
+		fleets.add(new Fleet(new Unit[] {new LargeTransport("Большой транспорт", 1)}, MissionCategory.LEAVE, new int[] {1, 1, 2}, new int[] {1, 1, 1}, 100, 25000, new int[] {0, 0, 0}));
 	}
 	
 	public int getCurrentPlanetIndex()
@@ -94,6 +94,12 @@ public class Player
 	public int getMaxFleetsAvailable()
 	{
 		return 1 + getTechs()[Technology.COMPUTER_TECHNOLOGY].getLevel();
+	}
+	
+	public void addNewFleet(Unit[] units, MissionCategory mission, int[] coords_from, int[] coords_to, int speed_percent, int capacity_left, int[] resources_loaded)
+	{
+		fleets.add(new Fleet(units, mission, coords_from, coords_to, speed_percent, capacity_left, resources_loaded));
+		planets[current_planet_index].departShips(units);
 	}
 	
 	private Planet[] planets;

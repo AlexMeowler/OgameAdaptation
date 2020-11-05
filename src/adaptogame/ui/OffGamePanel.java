@@ -55,7 +55,7 @@ public class OffGamePanel extends JPanel
 		windows.add(new SpaceYardDefensePanel("space_yard_defence", players[0]));
 		scrolls.add(new JScrollPane(windows.get(MenuContainer.DEFENCE)));
 		prepareScrollName(scrolls.get(MenuContainer.DEFENCE));
-		windows.add(new FleetControlPanel("fleet_control", players[0], this));
+		windows.add(new FleetControlPanel("fleet_control", players[0]));
 		scrolls.add(new JScrollPane(windows.get(MenuContainer.FLEET)));
 		prepareScrollName(scrolls.get(MenuContainer.FLEET));
 		//
@@ -192,6 +192,10 @@ public class OffGamePanel extends JPanel
 	
 	public void setCurrentWindow(int i)
 	{
+		if(i == MenuContainer.FLEET)
+		{
+			((FleetControlPanel)windows.get(i)).resetPhase();
+		}
 		setWindowNotActive(scrolls.get(currentActiveWindow));
 		windows.get(i).updatePanelUI();
 		setWindowActive(scrolls.get(i));
@@ -243,7 +247,7 @@ public class OffGamePanel extends JPanel
 		}
 	}
 	
-	public Planet getPlanetByCoordinates(int[] coords)
+	public static Planet getPlanetByCoordinates(int[] coords)
 	{
 		for(int i = 0; i < players.length; i++)
 		{
@@ -266,7 +270,7 @@ public class OffGamePanel extends JPanel
 	private ResourcePanel mail = new ResourcePanel("ml.png");
 	private ArrayList<InfoPanel> windows;
 	private ArrayList<JScrollPane> scrolls;
-	private Player[] players;
+	private static Player[] players;
 	private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 	private int topRowPadding = 15;
 	private int currentActiveWindow;

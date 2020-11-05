@@ -8,7 +8,7 @@ import adaptogame.core.units.Unit;
 
 public class Fleet 
 {
-	public Fleet(Unit[] units, MissionCategory mission, int[] coords_from, int[] coords_to)
+	public Fleet(Unit[] units, MissionCategory mission, int[] coords_from, int[] coords_to, int speed_percent, int capacity_left, int[] resources_loaded)
 	{
 		fleet_ships = new Unit[units.length];
 		max_fleet_speed = Integer.MAX_VALUE;
@@ -16,17 +16,19 @@ public class Fleet
 		{
 			fleet_ships[i] = units[i].clone();
 			int speed_i = fleet_ships[i].getSpeed();
-			if(max_fleet_speed > speed_i)
+			if((max_fleet_speed > speed_i) && (fleet_ships[i].getAmount() != 0))
 			{
 				max_fleet_speed = speed_i;
 			}
 		}
 		this.mission = mission;
+		this.capacity_left = capacity_left;
+		this.resources_loaded = resources_loaded;
 		base_coords = coords_from;
 		target_coords = coords_to;
 		int distance = Fleet.calcDistance(base_coords, target_coords);
 		starting_up_date = new Date(new Date().getTime() + calcStartDuration(distance, max_fleet_speed));
-		long clean_flight_duration = calcCleanDuration(distance, max_fleet_speed, 100);
+		long clean_flight_duration = calcCleanDuration(distance, max_fleet_speed, speed_percent);
 		to_flight_date = new Date(starting_up_date.getTime() + clean_flight_duration);
 		from_flight_date = new Date(starting_up_date.getTime() + 2 * clean_flight_duration);
 	}
@@ -75,19 +77,19 @@ public class Fleet
 	
 	public static long calcStartDuration(int distance, int max_fleet_speed)
 	{
-		return (long)ceil((35000 / 10 * sqrt(distance * 10 / max_fleet_speed) + 10) / FLEET_SPEED_FACTOR * 0.05) * 1000;
+		return (long)ceil((35000.0 / 10 * sqrt((double)distance * 10 / max_fleet_speed) + 10) / FLEET_SPEED_FACTOR * 0.05) * 1000;
 	}
 	
 	public static long calcCleanDuration(int distance, int max_fleet_speed, int speed_percent)
 	{
-		double duration = ((35000 / (speed_percent / 10)) * sqrt(distance * 10 / max_fleet_speed) + 10) / FLEET_SPEED_FACTOR * 1000;
+		double duration = ((35000.0 / (speed_percent / 10)) * sqrt((double)distance * 10 / max_fleet_speed) + 10) / FLEET_SPEED_FACTOR;
 		if (duration - (long)duration >= 0.5)
 		{
-			return (long)duration + 1;
+			return ((long)duration + 1) * 1000;
 		}
 		else
 		{
-			return (long)duration;
+			return (long)duration * 1000;
 		}
 	}
 	
@@ -98,7 +100,7 @@ public class Fleet
 		{
 			try
 			{
-				cons += ships[i].getAmount() * ships[i].calcFuelConsumption(calcCleanDuration(distance, Unit.findMaxFleetSpeed(ships), speed_percent), distance, speed_percent);
+				cons += ships[i].getAmount() * ceil(ships[i].calcFuelConsumption(calcCleanDuration(distance, Unit.findMaxFleetSpeed(ships), speed_percent), distance, speed_percent));
 			}
 			catch(NullPointerException e)
 			{
@@ -106,6 +108,23 @@ public class Fleet
 			}
 		}
 		return max(cons, 1);
+	}
+	
+	public static int calcTotalCapacity(Unit[] ships)
+	{
+		int capacity = 0;
+		for(int i = 0; i < ships.length; i++)
+		{
+			try
+			{
+				capacity += ships[i].getAmount() * ships[i].getCargoVolume();
+			}
+			catch(NullPointerException e)
+			{
+				return 0;
+			}
+		}
+		return capacity;
 	}
 	
 	public int[] getTarget()
@@ -141,5 +160,7 @@ public class Fleet
 	private Date starting_up_date;
 	private Date to_flight_date;
 	private Date from_flight_date;
+	private int capacity_left;
+	private int[] resources_loaded;
 	public static final int FLEET_SPEED_FACTOR = 2;
 }

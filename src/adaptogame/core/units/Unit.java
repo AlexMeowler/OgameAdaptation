@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import adaptogame.core.EngineCategory;
+import adaptogame.core.Fleet;
 import adaptogame.core.buildings.Building;
 import adaptogame.core.technologies.Technology;
 import adaptogame.core.units.defenses.*;
@@ -104,9 +105,16 @@ public abstract class Unit implements Cloneable
 		int max_fleet_speed = Integer.MAX_VALUE;
 		for(int i = 1; i < list.length; i++)
 		{
-			if((max_fleet_speed) > list[i].getSpeed())
+			try
 			{
-				max_fleet_speed = list[i].getSpeed();
+				if((max_fleet_speed > list[i].getSpeed()) && (list[i].getAmount() > 0))
+				{
+					max_fleet_speed = list[i].getSpeed();
+				}
+			}
+			catch(NullPointerException e)
+			{
+				return 0;
 			}
 		}
 		return max_fleet_speed;
@@ -114,9 +122,9 @@ public abstract class Unit implements Cloneable
 	
 	public double calcFuelConsumption(long clean_duration, int distance, int speed_percentage)
 	{
-		clean_duration -= 10;
+		clean_duration = (clean_duration * Fleet.FLEET_SPEED_FACTOR) / 1000 - 10 ;
 		double spd = 35000.0 / clean_duration * sqrt((double)distance * 10 / ((double)speed * speed_percentage / 100));
-		return (double)fuel_consumption * distance / 35000 * pow((spd / 10 + 1), 2);
+		return (double)fuel_consumption * distance / 35000.0 * pow(spd / 10 + 1, 2);
 	}
 	
 	public int[] getRequiredBuildings()
@@ -154,6 +162,11 @@ public abstract class Unit implements Cloneable
 		amount++;
 	}
 	
+	public void changeAmount(int delta)
+	{
+		amount += delta;
+	}
+	
 	public int getAmount()
 	{
 		return amount;
@@ -162,6 +175,11 @@ public abstract class Unit implements Cloneable
 	public String getName()
 	{
 		return name;
+	}
+	
+	public int getCargoVolume()
+	{
+		return cargo_volume;
 	}
 	
 	public long calcBuildingTime(int space_yard, int nanite_factory) // возвращает в секундах
@@ -221,31 +239,32 @@ public abstract class Unit implements Cloneable
 	
 	public Unit clone()
 	{
-		Unit u = null;
+		
 		try 
 		{
+			Unit u;
 			u = getClass().getConstructor(String.class).newInstance(new Object[] {name});
+			u.rapid_fire = rapid_fire;
+			u.amount = amount;
+			u.structure = structure;
+			u.shields = shields;
+			u.attack_power = attack_power;
+			u.cargo_volume = cargo_volume;
+			u.engine_type = engine_type;
+			u.speed = speed;
+			u.fuel_consumption = fuel_consumption;
+			u.name = name;
+			u.required_buildings = required_buildings;
+			u.required_technologies = required_technologies;
+			u.cost = cost;
+			u.building_amount = building_amount;
+			u.build_end_time = build_end_time;
+			return u;
 		} 
 		catch (Exception e)
 		{
-			
+			return null;
 		}
-		u.rapid_fire = rapid_fire;
-		u.amount = amount;
-		u.structure = structure;
-		u.shields = shields;
-		u.attack_power = attack_power;
-		u.cargo_volume = cargo_volume;
-		u.engine_type = engine_type;
-		u.speed = speed;
-		u.fuel_consumption = fuel_consumption;
-		u.name = name;
-		u.required_buildings = required_buildings;
-		u.required_technologies = required_technologies;
-		u.cost = cost;
-		u.building_amount = building_amount;
-		u.build_end_time = build_end_time;
-		return u;
 	}
 	
 	public int getSpeed()

@@ -49,6 +49,7 @@ public class Planet
 		building_queue = new ArrayList<>();
 		space_yard_building_queue = new  ArrayList<>();
 		updateResourcesProduction();
+		unit_list[Unit.LARGE_TRANSPORT].updateAmount();
 		unit_list[Unit.SPY_PROBE].updateAmount();
 	}
 	
@@ -226,7 +227,24 @@ public class Planet
 		}
 		return f && (fields_taken < fields);
 	}
-	// fleet
+	
+	public static boolean checkValidCoordinates(int[] coords)
+	{
+		try
+		{
+			boolean flag = true;
+			for(int i = 0; i < UNIVERSE_BOUNDS.length; i++)
+			{
+				flag &= (coords[i] > 0) && (coords[i] <= UNIVERSE_BOUNDS[i]);
+			}
+			flag &= (coords.length == 3);
+			return flag;
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
+	}
 	
 	public boolean isResearchable(int code)
 	{
@@ -437,6 +455,20 @@ public class Planet
 		return "[" + coords[0] + ":" + coords[1] + ":" + coords[2] + "]";
 	}
 	
+	//clone?
+	public Player getOwner()
+	{
+		return owner;
+	}
+	
+	public void departShips(Unit[] units)
+	{
+		for(int i = 0; i < units.length; i++)
+		{
+			unit_list[i].changeAmount(-units[i].getAmount());
+		}
+	}
+	
 	private int diameter;
 	private int fields;
 	private int fields_taken;
@@ -461,6 +493,7 @@ public class Planet
 	private ArrayList<UnitBuildQueueElement> space_yard_building_queue;
 	private Player owner;
 	private int[] coords;
+	public static final int[] UNIVERSE_BOUNDS = {5, 300, 16};
 	public static final double METAL_DEFAULT_PRODUCTION = 1200;
 	public static final double CRYSTAL_DEFAULT_PRODUCTION = 600;
 	public static final double DEITERIUM_DEFAULT_PRODUCTION = 300;

@@ -564,7 +564,7 @@ public class ResourcesOverviewPanel extends InfoPanel
 				int[] coords = {Integer.parseInt(s[0]), Integer.parseInt(s[1])};
 				switch(coords[1])
 				{
-					case 15:
+					case 16:
 						percentage = (int)(current_planet.getCurrentMetal() / current_planet.getMetalCapacity() * 100);
 						color_status = generateColor(percentage, true);
 						if(coords[0] == 4)
@@ -572,7 +572,7 @@ public class ResourcesOverviewPanel extends InfoPanel
 							((StorageProgressBar)list[i]).setValue(percentage);
 						}
 						break;
-					case 16:
+					case 17:
 						percentage = (int)(current_planet.getCurrentCrystal() / current_planet.getCrystalCapacity() * 100);
 						color_status = generateColor(percentage, true);
 						if(coords[0] == 4)
@@ -580,7 +580,7 @@ public class ResourcesOverviewPanel extends InfoPanel
 							((StorageProgressBar)list[i]).setValue(percentage);
 						}
 						break;
-					case 17:
+					case 18:
 						percentage = (int)(current_planet.getCurrentDeiterium() / current_planet.getDeiteriumCapacity() * 100);
 						color_status = generateColor(percentage, true);
 						if(coords[0] == 4)
@@ -588,7 +588,7 @@ public class ResourcesOverviewPanel extends InfoPanel
 							((StorageProgressBar)list[i]).setValue(percentage);
 						}
 						break;
-					case 18:
+					case 19:
 						percentage = (int)(current_planet.getProductionEfficiency() * 100);
 						color_status = generateColor(percentage, false);
 						if(coords[0] == 4)
