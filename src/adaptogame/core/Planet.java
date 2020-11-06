@@ -186,6 +186,16 @@ public class Planet
 		}
 	}
 	
+	public void updateResources(int[] res)
+	{
+		if(res.length == 3)
+		{
+			metal_current += res[0];
+			crystal_current += res[1];
+			crystal_current += res[2];
+		}
+	}
+	
 	public void updateResourcesProduction()
 	{
 		electricity_current = getBuildings()[Building.POWER_STATION].calcGathering() + getBuildings()[Building.NUCLEAR_STATION].calcGathering() + ((SolarSatellite)getUnits()[Unit.SOLAR_SATELLITE]).calcElectricityProduction() * getUnits()[Unit.SOLAR_SATELLITE].getAmount() - getBuildings()[Building.METAL_MINES].calcConsuming() - getBuildings()[Building.CRYSTAL_MINES].calcConsuming() - getBuildings()[Building.DEITERIUM_MINES].calcConsuming();
@@ -461,11 +471,11 @@ public class Planet
 		return owner;
 	}
 	
-	public void departShips(Unit[] units)
+	public void moveShips(Unit[] units, final int modifier)
 	{
 		for(int i = 0; i < units.length; i++)
 		{
-			unit_list[i].changeAmount(-units[i].getAmount());
+			unit_list[i].changeAmount(modifier * units[i].getAmount());
 		}
 	}
 	
@@ -498,6 +508,8 @@ public class Planet
 	public static final double CRYSTAL_DEFAULT_PRODUCTION = 600;
 	public static final double DEITERIUM_DEFAULT_PRODUCTION = 300;
 	public static final int MAX_BUILD_QUEUE = 5;
+	public static final int FLEET_DEPART = -1;
+	public static final int FLEET_LAND = 1;
 	public static final int BUILDINGS = 0;
 	public static final int TECHNOLOGIES = 0;
 }

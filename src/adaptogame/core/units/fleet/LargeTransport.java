@@ -18,6 +18,7 @@ public class LargeTransport extends Unit
 		cargo_volume = 25000;
 		engine_type = EngineCategory.REACTIVE;
 		speed = 7500;
+		speed = 100000000;
 		fuel_consumption = 50;
 		rapid_fire[SOLAR_SATELLITE] = 5;
 		rapid_fire[SPY_PROBE] = 5;
@@ -36,6 +37,7 @@ public class LargeTransport extends Unit
 		cargo_volume = 25000;
 		engine_type = EngineCategory.REACTIVE;
 		speed = 7500;
+		speed = 100000000;
 		fuel_consumption = 50;
 		rapid_fire[SOLAR_SATELLITE] = 5;
 		rapid_fire[SPY_PROBE] = 5;

@@ -10,17 +10,19 @@ public class TimeProcessingThread extends Thread
 	}
 	public void run()
 	{
+		Player player = panel.getPlayer();
 		while(true)
 		{
-			for(int i = 0; i < panel.getPlayer().getPlanetAmount(); i++)
+			player.processFleets();
+			for(int i = 0; i < player.getPlanetAmount(); i++)
 			{
-				Planet planet = panel.getPlayer().getPlanet(i);
+				Planet planet = player.getPlanet(i);
 				planet.updateResources();
 				planet.updateBuildingsProduction();
 				planet.updateResearchProcess();
 				planet.updateUnitsProduction();
-				panel.getCurrentWindow().updatePanelUI();
 			}
+			panel.getCurrentWindow().updatePanelUI();
 			panel.updateResourceBar();
 			panel.checkPlanetChange();
 			try 

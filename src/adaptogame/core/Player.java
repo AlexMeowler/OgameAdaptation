@@ -2,10 +2,12 @@ package adaptogame.core;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import adaptogame.core.technologies.Technology;
 import adaptogame.core.units.Unit;
 import adaptogame.core.units.fleet.LargeTransport;
+import adaptogame.ui.OffGamePanel;
 
 public class Player 
 {
@@ -22,7 +24,7 @@ public class Player
 		current_planet_index = 0;
 		active_research = NO_ACTIVE_RESEARCH;
 		planet_changed = false;
-		fleets.add(new Fleet(new Unit[] {new LargeTransport("Большой транспорт", 1)}, MissionCategory.LEAVE, new int[] {1, 1, 2}, new int[] {1, 1, 1}, 100, 25000, new int[] {0, 0, 0}));
+		//fleets.add(new Fleet(new Unit[] {new LargeTransport("Большой транспорт", 1)}, MissionCategory.LEAVE, new int[] {1, 1, 2}, new int[] {1, 1, 1}, 100, 25000, new int[] {0, 0, 0}));
 	}
 	
 	public int getCurrentPlanetIndex()
@@ -99,7 +101,77 @@ public class Player
 	public void addNewFleet(Unit[] units, MissionCategory mission, int[] coords_from, int[] coords_to, int speed_percent, int capacity_left, int[] resources_loaded)
 	{
 		fleets.add(new Fleet(units, mission, coords_from, coords_to, speed_percent, capacity_left, resources_loaded));
-		planets[current_planet_index].departShips(units);
+		Planet planet = OffGamePanel.getPlanetByCoordinates(coords_from);
+		planet.moveShips(units, Planet.FLEET_DEPART);
+		for(int i = 0; i < resources_loaded.length; i++)
+		{
+			resources_loaded[i] = -resources_loaded[i];
+		}
+		OffGamePanel.getPlanetByCoordinates(coords_from).updateResources(resources_loaded);
+	}
+	
+	public void processFleets()
+	{
+		int size = fleets.size();
+		for(int i = 0; i < size; i++)
+		{
+			Fleet fleet = fleets.get(i);
+			long time_remaining;
+			if(!fleet.isGoingHome())
+			{
+				time_remaining = fleet.getToTargetDate().getTime() - new Date().getTime();
+			}
+			else
+			{
+				time_remaining = fleet.getFromTargetDate().getTime() - new Date().getTime();
+			}
+			if(time_remaining < 300)
+			{
+				boolean remove_required = false;
+				Planet target_planet = OffGamePanel.getPlanetByCoordinates(fleet.getTarget());
+				Unit[] ships = fleet.getShips();
+				switch(fleet.getMission())
+				{
+					case ATTACK:
+						break;
+					case COLONIZE:
+						break;
+					case DEFEND:
+						break;
+					case ESPIONAGE:
+						break;
+					case EXPLORE:
+						break;
+					case LEAVE:
+						target_planet.moveShips(ships, Planet.FLEET_LAND);
+						target_planet.updateResources(fleet.getResourcesLoaded());
+						remove_required = true;
+						break;
+					case REFINE:
+						break;
+					case TRANSPORT:
+						remove_required = fleet.isGoingHome();
+						if(!remove_required)
+						{
+							target_planet.updateResources(fleet.getResourcesLoaded());
+						}
+						else
+						{
+							ships = fleet.getShips();
+							OffGamePanel.getPlanetByCoordinates(fleet.getBase()).moveShips(ships, Planet.FLEET_LAND);
+						}
+						break;
+					default:
+						remove_required = true;
+						break;
+				}
+				fleet.goHome();
+				if(remove_required)
+				{
+					fleets.remove(i);
+				}
+			}
+		}
 	}
 	
 	private Planet[] planets;

@@ -26,6 +26,7 @@ public class Fleet
 		this.resources_loaded = resources_loaded;
 		base_coords = coords_from;
 		target_coords = coords_to;
+		on_way_back = false;
 		int distance = Fleet.calcDistance(base_coords, target_coords);
 		starting_up_date = new Date(new Date().getTime() + calcStartDuration(distance, max_fleet_speed));
 		long clean_flight_duration = calcCleanDuration(distance, max_fleet_speed, speed_percent);
@@ -46,6 +47,21 @@ public class Fleet
 			sum += fleet_ships[i].getAmount();
 		}
 		return sum;
+	}
+	
+	public Unit[] getShips()
+	{
+		Unit[] ships = new Unit[fleet_ships.length];
+		for(int i = 0; i < ships.length; i++)
+		{
+			ships[i] = fleet_ships[i].clone();
+		}
+		return ships;
+	}
+	
+	public int[] getResourcesLoaded()
+	{
+		return resources_loaded.clone();
 	}
 	
 	public static int calcDistance(int coords_from[], int[] coords_to)
@@ -152,6 +168,16 @@ public class Fleet
 		return from_flight_date;
 	}
 	
+	public boolean isGoingHome()
+	{
+		return on_way_back;
+	}
+	
+	public void goHome()
+	{
+		on_way_back = true;
+	}
+	
 	private int[] target_coords;
 	private int[] base_coords;
 	private int max_fleet_speed;
@@ -162,5 +188,6 @@ public class Fleet
 	private Date from_flight_date;
 	private int capacity_left;
 	private int[] resources_loaded;
+	private boolean on_way_back;
 	public static final int FLEET_SPEED_FACTOR = 2;
 }

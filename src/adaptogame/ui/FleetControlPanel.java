@@ -35,6 +35,13 @@ public class FleetControlPanel extends InfoPanel
 		add(new PhasePanel(2), constraints);
 	}
 	
+	public void updateCurrentPlanet()
+	{
+		super.updateCurrentPlanet();
+		resetPhase();
+	}
+
+	
 	protected int[] getRemainingTime(Date fleet_date)
 	{
 		long total = (fleet_date.getTime() - new Date().getTime()) / 1000;
@@ -61,6 +68,13 @@ public class FleetControlPanel extends InfoPanel
 				{
 					String[] s = list[i].getName().split("\\.");
 					int[] coords = {Integer.parseInt(s[0]), Integer.parseInt(s[1])};
+					if(coords[1] == 0)
+					{
+						if(coords[0] == 0)
+						{
+							((TextLabel)list[i]).setText("Флоты " + player.getFleetsSize() + " / " + player.getMaxFleetsAvailable());
+						}
+					}
 					if(coords[1] - y_offset < fleets_amount)
 					{
 						list[i].setVisible(true);
@@ -79,7 +93,12 @@ public class FleetControlPanel extends InfoPanel
 					}
 					if((coords[1] >= y_offset_fleet_list) && (coords[1] < y_offset_fleet_list + Unit.SHIPS_AMOUNT - 1))
 					{
-						list[i].setVisible(current_planet.getUnits()[coords[1] - y_offset_fleet_list + 1].getAmount() != 0);
+						int amount = current_planet.getUnits()[coords[1] - y_offset_fleet_list + 1].getAmount();
+						list[i].setVisible(amount != 0);
+						if(coords[0] == 5)
+						{
+							((TextLabel)list[i]).setText("<div style='text-align:center'>" + amount + "</div>");
+						}
 					}
 				}
 				break;
@@ -382,17 +401,17 @@ public class FleetControlPanel extends InfoPanel
 			constraints.gridy = y_offset_fleet_list;
 			constraints.weightx = 0.0f;
 			constraints.gridx = 0;
-			constraints.gridwidth = 5;
+			constraints.gridwidth = 4;
 			constraints.insets.right = 3;
 			add(new TextLabel(false, 0, "<div style='text-align:center;'>Тип корабля</div>", constraints.gridx + "." + constraints.gridy, BACKGROUND_COLOR), constraints);
-			constraints.gridx = 5;
-			constraints.gridwidth = 1;
+			constraints.gridx = 4;
+			constraints.gridwidth = 2;
 			add(new TextLabel(false, 0, "<div style='text-align:center;'>Количество</div>", constraints.gridx + "." + constraints.gridy, BACKGROUND_COLOR), constraints);
 			constraints.gridx = 6;
-			constraints.gridwidth = 1;
-			add(new TextLabel(false, 0, "<div style='text-align:center;'>-</div>", constraints.gridx + "." + constraints.gridy, BACKGROUND_COLOR), constraints);
-			constraints.gridx = 7;
 			constraints.gridwidth = 2;
+			add(new TextLabel(false, 0, "<div style='text-align:center;'>-</div>", constraints.gridx + "." + constraints.gridy, BACKGROUND_COLOR), constraints);
+			constraints.gridx = 8;
+			constraints.gridwidth = 1;
 			constraints.insets.right = 0;
 			add(new TextLabel(false, 0, "<div style='text-align:center;'>-</div>", constraints.gridx + "." + constraints.gridy, BACKGROUND_COLOR), constraints);
 			y_offset_fleet_list++;
@@ -584,7 +603,7 @@ public class FleetControlPanel extends InfoPanel
 			add(new TextLabel(false, 0, text, constraints.gridx + "." + constraints.gridy, BACKGROUND_COLOR), constraints);
 			constraints.gridx = 4;
 			constraints.gridwidth = 1;
-			constraints.weightx = 0.5f;
+			constraints.weightx = 0.2f;
 			try
 			{
 				text = "<div style='text-align:center;'>" + new SimpleDateFormat("kk:mm:ss'<br>'dd MMMMMMMMM").format(fleet.getToTargetDate()) + "</div>";
@@ -648,19 +667,20 @@ public class FleetControlPanel extends InfoPanel
 		private void buildShipRow(int code)
 		{
 			constraints.gridy = y_offset_fleet_list + code  - 1;
-			constraints.weightx = 0.0f;
+			constraints.weightx = 0.4f;
 			constraints.gridx = 0;
-			constraints.gridwidth = 5;
+			constraints.gridwidth = 4;
 			constraints.insets.right = 3;
 			add(new TextLabel(true, code, current_planet.getUnits()[code].generateHeaderWithoutLevel(), constraints.gridx + "." + constraints.gridy, BACKGROUND_COLOR), constraints);
-			constraints.gridx = 5;
-			constraints.gridwidth = 1;
+			constraints.weightx = 0.2f;
+			constraints.gridx = 4;
+			constraints.gridwidth = 2;
 			add(new TextLabel(false, 0, "<div style='text-align:center;'>" + NumberFormat.getNumberInstance(Locale.US).format(current_planet.getUnits()[code].getAmount()) + "</div>", constraints.gridx + "." + constraints.gridy, BACKGROUND_COLOR), constraints);
 			constraints.gridx = 6;
-			constraints.gridwidth = 1;
-			add(new TextLabel(false, 0, "<div style='text-align:center;'><u>макс.</u></div>", constraints.gridx + "." + constraints.gridy, BACKGROUND_COLOR), constraints);
-			constraints.gridx = 7;
 			constraints.gridwidth = 2;
+			add(new TextLabel(false, 0, "<div style='text-align:center;'><u>макс.</u></div>", constraints.gridx + "." + constraints.gridy, BACKGROUND_COLOR), constraints);
+			constraints.gridx = 8;
+			constraints.gridwidth = 1;
 			add(new InputField(constraints.gridx + "." + constraints.gridy), constraints);
 			
 		}
@@ -702,7 +722,7 @@ public class FleetControlPanel extends InfoPanel
 							}
 							amounts[coords[1] - y_offset_fleet_list + 1] = amount;
 							amount_valid &= (amount >= 0) && (amount <= current_planet.getUnits()[coords[1] - y_offset_fleet_list + 1].getAmount());
-							selection_valid = (selection_valid || (amount > 0)) && amount_valid; 
+							selection_valid = (selection_valid || (amount > 0)) && amount_valid && (player.getFleetsSize() < player.getMaxFleetsAvailable()); 
 							ships = Unit.createFleetList(amounts);
 						}
 					}
@@ -728,15 +748,21 @@ public class FleetControlPanel extends InfoPanel
 						if(button.isSelected())
 						{
 							mission = MissionCategory.fromString(button.getText());
+							button.setSelected(false);
 						}
 					}
 					int sum = 0;
 					int[] res = textFieldsToArray(resources_loaded);
+					double[] planet_res = new double[] {current_planet.getCurrentMetal(), current_planet.getCurrentCrystal(), current_planet.getCurrentDeiterium()};
+					boolean resources_loaded_valid = true;
 					for(int i = 0; i < res.length; i++)
 					{
 						sum += res[i];
+						resources_loaded_valid &= res[i] < planet_res[i]; 
 					}
-					selection_valid &= (capacity_left - sum >= 0) && ((mission != MissionCategory.TRANSPORT) || (sum != 0));
+					resources_loaded_valid &= (mission != MissionCategory.TRANSPORT) || (sum != 0);
+					resources_loaded_valid &= ((mission != MissionCategory.ATTACK) && (mission != MissionCategory.ESPIONAGE)) || (sum == 0);
+					selection_valid &= (capacity_left - sum >= 0) && resources_loaded_valid;
 					break;
 			}
 			if(selection_valid)
