@@ -7,7 +7,7 @@ public enum MissionCategory
 	TRANSPORT,
 	COLONIZE,
 	LEAVE,
-	DEFEND, //usused
+	DEFEND, //unused
 	EXPLORE,
 	REFINE;
 	
@@ -38,62 +38,26 @@ public enum MissionCategory
 	
 	public static MissionCategory fromString(String input)
 	{
-		if(input.equals("Шпионаж"))
+		switch(input)
 		{
-			return ESPIONAGE;
-		}
-		else
-		{
-			if(input.equals("Атака"))
-			{
+			case "Шпионаж":
+				return ESPIONAGE;
+			case "Атака":
 				return ATTACK;
-			}
-			else
-			{
-				if(input.equals("Транспорт"))
-				{
-					return TRANSPORT;
-				}
-				else
-				{
-					if(input.equals("Колонизировать"))
-					{
-						return COLONIZE;
-					}
-					else
-					{
-						if(input.equals("Оставить"))
-						{
-							return LEAVE;
-						}
-						else
-						{
-							if(input.equals("Оборонять"))
-							{
-								return DEFEND;
-							}
-							else
-							{
-								if(input.equals("Экспедиция"))
-								{
-									return EXPLORE;
-								}
-								else
-								{
-									if(input.equals("Переработать"))
-									{
-										return REFINE;
-									}
-									else
-									{
-										return null;
-									}
-								}
-							}
-						}
-					}
-				}
-			}
+			case "Транспорт":
+				return TRANSPORT;
+			case "Колонизировать":
+				return COLONIZE;
+			case "Оставить":
+				return LEAVE;
+			case "Оборонять":
+				return DEFEND;
+			case "Экспедиция":
+				return EXPLORE;
+			case "Переработать":
+				return REFINE;
+			default:
+				return null;
 		}
 	}
 }

@@ -9,7 +9,7 @@ import javax.swing.*;
 import adaptogame.core.Planet;
 import adaptogame.core.Player;
 
-public class InfoPanel extends JPanel  implements MouseWheelListener, MouseListener, MouseMotionListener, Scrollable
+public abstract class InfoPanel extends JPanel  implements MouseWheelListener, MouseListener, MouseMotionListener, Scrollable
 {
 	public InfoPanel(String name, Player player)
 	{

@@ -26,7 +26,7 @@ public class OffGamePanel extends JPanel
 		background = ImageIO.read(this.getClass().getResourceAsStream("/bg_elite.jpg"));
 		//
 		players = new Player[1];
-		players[0] = new Player();
+		players[0] = new Player("Игрок(Вы)");
 		//
 		UIManager.put("ToolTip.background", InfoPanel.BACKGROUND_COLOR);
 		UIManager.put("ToolTip.foreground", Color.WHITE);
@@ -58,6 +58,9 @@ public class OffGamePanel extends JPanel
 		windows.add(new FleetControlPanel("fleet_control", players[0]));
 		scrolls.add(new JScrollPane(windows.get(MenuContainer.FLEET)));
 		prepareScrollName(scrolls.get(MenuContainer.FLEET));
+		windows.add(new GalaxyViewPanel("galaxy", players[0]));
+		scrolls.add(new JScrollPane(windows.get(MenuContainer.GALAXY)));
+		prepareScrollName(scrolls.get(MenuContainer.GALAXY));
 		//
 		currentActiveWindow = MenuContainer.OVERVIEW;
 		setWindowActive(scrolls.get(MenuContainer.OVERVIEW));

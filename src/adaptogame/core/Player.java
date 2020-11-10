@@ -11,7 +11,7 @@ import adaptogame.ui.OffGamePanel;
 
 public class Player 
 {
-	public Player() throws IOException
+	public Player(String name) throws IOException
 	{
 		planets = new Planet[2];
 		planets[0] = Planet.generateStartPlanet(this);
@@ -19,12 +19,18 @@ public class Player
 		{
 			planets[i] = Planet.generatePlanet(this, i + 1);
 		}
+		this.name = name;
 		techs = Technology.createList();
 		fleets = new ArrayList<>();
 		current_planet_index = 0;
 		active_research = NO_ACTIVE_RESEARCH;
 		planet_changed = false;
 		//fleets.add(new Fleet(new Unit[] {new LargeTransport("Большой транспорт", 1)}, MissionCategory.LEAVE, new int[] {1, 1, 2}, new int[] {1, 1, 1}, 100, 25000, new int[] {0, 0, 0}));
+	}
+	
+	public String getName()
+	{
+		return name;
 	}
 	
 	public int getCurrentPlanetIndex()
@@ -174,6 +180,7 @@ public class Player
 		}
 	}
 	
+	private String name;
 	private Planet[] planets;
 	private ArrayList<Fleet> fleets;
 	private int current_planet_index;

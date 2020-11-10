@@ -10,7 +10,7 @@ import javax.swing.*;
 import adaptogame.core.*;
 import adaptogame.core.technologies.Technology;
 import adaptogame.core.units.Unit;
-
+// надо дорабатывать
 public class FleetControlPanel extends InfoPanel 
 {
 	public FleetControlPanel(String name, Player player) 
@@ -40,7 +40,6 @@ public class FleetControlPanel extends InfoPanel
 		super.updateCurrentPlanet();
 		resetPhase();
 	}
-
 	
 	protected int[] getRemainingTime(Date fleet_date)
 	{
@@ -1334,7 +1333,7 @@ public class FleetControlPanel extends InfoPanel
 				return;
 			}
 			// moons debris
-			if(coords[2] == 16)
+			if(coords[2] == Planet.UNIVERSE_BOUNDS[2])
 			{
 				options[0].setText("Экспедиция");
 				options[0].setVisible(true);
