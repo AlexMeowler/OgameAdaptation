@@ -6,17 +6,20 @@ import java.util.Arrays;
 
 import javax.swing.*;
 
+import adaptogame.core.Fleet;
 import adaptogame.core.Planet;
 import adaptogame.core.Player;
 import adaptogame.core.units.Unit;
 
-public class GalaxyViewPanel extends InfoPanel 
+public class GalaxyViewPanel extends InfoPanel implements ActionListener
 {
 	public GalaxyViewPanel(String name, Player player)
 	{
 		super(name, player);
 		setOpaque(false);
 		position = Arrays.copyOfRange(current_planet.getCoords(), 0, 2);
+		coordinates = new JTextField[2];
+		last_time_burned = 0;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.gridwidth = 1;
@@ -36,7 +39,106 @@ public class GalaxyViewPanel extends InfoPanel
 	
 	public void updatePanelUI()
 	{
-		
+		Component[] list = getComponents();
+		int alive_planets = 0;
+		int line = 0;
+		for(int i = 0; i < list.length; i++)
+		{
+			String[] s = (list[i].getName() != null) && (list[i].getName().indexOf(".") != -1)? list[i].getName().split("\\.") : new String[] {"-1", "-1"};
+			int[] coords = {Integer.parseInt(s[0]), Integer.parseInt(s[1])};
+			if(coords[1] == 2)
+			{
+				((ChangeSystemPanel)list[i]).updateLabel();
+			}
+			if(coords[1] == 3)
+			{
+				((TextLabel)list[i]).setText("<div style='text-align:center'>Израсходовано <font color='red'>" + (int)last_time_burned + "</font> дейтерия</div>");
+			}
+			if((coords[1] - (y_offset + 2) >= 0) && (coords[1] < y_offset_after - 1))
+			{
+				Planet planet = OffGamePanel.getPlanetByCoordinates(new int[] {position[0], position[1], coords[1] - (y_offset + 1)});
+				if((planet != null) && (line != coords[1]))
+				{
+					alive_planets++;
+					line = coords[1];
+				}
+				String color_opening = "";
+				String color_ending = "";
+				if(planet == current_planet)
+				{
+					color_opening = "<font color='lime'>";
+					color_ending = "</font>";
+				}
+				Icon icon = planet != null ? new ImageIcon(planet.getImg().getScaledInstance(PlanetImg.SIZE, PlanetImg.SIZE, Image.SCALE_SMOOTH)) : null;
+				String opening = "<div style='text-align:center'>";
+				String ending = "</div>";
+				
+				String name = planet != null ? planet.getName() : "";
+				String owner_name = planet != null ?  planet.getOwner().getName() : "";
+				switch(coords[0])
+				{
+					case 1:
+						((PlanetImg)list[i]).setIcon(icon);
+						break;
+					case 2:
+						((TextLabel)list[i]).setText(opening + color_opening + name + color_ending + ending);
+						break;
+					case 3:
+						break;
+					case 4:
+						break;
+					case 6:
+						((TextLabel)list[i]).setText(opening + owner_name + ending);
+						break;
+					case 9:
+						break;
+				}
+			}
+			if(coords[1] == y_offset_after)
+			{
+				switch(coords[1] - y_offset_after)
+				{
+					case 0:
+						switch(coords[0])
+						{
+							case 0:
+								((TextLabel)list[i]).setText("( " + alive_planets + " обитаемые планеты )");
+								break;
+							case 9:
+								((TextLabel)list[i]).setText(current_planet.getUnits()[Unit.PROCESSOR].getAmount()  + " переработчиков<br>" + current_planet.getUnits()[Unit.SPY_PROBE].getAmount() + " шпионских зондов");
+								break;
+						}
+						break;
+					case 1:
+						switch(coords[0])
+						{
+							case 0:
+								//!
+								break;
+							case 3:
+								((TextLabel)list[i]).setText(player.getFleetsSize() + "/" + player.getMaxFleetsAvailable() + " флотов");
+								break;
+						}
+						break;
+				}
+			}
+		}
+	}
+	
+	private void resetPanelUI()
+	{
+		for(int i = 0; i < 2; i++)
+		{
+			position[i] = current_planet.getCoords()[i];
+			coordinates[i].setText("" + position[i]);
+		}
+		last_time_burned = 0;
+	}
+	
+	public void updateCurrentPlanet()
+	{
+		super.updateCurrentPlanet();
+		resetPanelUI();
 	}
 	
 	private void addLocationMenu()
@@ -56,11 +158,11 @@ public class GalaxyViewPanel extends InfoPanel
 		constraints.insets.top = 8;
 		constraints.insets.right = 0;
 		constraints.ipady = 10;
-		add(new ChangeSystemPanel(), constraints);
+		add(new ChangeSystemPanel(constraints.gridx + "." + constraints.gridy), constraints);
 		constraints.ipady = 0;
 		//
 		constraints.gridy = 3;
-		add(new TextLabel("<div style='text-align:center'>Израсходовано <font color='red'>" + 0 + "</font> дейтерия</div>", constraints.gridx + "." + constraints.gridy, new Color(0, 0 , 0 ,0)), constraints);
+		add(new TextLabel("<div style='text-align:center'>Израсходовано <font color='red'>" + 0 + "</font> дейтерия</div>", constraints.gridx + "." + constraints.gridy, CATEGORY_BACKGROUND_COLOR), constraints);
 		constraints.insets.top = 0;
 	}
 	
@@ -69,11 +171,14 @@ public class GalaxyViewPanel extends InfoPanel
 		JButton button_left = createButton("←");
 		JButton button_right = createButton("→");
 		JTextField field = new JTextField(fieldText);
-		button_left.addActionListener(e -> field.setText("" + Math.max(1, (Integer.parseInt(field.getText()) - 1))));
-		button_right.addActionListener(e -> field.setText("" + Math.min(Planet.UNIVERSE_BOUNDS[1], (Integer.parseInt(field.getText()) + 1))));
 		field.setBorder(BorderFactory.createLineBorder(new Color(60, 100, 134)));
 		field.setBackground(new Color(102, 102, 102));
 		field.setForeground(Color.WHITE);
+		coordinates[x / 3 - 1] = field;
+		button_left.setName("" + (x / 3 - 1));
+		button_right.setName("" + (x / 3 - 1));
+		button_left.addActionListener(this);
+		button_right.addActionListener(this);
 		constraints.gridx = x;
 		constraints.gridy = 0;
 		constraints.gridwidth = 3;
@@ -152,7 +257,7 @@ public class GalaxyViewPanel extends InfoPanel
 			constraints.gridx++;
 			//!!!!!
 			Planet planet = OffGamePanel.getPlanetByCoordinates(new int[] {1, 1, i + 1});
-			PlanetImg img = new PlanetImg(planet);
+			PlanetImg img = new PlanetImg(planet, constraints.gridx + "." + constraints.gridy);
 			String name = "";
 			String owner_name = "";
 			if(planet != null)
@@ -200,7 +305,7 @@ public class GalaxyViewPanel extends InfoPanel
 		constraints.gridheight = 1;
 		constraints.insets.right = 5;
 		//
-		add(new TextLabel("(0 обитаемые планеты )", constraints.gridx + "." + constraints.gridy, CATEGORY_BACKGROUND_COLOR), constraints);
+		add(new TextLabel("( 0 обитаемые планеты )", constraints.gridx + "." + constraints.gridy, CATEGORY_BACKGROUND_COLOR), constraints);
 		constraints.gridx += 9;
 		constraints.gridwidth = 1;
 		constraints.gridheight = 2;
@@ -225,6 +330,78 @@ public class GalaxyViewPanel extends InfoPanel
 		button.setForeground(Color.WHITE);
 		button.setFocusPainted(false);
 		return button;
+	}
+	
+	public void actionPerformed(ActionEvent e)
+	{
+		byte[] sign = {0, 0};
+		JButton button = ((JButton)e.getSource());
+		int gal_start = current_planet.getCoords()[0];
+		int sys_start = current_planet.getCoords()[1];
+		int gal_end = 0;
+		int sys_end = 0;
+		double burned = 0;
+		switch(button.getText())
+		{
+			case "←":
+				sign[Integer.parseInt(button.getName())] = -1;
+				break;
+			case "→":
+				sign[Integer.parseInt(button.getName())] = 1;
+				break;
+		}
+		try
+		{
+			gal_end = inTheUniverseBounds(Integer.parseInt(coordinates[0].getText()) + sign[0], 0);
+			sys_end = inTheUniverseBounds(Integer.parseInt(coordinates[1].getText()) + sign[1], 1);
+			burned = deiteriumBurned(gal_start, sys_start, gal_end, sys_end);
+			if(burned <= current_planet.getCurrentDeiterium())
+			{
+				position[0] = inTheUniverseBounds(Integer.parseInt(coordinates[0].getText()) + sign[0], 0);
+				position[1] = inTheUniverseBounds(Integer.parseInt(coordinates[1].getText()) + sign[1], 1);
+			}
+		}
+		catch(NumberFormatException ex)
+		{
+			gal_end = inTheUniverseBounds(position[0] + sign[0], 0);
+			sys_end = inTheUniverseBounds(position[1] + sign[1], 1);
+			burned = deiteriumBurned(gal_start, sys_start, gal_end, sys_end);
+			if(burned <= current_planet.getCurrentDeiterium())
+			{
+				position[0] = inTheUniverseBounds(position[0] + sign[0], 0);
+				position[1] = inTheUniverseBounds(position[1] + sign[1], 1);
+			}
+		}
+		finally
+		{
+			coordinates[0].setText("" + position[0]);
+			coordinates[1].setText("" + position[1]);
+			if(burned <= current_planet.getCurrentDeiterium())
+			{
+				last_time_burned = burned;
+				current_planet.updateResources(new double[] {0, 0, -burned});
+			}
+			updatePanelUI();
+		}
+	}
+	
+	private int inTheUniverseBounds(int value, int celestial_index)
+	{
+		if(value < 1)
+		{
+			return 1;
+		}
+		if(value > Planet.UNIVERSE_BOUNDS[celestial_index])
+		{
+			return Planet.UNIVERSE_BOUNDS[celestial_index];
+		}
+		return value;
+	}
+	
+	private double deiteriumBurned(int gal_start, int sys_start, int gal_end, int sys_end)
+	{
+		double dist = Fleet.calcDistance(new int[] {gal_start, sys_start, 0}, new int[] {gal_end, sys_end, 0});
+		return Math.floor((dist / 100) * (1 + Math.floor(dist / 5000)));
 	}
 	
 	private class TextLabel extends JLabel implements ComponentListener
@@ -283,7 +460,7 @@ public class GalaxyViewPanel extends InfoPanel
 	
 	private class PlanetImg extends JLabel
 	{
-		public PlanetImg(Planet planet)
+		public PlanetImg(Planet planet, String name)
 		{
 			try
 			{
@@ -293,6 +470,7 @@ public class GalaxyViewPanel extends InfoPanel
 			{
 				
 			}
+			setName(name);
 			setBackground(BACKGROUND_COLOR);
 			setHorizontalAlignment(SwingConstants.CENTER);
 			setOpaque(true);
@@ -301,10 +479,11 @@ public class GalaxyViewPanel extends InfoPanel
 		private static final int SIZE = 40;
 	}
 	
-	private class ChangeSystemPanel extends JPanel
+	private class ChangeSystemPanel extends JPanel implements ActionListener
 	{
-		public ChangeSystemPanel()
+		public ChangeSystemPanel(String name)
 		{
+			setName(name);
 			setBackground(BACKGROUND_COLOR);
 			setLayout(new GridBagLayout());
 			GridBagConstraints constraints = new GridBagConstraints();
@@ -318,14 +497,55 @@ public class GalaxyViewPanel extends InfoPanel
 			constraints.fill = GridBagConstraints.BOTH;
 			constraints.insets.left = 5;
 			JButton button = createButton(" Просмотр ");
+			button.addActionListener(this);
 			add(button, constraints);
 			constraints.insets.left = 0;
 			constraints.gridx++;
 			constraints.weightx = 0.7f;
-			add(new TextLabel("<div style='text-align:left'>" + "Дейтерия на планете: <font color='lime'>" + (int)current_planet.getCurrentDeiterium() + "</font></div>", constraints.gridx + "." + constraints.gridy, BACKGROUND_COLOR), constraints);
+			label = new TextLabel("<div style='text-align:right'>" + "Дейтерия на планете: <font color='lime'>" + (int)current_planet.getCurrentDeiterium() + "</font></div>", constraints.gridx + "." + constraints.gridy, BACKGROUND_COLOR);
+			add(label, constraints);
 		}
+		
+		public void actionPerformed(ActionEvent e)
+		{
+			try
+			{
+				int gal = Integer.parseInt(coordinates[0].getText());
+				int sys = Integer.parseInt(coordinates[1].getText());
+				if((gal == position[0]) && (sys == position[1]))
+				{
+					return ;
+				}
+				int gal_start = current_planet.getCoords()[0];
+				int sys_start = current_planet.getCoords()[1];
+				position[0] = gal;
+				position[1] = sys;
+				int gal_end = position[0];
+				int sys_end = position[1];
+				double burned = deiteriumBurned(gal_start, sys_start, gal_end, sys_end);
+				if(burned <= current_planet.getCurrentDeiterium())
+				{
+					last_time_burned = burned;
+					current_planet.updateResources(new double[] {0, 0, -burned});
+				}
+				updatePanelUI();
+			}
+			catch(NumberFormatException ex)
+			{
+				
+			}
+		}
+		
+		private void updateLabel()
+		{
+			label.setText("<div style='text-align:right'>" + "Дейтерия на планете: <font color='lime'>" + (int)current_planet.getCurrentDeiterium() + "</font></div>");
+		}
+		
+		private TextLabel label;
 	}
 	
 	private int[] position;
+	private double last_time_burned;
+	private JTextField[] coordinates;
 	private int y_offset_after;
 }

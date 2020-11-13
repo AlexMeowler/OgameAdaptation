@@ -248,7 +248,7 @@ public class FleetControlPanel extends InfoPanel
 		}
 	}
 	
-	public void resetPhase()
+	private void resetPhase()
 	{
 		phase = 0;
 		Component[] list = getComponents();

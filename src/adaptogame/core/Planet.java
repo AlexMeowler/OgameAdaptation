@@ -3,7 +3,7 @@ package adaptogame.core;
 import static java.lang.Math.*;
 
 import java.util.*;
-
+import java.util.stream.*;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -186,14 +186,24 @@ public class Planet
 		}
 	}
 	
-	public void updateResources(int[] res)
+	public void updateResources(double[] res)
 	{
 		if(res.length == 3)
 		{
 			metal_current += res[0];
 			crystal_current += res[1];
-			crystal_current += res[2];
+			deiterium_current += res[2];
 		}
+	}
+	
+	public void updateResources(int[] res)
+	{
+		double[] d_res = new double[res.length];
+		for(int i = 0; i < res.length; i++)
+		{
+			d_res[i] = res[i];
+		}
+		updateResources(res);
 	}
 	
 	public void updateResourcesProduction()

@@ -195,9 +195,9 @@ public class OffGamePanel extends JPanel
 	
 	public void setCurrentWindow(int i)
 	{
-		if(i == MenuContainer.FLEET)
+		if((i == MenuContainer.FLEET)|| (i == MenuContainer.GALAXY))
 		{
-			((FleetControlPanel)windows.get(i)).resetPhase();
+			windows.get(i).updateCurrentPlanet();
 		}
 		setWindowNotActive(scrolls.get(currentActiveWindow));
 		windows.get(i).updatePanelUI();
