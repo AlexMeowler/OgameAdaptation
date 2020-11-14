@@ -7,17 +7,17 @@ import java.util.Date;
 import adaptogame.core.technologies.Technology;
 import adaptogame.core.units.Unit;
 import adaptogame.core.units.fleet.LargeTransport;
-import adaptogame.ui.OffGamePanel;
+import adaptogame.ui.MainPanel;
 
 public class Player 
 {
-	public Player(String name) throws IOException
+	public Player(String name, int start_index) throws IOException
 	{
 		planets = new Planet[2];
 		planets[0] = Planet.generateStartPlanet(this);
-		for(int i = 1; i < planets.length; i++)
+		for(int i = 0; i < planets.length; i++)
 		{
-			planets[i] = Planet.generatePlanet(this, i + 1);
+			planets[i] = Planet.generatePlanet(this, start_index + i);
 		}
 		this.name = name;
 		techs = Technology.createList();
@@ -25,7 +25,6 @@ public class Player
 		current_planet_index = 0;
 		active_research = NO_ACTIVE_RESEARCH;
 		planet_changed = false;
-		//fleets.add(new Fleet(new Unit[] {new LargeTransport("Большой транспорт", 1)}, MissionCategory.LEAVE, new int[] {1, 1, 2}, new int[] {1, 1, 1}, 100, 25000, new int[] {0, 0, 0}));
 	}
 	
 	public String getName()
@@ -107,13 +106,13 @@ public class Player
 	public void addNewFleet(Unit[] units, MissionCategory mission, int[] coords_from, int[] coords_to, int speed_percent, int capacity_left, int[] resources_loaded)
 	{
 		fleets.add(new Fleet(units, mission, coords_from, coords_to, speed_percent, capacity_left, resources_loaded));
-		Planet planet = OffGamePanel.getPlanetByCoordinates(coords_from);
+		Planet planet = MainPanel.getPlanetByCoordinates(coords_from);
 		planet.moveShips(units, Planet.FLEET_DEPART);
 		for(int i = 0; i < resources_loaded.length; i++)
 		{
 			resources_loaded[i] = -resources_loaded[i];
 		}
-		OffGamePanel.getPlanetByCoordinates(coords_from).updateResources(resources_loaded);
+		MainPanel.getPlanetByCoordinates(coords_from).updateResources(resources_loaded);
 	}
 	
 	public void processFleets()
@@ -134,7 +133,7 @@ public class Player
 			if(time_remaining < 300)
 			{
 				boolean remove_required = false;
-				Planet target_planet = OffGamePanel.getPlanetByCoordinates(fleet.getTarget());
+				Planet target_planet = MainPanel.getPlanetByCoordinates(fleet.getTarget());
 				Unit[] ships = fleet.getShips();
 				switch(fleet.getMission())
 				{
@@ -164,7 +163,7 @@ public class Player
 						else
 						{
 							ships = fleet.getShips();
-							OffGamePanel.getPlanetByCoordinates(fleet.getBase()).moveShips(ships, Planet.FLEET_LAND);
+							MainPanel.getPlanetByCoordinates(fleet.getBase()).moveShips(ships, Planet.FLEET_LAND);
 						}
 						break;
 					default:

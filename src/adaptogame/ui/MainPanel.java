@@ -16,17 +16,18 @@ import adaptogame.core.Planet;
 import adaptogame.core.Player;
 import adaptogame.core.TimeProcessingThread;
 
-public class OffGamePanel extends JPanel 
+public class MainPanel extends JPanel 
 {
-	public OffGamePanel() throws IOException
+	public MainPanel() throws IOException
 	{
 		setVisible(false);
 		setName("main_panel");
 		
 		background = ImageIO.read(this.getClass().getResourceAsStream("/bg_elite.jpg"));
 		//
-		players = new Player[1];
-		players[0] = new Player("Игрок(Вы)");
+		players = new Player[2];
+		players[0] = new Player("Игрок(Вы)", 1);
+		players[1] = new Player("Enemy", 3);
 		//
 		UIManager.put("ToolTip.background", InfoPanel.BACKGROUND_COLOR);
 		UIManager.put("ToolTip.foreground", Color.WHITE);

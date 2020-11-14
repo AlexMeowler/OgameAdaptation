@@ -6,9 +6,8 @@ import java.util.Arrays;
 
 import javax.swing.*;
 
-import adaptogame.core.Fleet;
-import adaptogame.core.Planet;
-import adaptogame.core.Player;
+import adaptogame.GameLauncher;
+import adaptogame.core.*;
 import adaptogame.core.units.Unit;
 
 public class GalaxyViewPanel extends InfoPanel implements ActionListener
@@ -56,7 +55,7 @@ public class GalaxyViewPanel extends InfoPanel implements ActionListener
 			}
 			if((coords[1] - (y_offset + 2) >= 0) && (coords[1] < y_offset_after - 1))
 			{
-				Planet planet = OffGamePanel.getPlanetByCoordinates(new int[] {position[0], position[1], coords[1] - (y_offset + 1)});
+				Planet planet = MainPanel.getPlanetByCoordinates(new int[] {position[0], position[1], coords[1] - (y_offset + 1)});
 				if((planet != null) && (line != coords[1]))
 				{
 					alive_planets++;
@@ -141,6 +140,23 @@ public class GalaxyViewPanel extends InfoPanel implements ActionListener
 		resetPanelUI();
 	}
 	
+	public void mousePressed(MouseEvent e)
+	{
+		super.mousePressed(e);
+		Component[] list = getComponents();
+		for(Component c : list)
+		{
+			if(c.contains(new Point(e.getX() - c.getX(), e.getY() - c.getY())))
+			{
+				if((c instanceof TextLabel) && ((Integer.parseInt(((TextLabel)c).getName().split("\\.")[0]) ==  0) && ((Integer.parseInt(((TextLabel)c).getName().split("\\.")[1])  - (y_offset + 1) != Planet.UNIVERSE_BOUNDS[2])) || ((Integer.parseInt(((TextLabel)c).getName().split("\\.")[0]) ==  1) && ((Integer.parseInt(((TextLabel)c).getName().split("\\.")[1])  - (y_offset + 1) == Planet.UNIVERSE_BOUNDS[2])))))
+				{
+					GameLauncher.arguments = new String[] {position[0] + ":" + position[1] + ":" + (Integer.parseInt(((TextLabel)c).getName().split("\\.")[1])  - (y_offset + 1))};
+					((MainPanel)SwingUtilities.getAncestorNamed("main_panel", this)).setCurrentWindow(MenuContainer.FLEET);
+				}
+			}
+		}
+	}
+	
 	private void addLocationMenu()
 	{
 		constraints.gridx = 0;
@@ -187,7 +203,6 @@ public class GalaxyViewPanel extends InfoPanel implements ActionListener
 		constraints.weighty = 0.0f;
 		constraints.insets.right = x != 6 ? 10 : 0;
 		constraints.ipady = 5;
-		//constraints.ipadx = 5;
 		add(new TextLabel(block_name, constraints.gridx + "." + constraints.gridy, CATEGORY_BACKGROUND_COLOR), constraints);
 		constraints.insets.right = 5;
 		constraints.weightx = 0.05f;
@@ -253,10 +268,12 @@ public class GalaxyViewPanel extends InfoPanel implements ActionListener
 			constraints.gridx = 0;
 			constraints.insets.right = 5;
 			constraints.gridwidth = 1;
-			add(new TextLabel("<div style='text-align:center'>" + (i + 1) + "</div>", constraints.gridx + "." + constraints.gridy, BACKGROUND_COLOR), constraints);
+			String u_open = i + 1 != Planet.UNIVERSE_BOUNDS[2] ? "<u>" : "";
+			String u_close = i + 1 != Planet.UNIVERSE_BOUNDS[2] ? "</u>" : "";
+			add(new TextLabel("<div style='text-align:center'>" + u_open + (i + 1) + u_close + "</div>", constraints.gridx + "." + constraints.gridy, BACKGROUND_COLOR), constraints);
 			constraints.gridx++;
 			//!!!!!
-			Planet planet = OffGamePanel.getPlanetByCoordinates(new int[] {1, 1, i + 1});
+			Planet planet = MainPanel.getPlanetByCoordinates(new int[] {1, 1, i + 1});
 			PlanetImg img = new PlanetImg(planet, constraints.gridx + "." + constraints.gridy);
 			String name = "";
 			String owner_name = "";
@@ -291,7 +308,9 @@ public class GalaxyViewPanel extends InfoPanel implements ActionListener
 		add(new TextLabel("<div style='text-align:center'>" + Planet.UNIVERSE_BOUNDS[2] + "</div>", constraints.gridx + "." + constraints.gridy, BACKGROUND_COLOR), constraints);
 		constraints.gridx++;
 		constraints.gridwidth = 9;
-		add(new TextLabel("<div style='text-align:center'>" + "Отправить экспедицию" + "</div>", constraints.gridx + "." + constraints.gridy, BACKGROUND_COLOR), constraints);
+		String u_open = "<u>";
+		String u_close = "</u>";
+		add(new TextLabel("<div style='text-align:center'>" + u_open + "Отправить экспедицию" + u_close + "</div>", constraints.gridx + "." + constraints.gridy, BACKGROUND_COLOR), constraints);
 		
 	}
 	

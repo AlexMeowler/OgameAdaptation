@@ -7,6 +7,7 @@ import java.util.*;
 
 import javax.swing.*;
 
+import adaptogame.GameLauncher;
 import adaptogame.core.*;
 import adaptogame.core.technologies.Technology;
 import adaptogame.core.units.Unit;
@@ -39,6 +40,16 @@ public class FleetControlPanel extends InfoPanel
 	{
 		super.updateCurrentPlanet();
 		resetPhase();
+		String[] coords = null;
+		if((GameLauncher.arguments != null) && (GameLauncher.arguments[0] instanceof String))
+		{
+			coords = ((String)GameLauncher.arguments[0]).split(":");
+			for(int i = 0; i < coordinates.length; i++)
+			{
+				coordinates[i].setText(coords[i]);
+			}
+			GameLauncher.arguments = null;
+		}
 	}
 	
 	protected int[] getRemainingTime(Date fleet_date)
@@ -244,6 +255,38 @@ public class FleetControlPanel extends InfoPanel
 						((TextLabel)list[i]).setText(text);
 					}
 				}
+				break;
+		}
+	}
+	
+	public void mousePressed(MouseEvent e)
+	{
+		super.mousePressed(e);
+		Component[] list = ((Container)getComponent(phase)).getComponents();
+		switch(phase)
+		{
+			case 0:
+				for(Component c : list)
+				{
+					if(c.contains(new Point(e.getX() - c.getX(), e.getY() - c.getY())))
+					{
+						if((c instanceof TextLabel) && (((TextLabel)c).getText().indexOf("макс.") != -1))
+						{
+							int y = Integer.parseInt(c.getName().split("\\.")[1]);
+							for(Component comp : list)
+							{
+								if((Integer.parseInt(comp.getName().split("\\.")[1]) == y) && (comp instanceof InputField))
+								{
+									((InputField)comp).amount_field.setText("" + current_planet.getUnits()[y - ((PhasePanel)getComponent(phase)).getYOffsetFleetList() + 1].getAmount());
+								}
+							}
+						}
+					}
+				}
+				break;
+			case 1:
+				break;
+			case 2:
 				break;
 		}
 	}
@@ -592,7 +635,7 @@ public class FleetControlPanel extends InfoPanel
 			Planet base_planet = null;
 			try
 			{
-				base_planet = OffGamePanel.getPlanetByCoordinates(fleet.getBase());
+				base_planet = MainPanel.getPlanetByCoordinates(fleet.getBase());
 				text = "<div style='text-align:center;'>" + base_planet.getName() + "<br>" + Planet.coordinatesToString(base_planet.getCoords()) + "</div>";
 			}
 			catch(NullPointerException e)
@@ -617,7 +660,7 @@ public class FleetControlPanel extends InfoPanel
 			Planet target_planet = null;
 			try
 			{
-				target_planet = OffGamePanel.getPlanetByCoordinates(fleet.getTarget());
+				target_planet = MainPanel.getPlanetByCoordinates(fleet.getTarget());
 				text = "<div style='text-align:center;'>" + target_planet.getName() + "<br>" + Planet.coordinatesToString(target_planet.getCoords()) + "</div>";
 			}
 			catch(NullPointerException e)
@@ -802,14 +845,14 @@ public class FleetControlPanel extends InfoPanel
 									((TextLabel)list[i]).setText("<div style='text-align:center;'>" + fleet.getShipsTotal() + "</div>");
 									break;
 								case 3:
-									planet = OffGamePanel.getPlanetByCoordinates(fleet.getBase());
+									planet = MainPanel.getPlanetByCoordinates(fleet.getBase());
 									((TextLabel)list[i]).setText("<div style='text-align:center;'>" + planet.getName() + "<br>" + Planet.coordinatesToString(planet.getCoords()) + "</div>");
 									break;
 								case 4:
 									((TextLabel)list[i]).setText("<div style='text-align:center;'>" + new SimpleDateFormat("kk:mm:ss'<br>'dd MMMMMMMMM").format(fleet.getToTargetDate()) + "</div>");
 									break;
 								case 5:
-									planet = OffGamePanel.getPlanetByCoordinates(fleet.getTarget());
+									planet = MainPanel.getPlanetByCoordinates(fleet.getTarget());
 									if(planet != null)
 									{
 										planet_name = planet.getName();
@@ -1292,7 +1335,7 @@ public class FleetControlPanel extends InfoPanel
 		private void updateOptions()
 		{
 			int[] coords = textFieldsToArray(coordinates);
-			Planet target = OffGamePanel.getPlanetByCoordinates(coords);
+			Planet target = MainPanel.getPlanetByCoordinates(coords);
 			if(target == null)
 			{
 				options[0].setText("Колонизировать");

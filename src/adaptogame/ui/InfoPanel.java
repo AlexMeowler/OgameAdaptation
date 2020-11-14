@@ -128,5 +128,5 @@ public abstract class InfoPanel extends JPanel  implements MouseWheelListener, M
 	protected Player player;
 	protected int y_offset;
 	public static final Color BACKGROUND_COLOR = new Color(42, 69, 112);
-	protected static final Color CATEGORY_BACKGROUND_COLOR= new Color(109, 150, 184);
+	public static final Color CATEGORY_BACKGROUND_COLOR= new Color(109, 150, 184);
 }

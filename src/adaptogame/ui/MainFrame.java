@@ -7,9 +7,9 @@ import java.io.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class OffGameFrame extends JFrame
+public class MainFrame extends JFrame
 {
-	public OffGameFrame() throws IOException
+	public MainFrame() throws IOException
 	{
 		setName("game_frame");
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -17,7 +17,7 @@ public class OffGameFrame extends JFrame
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 		//setUndecorated(true);
-		OffGamePanel main_panel = new OffGamePanel();
+		MainPanel main_panel = new MainPanel();
 		main_panel.setBounds(new Rectangle(0, 0, dim.width, dim.height));
 		add(main_panel);
 		main_panel.setVisible(true);

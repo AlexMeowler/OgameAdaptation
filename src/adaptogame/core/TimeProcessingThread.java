@@ -1,10 +1,10 @@
 package adaptogame.core;
 
-import adaptogame.ui.OffGamePanel;
+import adaptogame.ui.MainPanel;
 
 public class TimeProcessingThread extends Thread 
 {
-	public TimeProcessingThread(OffGamePanel panel)
+	public TimeProcessingThread(MainPanel panel)
 	{
 		this.panel = panel;
 	}
@@ -37,5 +37,5 @@ public class TimeProcessingThread extends Thread
 	}
 	
 	public static final int SLEEP_DURATION = 300;
-	private OffGamePanel panel;
+	private MainPanel panel;
 }
