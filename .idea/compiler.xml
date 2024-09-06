@@ -10,10 +10,17 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="offgame-core" />
+        <module name="offgame-ui" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="OffGame" target="17" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="offgame-core" options="-parameters" />
+      <module name="offgame-ui" options="-parameters" />
+    </option>
   </component>
 </project>
