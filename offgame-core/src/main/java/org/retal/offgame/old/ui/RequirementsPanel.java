@@ -82,7 +82,7 @@ public class RequirementsPanel extends JPanel
 			switch(this.type)
 			{
 				case BUILDING:
-					folder += "bl/";
+					folder += "img/buildings/";
 					switch(code)
 					{
 						case Building.TERRAFORMER:

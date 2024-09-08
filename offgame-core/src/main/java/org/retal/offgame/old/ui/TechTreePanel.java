@@ -218,7 +218,7 @@ public class TechTreePanel extends InfoPanel
 			switch(type)
 			{
 				case BUILDING:
-					folder += "bl/";
+					folder += "img/buildings/";
 					switch(code)
 					{
 						case Building.TERRAFORMER:
