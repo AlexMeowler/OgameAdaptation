@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <property  name="tableName"  value="building"/>
+    <property name="tableName" value="building" global="false"/>
 
     <changeSet id="1" author="alexMeowler">
         <createTable tableName="${tableName}">
