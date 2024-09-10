@@ -939,7 +939,7 @@ public class FleetControlPanel extends InfoPanel
 					param = Image.SCALE_REPLICATE;
 					break;
 			}
-			ImageIcon img = new ImageIcon(getClass().getResource("/un/" + code + ".gif"));
+			ImageIcon img = new ImageIcon(getClass().getResource("/static/un/" + code + ".gif"));
 			setIcon(new ImageIcon(img.getImage().getScaledInstance(40, 40, param)));
 		}
 		

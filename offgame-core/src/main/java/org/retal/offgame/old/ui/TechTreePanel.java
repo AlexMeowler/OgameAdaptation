@@ -218,7 +218,7 @@ public class TechTreePanel extends InfoPanel
 			switch(type)
 			{
 				case BUILDING:
-					folder += "img/buildings/";
+					folder += "static/img/buildings/";
 					switch(code)
 					{
 						case Building.TERRAFORMER:
@@ -227,7 +227,7 @@ public class TechTreePanel extends InfoPanel
 					}
 					break;
 				case RESEARCH:
-					folder += "rs/";
+					folder += "static/rs/";
 					switch(code)
 					{
 						case Technology.EXPEDITION_TECHNOLOGY:
@@ -239,7 +239,7 @@ public class TechTreePanel extends InfoPanel
 					break;
 				case FLEET:
 				case DEFENSE:
-					folder += "un/";
+					folder += "static/un/";
 					switch(code)
 					{
 						case Unit.PROCESSOR:

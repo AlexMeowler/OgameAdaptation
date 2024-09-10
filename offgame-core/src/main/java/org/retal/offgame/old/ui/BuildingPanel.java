@@ -311,7 +311,7 @@ public class BuildingPanel extends InfoPanel
 	{
 		public BuildingImg(int img_num) throws IOException
 		{
-			setIcon(new ImageIcon(getClass().getResource("/img/buildings/" + img_num + ".gif")));
+			setIcon(new ImageIcon(getClass().getResource("/static/img/buildings/" + img_num + ".gif")));
 			setBackground(BACKGROUND_COLOR);
 			setHorizontalAlignment(SwingConstants.CENTER);
 			setOpaque(true);

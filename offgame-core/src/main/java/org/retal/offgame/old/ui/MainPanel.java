@@ -22,7 +22,7 @@ public class MainPanel extends JPanel
 		setVisible(false);
 		setName("main_panel");
 		
-		background = ImageIO.read(this.getClass().getResourceAsStream("/bg_elite.jpg"));
+		background = ImageIO.read(this.getClass().getResourceAsStream("/static/bg_elite.jpg"));
 		//
 		players = new Player[2];
 		players[0] = new Player("Игрок(Вы)", 1);
@@ -266,11 +266,11 @@ public class MainPanel extends JPanel
 	}
 	
 	private BufferedImage background;
-	private ResourcePanel metal = new ResourcePanel("m.png");
-	private ResourcePanel crystal = new ResourcePanel("k.png");
-	private ResourcePanel deiterium = new ResourcePanel("d.png");
-	private ResourcePanel electricity = new ResourcePanel("e.png");
-	private ResourcePanel mail = new ResourcePanel("ml.png");
+	private ResourcePanel metal = new ResourcePanel("static/m.png");
+	private ResourcePanel crystal = new ResourcePanel("static/k.png");
+	private ResourcePanel deiterium = new ResourcePanel("static/d.png");
+	private ResourcePanel electricity = new ResourcePanel("static/e.png");
+	private ResourcePanel mail = new ResourcePanel("static/ml.png");
 	private ArrayList<InfoPanel> windows;
 	private ArrayList<JScrollPane> scrolls;
 	private static Player[] players;

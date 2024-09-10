@@ -96,7 +96,7 @@ public class MenuContainer extends JPanel implements MouseListener, MouseMotionL
 			setText("<html><font size=\"4\">" + text +"</font></html>");
 			try 
 			{
-				setIcon(new ImageIcon(ImageIO.read(this.getClass().getResourceAsStream("/link.gif"))));
+				setIcon(new ImageIcon(ImageIO.read(this.getClass().getResourceAsStream("/static/link.gif"))));
 				revalidate();
 			} 
 			catch (IOException e) 
