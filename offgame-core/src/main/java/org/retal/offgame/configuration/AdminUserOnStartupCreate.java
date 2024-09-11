@@ -1,5 +1,6 @@
 package org.retal.offgame.configuration;
 
+import lombok.RequiredArgsConstructor;
 import org.retal.offgame.model.Role;
 import org.retal.offgame.model.User;
 import org.retal.offgame.service.RoleService;
@@ -13,6 +14,7 @@ import static java.util.Collections.singleton;
 import static org.retal.offgame.model.RoleType.ROLE_ADMIN;
 
 @Component
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class AdminUserOnStartupCreate implements CommandLineRunner {
 
     private final UserService userService;
@@ -24,14 +26,8 @@ public class AdminUserOnStartupCreate implements CommandLineRunner {
     @Value("${spring.security.user.password}")
     private String defaultPassword;
 
-    @Autowired
-    public AdminUserOnStartupCreate(UserService userService, RoleService roleService) {
-        this.userService = userService;
-        this.roleService = roleService;
-    }
-
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         Role adminRole = roleService.findByRoleType(ROLE_ADMIN);
         User admin = User.builder()
                 .id(1L)

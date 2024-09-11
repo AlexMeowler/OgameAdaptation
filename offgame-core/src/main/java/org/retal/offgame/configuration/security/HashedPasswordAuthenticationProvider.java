@@ -1,5 +1,6 @@
 package org.retal.offgame.configuration.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -12,16 +13,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class HashedPasswordAuthenticationProvider implements AuthenticationProvider {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserDetailsService userDetailsService;
-
-    @Autowired
-    public HashedPasswordAuthenticationProvider(BCryptPasswordEncoder bCryptPasswordEncoder, UserDetailsService userDetailsService) {
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.userDetailsService = userDetailsService;
-    }
 
 
     @Override

@@ -26,7 +26,7 @@
             <column name="cost_energy" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="img" type="VARBINARY(1000000000)"/>
+            <column name="image_name" type="VARCHAR(32)"/>
         </createTable>
     </changeSet>
 
@@ -40,7 +40,7 @@
             <column name="cost_crystal" value="30"/>
             <column name="cost_deuterium" value="0"/>
             <column name="cost_energy" value="0"/>
-            <column name="img" valueBlobFile="${relative-resource-folder}/img/buildings/solar_station.gif"/>
+            <column name="image_name" value="solar_station.gif"/>
         </insert>
         <insert tableName="${tableName}">
             <column name="id" value="2"/>
@@ -51,7 +51,7 @@
             <column name="cost_crystal" value="15"/>
             <column name="cost_deuterium" value="0"/>
             <column name="cost_energy" value="0"/>
-            <column name="img" valueBlobFile="${relative-resource-folder}/img/buildings/mines_metal.gif"/>
+            <column name="image_name" value="mines_metal.gif"/>
         </insert>
         <insert tableName="${tableName}">
             <column name="id" value="3"/>
@@ -62,7 +62,7 @@
             <column name="cost_crystal" value="24"/>
             <column name="cost_deuterium" value="0"/>
             <column name="cost_energy" value="0"/>
-            <column name="img" valueBlobFile="${relative-resource-folder}/img/buildings/mines_crystal.gif"/>
+            <column name="image_name" value="mines_crystal.gif"/>
         </insert>
         <insert tableName="${tableName}">
             <column name="id" value="4"/>
@@ -73,7 +73,7 @@
             <column name="cost_crystal" value="75"/>
             <column name="cost_deuterium" value="0"/>
             <column name="cost_energy" value="0"/>
-            <column name="img" valueBlobFile="${relative-resource-folder}/img/buildings/mines_deuterium.gif"/>
+            <column name="image_name" value="mines_deuterium.gif"/>
         </insert>
     </changeSet>
 

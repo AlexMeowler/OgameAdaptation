@@ -22,7 +22,7 @@ public class MainPanel extends JPanel
 		setVisible(false);
 		setName("main_panel");
 		
-		background = ImageIO.read(this.getClass().getResourceAsStream("/static/bg_elite.jpg"));
+		background = ImageIO.read(this.getClass().getResourceAsStream("/src/app/img/bg_elite.jpg"));
 		//
 		players = new Player[2];
 		players[0] = new Player("Игрок(Вы)", 1);
