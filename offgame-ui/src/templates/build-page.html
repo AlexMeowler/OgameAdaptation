@@ -117,7 +117,7 @@
         </div>-->
     </div>
     <div id="main" class="js-main" style="padding-left: 93px;">
-        <center>
+        <div style="text-align: center">
             <table width="750">
                 <tbody>
                 <tr>
@@ -131,27 +131,26 @@
                 </tr>
                 <tr *ngFor="let obj of buildings">
                     <td class="l">
-                        <a href="infos.php?gid=4"><img border="0" src="/skins/epsilon/gebaeude/4.gif" align="top"
+                        <a href="infos.php?gid=4"><img border="0" src="/img/{{obj.imageName}}" align="top"
                                                        width="120" height="120"></a>
                     </td>
                     <td class="l">
-                        <a href="infos.php?gid=4">Солнечная электростанция</a> (Уровень 15) (<font color="#00FF00"
+                        <a href="infos.php?gid=4">{{obj.name}}</a> (Уровень 15) (<font color="#00FF00"
                                                                                                    js-title="Будет произведено энергии при постройке следующего уровеня">+<font
                             color="#00ff00">239</font> Энергия</font>)<br>
-                        Производит энергию из солнечных лучей. Энергия требуется для работы всех строений производящих
-                        ресурсы. <br>
+                        {{obj.shortDescription }}<br>
                         Необходимые ресурсы: Металл: <b class="cred" js-title="-4.574"><span
-                            class="noresources">32.842</span></b> Кристалл: <b class="cred" js-title="-8.211"><span
-                            class="noresources">13.136</span></b>
+                            class="noresources">{{ obj.costMetal }}</span></b> Кристалл: <b class="cred" js-title="-8.211"><span
+                            class="noresources">{{ obj.costCrystal }}</span></b>
                         <br>Время строительства: 02 ч. 47 мин. 11 сек.
-                        <div class="color-gray">Останется ресурсов: Металл: <b class="cgred">-4.575</b> Кристалл: <b
-                                class="cgred">-8.212</b></div>
+                        <!--<div class="color-gray">Останется ресурсов: Металл: <b class="cgred">-4.575</b> Кристалл: <b
+                                class="cgred">-8.212</b></div>-->
                         <br>
                     </td>
                     <td class="k" width="76"><font color="#FF0000">Недостаточно ресурсов!</font></td>
                 </tr>
                 </tbody>
             </table>
-        </center>
+        </div>
     </div>
 </div>

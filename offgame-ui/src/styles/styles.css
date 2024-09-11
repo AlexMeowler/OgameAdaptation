@@ -42,7 +42,7 @@ body.elite::before {
     height: 100%;
     top: 0;
     left: 0;
-    background-image: url(img/bg_elite.jpg);
+    background-image: url(/img/bg_elite.jpg);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position-x: -130px;
@@ -59,7 +59,7 @@ body.nobgmove.elite::before {
     height: 100%;
     top: 0;
     left: 0;
-    background-image: url(img/bg_elite.jpg);
+    background-image: url(/img/bg_elite.jpg);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position-x: 0;
@@ -80,7 +80,7 @@ body.nobgmove {
 }
 
 body.elite {
-    background-image: url(img/bg_elite.jpg)
+    background-image: url(/img/bg_elite.jpg)
 }
 
 body form table th table input {
@@ -105,7 +105,7 @@ body form table th table input {
     padding: 5px;
     font-size: 16px;
     font-weight: 700;
-    background: #051d2e url(img/top_l_bg.png) repeat-x;
+    background: #051d2e url(/img/top_l_bg.png) repeat-x;
     width: 100%;
     height: 22px
 }
@@ -225,7 +225,7 @@ th {
 }
 
 th.blue {
-    background-image: url(img/bg2.gif);
+    background-image: url(/img/bg2.gif);
     background-repeat: repeat-x
 }
 
@@ -242,7 +242,7 @@ td.c {
     font-weight: 700;
     color: #fff;
     padding-left: 3px;
-    background: #19273a url(img/bg2.gif) repeat-x
+    background: #19273a url(/img/bg2.gif) repeat-x
 }
 
 td.f, select, textarea, input {
@@ -401,7 +401,7 @@ a:hover {
 }
 
 #menu div a:hover {
-    background-image: url(img/link.gif);
+    background-image: url(/img/link.gif);
     background-repeat: no-repeat;
     background-position: left;
     height: 100%;
