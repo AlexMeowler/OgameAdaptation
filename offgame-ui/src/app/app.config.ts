@@ -8,7 +8,7 @@ import {ENVIRONMENT_SPECIFIC_PROVIDERS} from "./environments/environment";
 const address = 'localhost'
 const port = 8080
 
-export const apiUrl = `http://${address}:${port}/api`
+export const apiUrl = `http://${address}:${port}/api`;
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -18,3 +18,6 @@ export const appConfig: ApplicationConfig = {
         provideRouter(routes)
     ]
 };
+
+export const ENERGY_DIFF_POSITIVE_TOOLTIP = "Будет произведено энергии при постройке следующего уровеня";
+export const ENERGY_DIFF_NEGATIVE_TOOLTIP = "Используется энергии при постройке следующего уровеня";

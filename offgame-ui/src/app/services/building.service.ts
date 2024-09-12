@@ -14,4 +14,12 @@ export class BuildingService {
             return data.map((object: any) => new Building(object))
         }))
     }
+
+    getPlanetBuildings(planetId: bigint): Observable<Map<bigint, bigint>> {
+        return this.http.get(`${apiUrl}/planet/${planetId}/buildings`).pipe(map((data: any) => {
+            let map = new Map<bigint, bigint>();
+            data.map((object: any) => map.set(object.building_id, object.level))
+            return map;
+        }))
+    }
 }

@@ -116,31 +116,45 @@
             </div>
         </div>-->
     </div>
-    <div id="main" class="js-main" style="padding-left: 93px;">
+    <div #tooltip class="tooltip">
+        <table width="324" border="0" cellpadding="1" cellspacing="0">
+            <tbody>
+            <tr>
+                <td>
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                        <tbody>
+                        <tr>
+                            <td valign="top">
+                                <div style="color:#FFFFFF;font-family:Verdana,Arial,Helvetica;font-size:10px;">
+                                    Будет произведено энергии при постройке следующего уровеня
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="padding-left: 93px;">
         <div style="text-align: center">
             <table width="750">
                 <tbody>
-                <tr>
-                    <th>Занятость полей</th>
-                    <th>
-                        <font color="#00FF00">70</font> / <font color="#FF0000">150</font> Осталось 80 свободных полей
-                    </th>
-                    <th js-title="Температура">
-                        <div class="planet_temp">-5 — 10 °C</div>
-                    </th>
-                </tr>
-                <tr *ngFor="let obj of buildings">
+                <tr *ngFor="let obj of buildingList">
                     <td class="l">
                         <a href="infos.php?gid=4"><img border="0" src="/img/{{obj.imageName}}" align="top"
                                                        width="120" height="120"></a>
                     </td>
                     <td class="l">
-                        <a href="infos.php?gid=4">{{obj.name}}</a> (Уровень 15) (<font color="#00FF00"
-                                                                                                   js-title="Будет произведено энергии при постройке следующего уровеня">+<font
-                            color="#00ff00">239</font> Энергия</font>)<br>
-                        {{obj.shortDescription }}<br>
+                        <a href="infos.php?gid=4">{{ obj.name }}</a>
+                        <div style="display:inline-block;" *ngIf="buildingInstances.get(obj.id)">(Уровень {{ buildingInstances.get(obj.id) }})</div>
+                        (<div style="color: #00FF00; display: inline-block" (mouseover)="showTooltip()"
+                             (mousemove)="moveTooltip($event)" (mouseout)="hideTooltip()">+239 Энергия</div>)<br>
+                        {{ obj.shortDescription }}<br>
                         Необходимые ресурсы: Металл: <b class="cred" js-title="-4.574"><span
-                            class="noresources">{{ obj.costMetal }}</span></b> Кристалл: <b class="cred" js-title="-8.211"><span
+                            class="noresources">{{ obj.costMetal }}</span></b> Кристалл: <b class="cred"
+                                                                                            js-title="-8.211"><span
                             class="noresources">{{ obj.costCrystal }}</span></b>
                         <br>Время строительства: 02 ч. 47 мин. 11 сек.
                         <!--<div class="color-gray">Останется ресурсов: Металл: <b class="cgred">-4.575</b> Кристалл: <b

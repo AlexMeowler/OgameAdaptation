@@ -1,4 +1,5 @@
 export class Building {
+    public id: bigint
     public name: string
     public shortDescription: string
     public fullDescription: string
@@ -9,6 +10,7 @@ export class Building {
     public imageName: string
 
     constructor(data: any) {
+        this.id = data.id
         this.name = data.name
         this.shortDescription = data.shortDescription
         this.fullDescription = data.fullDescription

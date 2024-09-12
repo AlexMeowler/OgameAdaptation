@@ -36,6 +36,9 @@ public class User implements UserDetails {
     )
     private Set<Role> roles;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
+    private Set<BuildingInstance> buildings;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
