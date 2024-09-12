@@ -9,4 +9,8 @@
     <property name="ROLE_ADMIN_ID" value="1"/>
     <property name="ROLE_PLAYER_ID" value="2"/>
 
+    <property name="BUILDING_SOLAR_PANEL_ID" value="1"/>
+    <property name="BUILDING_METAL_MINE_ID" value="2"/>
+    <property name="BUILDING_CRYSTAL_MINE_ID" value="3"/>
+
 </databaseChangeLog>

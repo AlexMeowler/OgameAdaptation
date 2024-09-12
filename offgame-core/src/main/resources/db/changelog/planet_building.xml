@@ -4,23 +4,25 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <property name="tableName" value="users" global="false"/>
+    <property name="tableName" value="planet_building" global="false"/>
 
     <changeSet id="1" author="alexMeowler">
         <createTable tableName="${tableName}">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="username" type="VARCHAR(32)">
-                <constraints unique="true"/>
+            <column name="planet_id" type="BIGINT">
+                <constraints nullable="false" references="planet(id)" foreignKeyName="fk_planet"/>
             </column>
-            <column name="password" type="VARCHAR(255)"/>
+            <column name="building_id" type="BIGINT">
+                <constraints nullable="false" references="building(id)" foreignKeyName="fk_building"/>
+            </column>
+            <column name="level" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
 
-        <insert tableName="${tableName}">
-            <column name="id" value="${ADMIN_ID}"/>
-            <column name="username" value="${admin.username}"/>
-        </insert>
+        <addUniqueConstraint tableName="${tableName}" columnNames="planet_id, building_id"/>
     </changeSet>
 
 </databaseChangeLog>

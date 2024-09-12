@@ -1,5 +1,6 @@
-package org.retal.offgame.model;
+package org.retal.offgame.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -46,5 +47,7 @@ public class Building {
     private String imageName;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "building")
+    @JsonIgnore
     private Set<BuildingInstance> instances;
+
 }

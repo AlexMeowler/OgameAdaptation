@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="1" author="alexMeowler">
+        <insert tableName="planet">
+            <column name="owner_id" value="${ADMIN_ID}"/>
+            <column name="diameter" value="5000"/>
+            <column name="base_fields" value="150"/>
+            <column name="created_at" value="NOW()"/>
+        </insert>
+
+        <insert tableName="planet_building">
+            <column name="planet_id" value="1"/>
+            <column name="building_id" value="${BUILDING_SOLAR_PANEL_ID}"/>
+            <column name="level" value="3"/>
+        </insert>
+        <insert tableName="planet_building">
+            <column name="planet_id" value="1"/>
+            <column name="building_id" value="${BUILDING_METAL_MINE_ID}"/>
+            <column name="level" value="1"/>
+        </insert>
+        <insert tableName="planet_building">
+            <column name="planet_id" value="1"/>
+            <column name="building_id" value="${BUILDING_CRYSTAL_MINE_ID}"/>
+            <column name="level" value="1"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

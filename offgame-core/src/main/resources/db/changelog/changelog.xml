@@ -4,9 +4,15 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
+    <include relativeToChangelogFile="true" file="constants.xml"/>
+
     <include relativeToChangelogFile="true" file="users.xml"/>
     <include relativeToChangelogFile="true" file="roles.xml"/>
     <include relativeToChangelogFile="true" file="user_role.xml"/>
     <include relativeToChangelogFile="true" file="building.xml"/>
+    <include relativeToChangelogFile="true" file="planet.xml"/>
+    <include relativeToChangelogFile="true" file="planet_building.xml"/>
+
+    <include relativeToChangelogFile="true" file="dev/data.xml"/>
 
 </databaseChangeLog>

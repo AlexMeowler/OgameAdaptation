@@ -1,7 +1,13 @@
 package org.retal.offgame.repository;
 
-import org.retal.offgame.model.Building;
+import org.retal.offgame.entity.Building;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+@Repository
 public interface BuildingRepository extends JpaRepository<Building, Long> {
+
+    List<Building> findAllByOrderByIdAsc();
 }

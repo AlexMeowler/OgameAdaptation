@@ -1,8 +1,8 @@
 package org.retal.offgame.configuration;
 
 import lombok.RequiredArgsConstructor;
-import org.retal.offgame.model.Role;
-import org.retal.offgame.model.User;
+import org.retal.offgame.entity.Role;
+import org.retal.offgame.entity.User;
 import org.retal.offgame.service.RoleService;
 import org.retal.offgame.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import static java.util.Collections.singleton;
-import static org.retal.offgame.model.RoleType.ROLE_ADMIN;
+import static org.retal.offgame.entity.RoleType.ROLE_ADMIN;
 
 @Component
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})

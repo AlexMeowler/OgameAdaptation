@@ -1,4 +1,4 @@
-package org.retal.offgame.model;
+package org.retal.offgame.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

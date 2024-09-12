@@ -1,7 +1,7 @@
 package org.retal.offgame.service;
 
-import org.retal.offgame.model.Role;
-import org.retal.offgame.model.RoleType;
+import org.retal.offgame.entity.Role;
+import org.retal.offgame.entity.RoleType;
 
 public interface RoleService {
 

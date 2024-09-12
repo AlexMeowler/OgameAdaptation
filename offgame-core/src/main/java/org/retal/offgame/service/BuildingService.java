@@ -1,10 +1,14 @@
 package org.retal.offgame.service;
 
-import org.retal.offgame.model.Building;
+import org.retal.offgame.dto.BuildingInstanceDTO;
+import org.retal.offgame.entity.Building;
 
 import java.util.List;
+import java.util.Set;
 
 public interface BuildingService {
 
-    List<Building> getAllBuildings();
+    Set<BuildingInstanceDTO> getPlanetBuildings(Long planetId);
+
+    List<Building> getBuildingList();
 }

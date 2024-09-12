@@ -1,4 +1,4 @@
-package org.retal.offgame.model;
+package org.retal.offgame.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -36,8 +36,8 @@ public class User implements UserDetails {
     )
     private Set<Role> roles;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
-    private Set<BuildingInstance> buildings;
+    @OneToMany(mappedBy = "owner")
+    private Set<Planet> planets;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
