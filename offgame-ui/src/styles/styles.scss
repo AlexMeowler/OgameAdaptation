@@ -63,7 +63,7 @@ body.nobgmove.elite::before {
     height: 100%;
     top: 0;
     left: 0;
-    background-image: url(/img/bg_elite.jpg);
+    background-image: url(/img/ui/bg_elite.jpg);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position-x: 0;
@@ -84,7 +84,7 @@ body.nobgmove {
 }
 
 body.elite {
-    background-image: url(/img/bg_elite.jpg)
+    background-image: url(/img/ui/bg_elite.jpg)
 }
 
 body form table th table input {
@@ -95,6 +95,107 @@ body form table th table input {
     top: 0;
     height: 32px;
     background-color: #040e1e
+}
+
+.top_bar_fake {
+    position: relative;
+    width: 100%;
+    height: 32px;
+}
+
+.top_bar_bg {
+    position: fixed;
+    width: 100%;
+    height: 32px;
+    background: #051d2e url(/img/ui/header/top_r_bg.png) repeat-x;
+    z-index: 1;
+}
+
+.top_bar_left {
+    display: inline-block;
+    float: left;
+    position: relative;
+    width: 45px;
+    height: 32px;
+    background: #051d2e url(/img/ui/header/top_l_bg.png) repeat-x;
+    padding: 0;
+    margin: 0;
+}
+
+.top_bar_center {
+    display: inline-block;
+    float: left;
+    position: relative;
+}
+
+.top_bar_center .top_bar_open {
+    display: inline-block;
+    float: left;
+    width: 38px;
+    height: 32px;
+    background: #051d2e url(/img/ui/header/top_open.png) no-repeat 0 0
+}
+
+.top_bar_center .top_bar_next {
+    display: inline-block;
+    float: left;
+    height: 32px;
+    width: 48px;
+    background: #051d2e url(/img/ui/header/top_next.png) no-repeat 0 0
+}
+
+.top_bar_center .tbb_content {
+    display: inline-block;
+    float: left;
+    width: 80px;
+    height: 32px;
+    background: #051d2e url(/img/ui/header/top_bg.png) repeat-x 0 0;
+    color: #dbe9fa;
+    font-size: 11px;
+    padding: 0;
+    margin: 0
+}
+
+.top_bar_center .w_60 {
+    width: 54px
+}
+
+.top_bar_center .w_70 {
+    width: 70px
+}
+
+.top_bar_center .w_80 {
+    width: 79px
+}
+
+.top_bar_center .w_90 {
+    width: 90px
+}
+
+.top_bar_center .tbb_content .tbb_element {
+    margin-top: 9px;
+    margin-left: -10px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.res_metal {
+    background: url(/img/ui/res/metal.png) no-repeat 0 0;
+}
+
+.res-icon {
+    display: inline-block;
+    padding-left: 18px;
+    padding-right: 10px;
+    font-size: 110%;
+}
+
+.top_bar_center .top_bar_close {
+    display: inline-block;
+    float: left;
+    height: 32px;
+    width: 41px;
+    background: #051d2e url(/img/ui/header/top_close.png) no-repeat 0 0;
 }
 
 #top_bar_right_empty {

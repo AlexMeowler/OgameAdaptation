@@ -1,170 +1,29 @@
-<div class="top_bar_fake">
-    <div class="top_bar_bg ">
-        <!--<div class="top_bar ">
-            <div class="top_bar_left">
-                <div style="margin-left:1px;margin-top:5px;"></div>
-            </div>
-            <div class="top_bar_center">
-                <div class="top_bar_open"></div>
-                <div class="tbb_content w_80" style="color:white;" js-title="Металл<br>Вместимость: 82.500<br><br><small>Клик на иконку для просмотра деталей</small>" js-help="<div class=&quot;res-tooltip_header&quot;>Металл</div>
-                    <br>
-                    <p>Используется как основной материал при строительстве, очень нужен в начале игры.<br>
-                    Для повышения добычи стройте и улучшайте <b>Рудник по добыче металла</b><br>
-                    Офицер Геолог - существенно усиливает добычу<br>
-                    Можно быстро купить этот ресурс в сервисах за куиды.<br>
-                    Cамое дешёвое сырьё, но за то его требуется больше, чем всего остального.<br>
-                    Для производства металла требуется меньше всего энергии.<br>
-                    Добывается даже пока вас нет в игре.<br>
-                    </p>,,STICKY"><span id="metal" class="tbb_element res-icon res1">29.158</span></div>
-                <div class="top_bar_next"></div>
-                <div class="tbb_content w_80" style="color:white;" js-title="Кристалл<br>Вместимость: 44.000<br><br><small>Клик на иконку для просмотра деталей</small>" js-help="<div class=&quot;res-tooltip_header&quot;>Кристалл</div>
-                    <br>
-                    <p>Очень много кристалла требуется для исследований, особенно на пути к колонизации новых миров<br>
-                    Для повышения добычи стройте и улучшайте <b>Рудник по добыче кристалла</b><br>
-                    Офицер Геолог - существенно усиливает добычу<br>
-                    Можно быстро купить этот ресурс в сервисах за куиды.<br>
-                    Средний курс при обмене на металл 2 (1 единица кристалла = 2 единицам металла)<br>
-                    Добывается даже пока вас нет в игре.<br>
-                    </p>,,STICKY"><span id="crystal" class="tbb_element res-icon res2">5.417</span></div>
-                <div class="top_bar_next"></div>
-                <div class="tbb_content w_80" style="color:white;" js-title="Дейтерий<br>Вместимость: 44.000<br><br><small>Клик на иконку для просмотра деталей</small>" js-help="<div class=&quot;res-tooltip_header&quot;>Дейтерий</div>
-                    <br>
-                    <p>Является топливом для кораблей при звёздных перелётах<br>
-                    Для повышения добычи стройте и улучшайте <b>Синтезатор дейтерия</b><br>
-                    Офицер Геолог - существенно усиливает добычу<br>
-                    Можно быстро купить этот ресурс в сервисах за куиды.<br>
-                    На более холодных планетах дейтерий добывается быстрее<br>
-                    Самое дорогое сырьё.<br>Средний курс при обмене на кристалл 2 (1 единица дейтерия = 2 единицам кристалла)<br>
-                    Добывается даже пока вас нет в игре.<br>
-                    </p>,,STICKY"><span id="deuterium" class="tbb_element res-icon res3">38.205</span></div>
-                <div class="top_bar_next"></div>
-                <div class="tbb_content w_60" style="color:white;" js-title="Энергия<br>Всего: 1.526<br><br><small>Клик для просмотра деталей</small>" js-help="<div class=&quot;res-tooltip_header&quot;>Энергия</div>
-                    <br>
-                    <p>Используется для работы добывающих предприятий (шахт и синтезаторов)<br>
-                    При недостатке (отрицательных значениях) понижается эффективность работы добывающих предприятий<br>
-                    Следите за балансом энергии не допускайте красных значений<br>
-                    Для повышения выработки энергии стройте и улучшайте <b>Солнечную электростанцию</b>, <b>Термоядерную электростанцию</b><br>
-                    Изучение энергетической технологии увеличивает выработку <b>Термоядерных электростанций</b><br>
-                    Существенное количество энергии можно получить с достаточного количества <b>Солнечных спутников</b><br>
-                    На горячих планетах <b>Солнечные спутники</b> вырабатывают больше энергии<br>
-                    Офицер Инженер - существенно усиливает выработку энергии<br>
-                    Большое количество энергии требуется для изучения гравитационной технологии.<br>
-                    </p>,,STICKY"><span id="energy" class="tbb_element res-icon res4">26</span></div>
-                <div class="top_bar_next"></div>
-                <div class="tbb_content w_60" js-title="Кредиты<br><br><small>Клик на иконку для просмотра деталей</small>" js-help="<div class=&quot;res-tooltip_header&quot;>Кредиты</div>
-                    <br>
-                    <p>Внутри-игровая валюта<br>
-                    Основное назначение - контроль численности флота (в разработке).<br>
-                    За кредиты можно осуществлять:
-                    <ul>
-                      <li>Симуляции боёв (Меню → Симулятор боя)</li>
-                      <li>Торговые операции между игроками - Рынок</li>
-                      <li>Подарить другому игроку подарки</li>
-                    </ul>
-                    Кредиты можно получить следующим путем:
-                    <ul>
-                       <li>В экспедициях (доступно)
-                       <li>Торговля с имперским флотом раз в час (доступно)
-                       <li>За выполнение квестов или заданий (в разработке)
-                       <li>Размен куидов на кредиты (в планах)
-                    </ul>
-                    </p>,,STICKY"><span id="cr" class="tbb_element res-icon res-cr">223</span></div>
-                <div class="top_bar_next"></div>
-                <div class="tbb_content w_60" js-title="Куиды<br><br><small>Клик на иконку для просмотра деталей</small>" js-help="<div class=&quot;res-tooltip_header&quot;>Куиды</div>
-                    <br>
-                    <p>Является не игровой валютой<br>
-                    Куиды можно потратить на:
-                    <ul>
-                       <li>Найм офицеров (Меню → Офицеры)</li>
-                       <li>Игровые сервисы (Меню → Сервисы)</li>
-                       <li>Создание альянса</li>
-                       <li>Снятие игровых санкций</li>
-                    </ul>
-                    <br>
-                    Способы пополнить куидный счёт:
-                    <ul>
-                        <li>Заработать в реферальной программе (Меню → Заработать куиды)
-                        <li><a href=&quot;/quids.php&quot;>Пополнить счёт</a> за реальные деньги (Меню → Получить куиды)
-                        <li>Выиграть (Меню → Выиграть куиды) или получить в качестве приза в конкурсе
-                        <li>Поддержка премирует всех внимательных игроков нашедших в игре неизвестные ошибки
-                    </ul>
-                    </p>,,STICKY"><span id="quid" class="tbb_element res-icon res-q">250</span></div>
-                <div class="top_bar_next"></div>
-                <div class="tbb_content w_70" js-title="Сообщения<br><br><small>Клик на иконку для просмотра деталей</small>" js-help="<div class=&quot;res-tooltip_header&quot;>Сообщения</div>
-                    <br>
-                    <p>Нажав на число в квадратных скобках вы увидете список игровых и системных сообщений<br>
-                    Так же тут отображается оранжевым количество новых сообщений от поддержки<br>
-                    </p>,,STICKY"><span id="message" class="tbb_element res-icon message"><a href="/messages.php" js-title="<div style='width: 200px;'><div style='color: #FFFF00;' messcat='0'>Шпионские доклады <span class='fright'>0</span></div>
-<div style='color: #00FFFF;' messcat='1'>Сообщения от игроков <span class='fright'>0</span></div>
-<div style='color: #49B492;' messcat='2'>Сообщения альянса <span class='fright'>0</span></div>
-<div style='color: #FF6699;' messcat='3'>Боевые отчёты <span class='fright'>0</span></div>
-<div style='color: #9D6AB6;' messcat='4'>Отчёты от переработчиков <span class='fright'>0</span></div>
-<div style='color: #009933;' messcat='5'>Доставка флота <span class='fright'>0</span></div>
-<div style='color: #009933;' messcat='6'>Торговля <span class='fright'>0</span></div>
-<div style='color: #60c3f3;' messcat='12'>Поисковые отчёты <span class='fright'>0</span></div>
-<div style='color: #6864F3;' messcat='15'>Отчёты экспедиций <span class='fright'>0</span></div>
-<div style='color: #eeeeee;' messcat='95'>Система оповещений <span class='fright'>0</span></div>
-<div style='color: #FF9900;' messcat='97'>Системные сообщения <span class='fright'>0</span></div>
-<div style='color: #08a6a9;' messcat='99'>Сообщения очереди построек <span class='fright'>0</span></div>
-<div style='color: #ABABAB;' messcat='100'>Все сообщения <span class='fright'>0</span></div>
-</div>">[ 0 ]</a> </span></div>
-                <div class="top_bar_close "></div>
-            </div>
-            <div class="top_bar_right">
-                <div id="btn-market" js-title="Рынок"></div>
-                <a class="flagship-btn flagship-btn-top" id="js-usership-open" js-title="Флагман"></a>
-            </div>
-        </div>-->
-    </div>
-    <div #tooltip class="tooltip">
-        <table width="324" border="0" cellpadding="1" cellspacing="0">
+<div style="padding-left: 93px;">
+    <div style="text-align: center">
+        <table width="750">
             <tbody>
-            <tr>
-                <td>
-                    <table width="100%" border="0" cellpadding="0" cellspacing="0">
-                        <tbody>
-                        <tr>
-                            <td valign="top">
-                                <div style="color:#FFFFFF;font-family:Verdana,Arial,Helvetica;font-size:10px;">
-                                    Будет произведено энергии при постройке следующего уровеня
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+            <tr *ngFor="let obj of buildingList">
+                <td class="l">
+                    <a href="infos.php?gid=4"><img border="0" src="/img/{{obj.imageName}}" align="top"
+                                                   width="120" height="120"></a>
                 </td>
+                <td class="l">
+                    <a href="infos.php?gid=4">{{ obj.name }}</a>
+                    <span *ngIf="buildingInstances.get(obj.id)"> (Уровень {{ buildingInstances.get(obj.id) }})</span>
+                    (<div style="color: #00FF00; display: inline-block" text-tooltip tooltipText="Будет произведено энергии при постройке следующего уровеня">+239 Энергия</div>)<br>
+                    {{ obj.shortDescription }}<br>
+                    Необходимые ресурсы: Металл: <b class="cred" js-title="-4.574"><span
+                        class="noresources">{{ obj.costMetal }}</span></b> Кристалл: <b class="cred"
+                                                                                        js-title="-8.211"><span
+                        class="noresources">{{ obj.costCrystal }}</span></b>
+                    <br>Время строительства: 02 ч. 47 мин. 11 сек.
+                    <!--<div class="color-gray">Останется ресурсов: Металл: <b class="cgred">-4.575</b> Кристалл: <b
+                            class="cgred">-8.212</b></div>-->
+                    <br>
+                </td>
+                <td class="k" width="76"><font color="#FF0000">Недостаточно ресурсов!</font></td>
             </tr>
             </tbody>
         </table>
-    </div>
-    <div style="padding-left: 93px;">
-        <div style="text-align: center">
-            <table width="750">
-                <tbody>
-                <tr *ngFor="let obj of buildingList">
-                    <td class="l">
-                        <a href="infos.php?gid=4"><img border="0" src="/img/{{obj.imageName}}" align="top"
-                                                       width="120" height="120"></a>
-                    </td>
-                    <td class="l">
-                        <a href="infos.php?gid=4">{{ obj.name }}</a>
-                        <div style="display:inline-block;" *ngIf="buildingInstances.get(obj.id)">(Уровень {{ buildingInstances.get(obj.id) }})</div>
-                        (<div style="color: #00FF00; display: inline-block" (mouseover)="showTooltip()"
-                             (mousemove)="moveTooltip($event)" (mouseout)="hideTooltip()">+239 Энергия</div>)<br>
-                        {{ obj.shortDescription }}<br>
-                        Необходимые ресурсы: Металл: <b class="cred" js-title="-4.574"><span
-                            class="noresources">{{ obj.costMetal }}</span></b> Кристалл: <b class="cred"
-                                                                                            js-title="-8.211"><span
-                            class="noresources">{{ obj.costCrystal }}</span></b>
-                        <br>Время строительства: 02 ч. 47 мин. 11 сек.
-                        <!--<div class="color-gray">Останется ресурсов: Металл: <b class="cgred">-4.575</b> Кристалл: <b
-                                class="cgred">-8.212</b></div>-->
-                        <br>
-                    </td>
-                    <td class="k" width="76"><font color="#FF0000">Недостаточно ресурсов!</font></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
     </div>
 </div>

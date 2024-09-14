@@ -3,9 +3,10 @@ import {HttpClient} from "@angular/common/http";
 import {apiUrl} from "../app.config";
 import {map, Observable} from "rxjs";
 import {Building} from "../model/Building";
+import {Resources} from "../model/Resources";
 
 @Injectable()
-export class BuildingService {
+export class PlanetService {
     constructor(private http: HttpClient) {
     }
 
@@ -20,6 +21,12 @@ export class BuildingService {
             let map = new Map<bigint, bigint>();
             data.map((object: any) => map.set(object.building_id, object.level))
             return map;
+        }))
+    }
+
+    getPlanetResources(planetId: bigint): Observable<Resources> {
+        return this.http.get(`${apiUrl}/planet/${planetId}/resources`).pipe(map((data: any) => {
+            return new Resources(data)
         }))
     }
 }
