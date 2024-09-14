@@ -11,6 +11,13 @@
             <column name="base_fields" value="150"/>
             <column name="created_at" value="NOW()"/>
         </insert>
+        <insert tableName="planet_resource">
+            <column name="id" value="1"/>
+            <column name="metal" value="5000"/>
+            <column name="crystal" value="2500"/>
+            <column name="deuterium" value="1250"/>
+            <column name="updated_at" value="NOW()"/>
+        </insert>
 
         <insert tableName="planet_building">
             <column name="planet_id" value="1"/>

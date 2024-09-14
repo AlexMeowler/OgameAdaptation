@@ -3,6 +3,7 @@ package org.retal.offgame.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.retal.offgame.entity.buildings.Building;
 
 @Entity
 @Table(name = "planet_building")

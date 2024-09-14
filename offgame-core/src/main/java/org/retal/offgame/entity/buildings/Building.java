@@ -1,4 +1,4 @@
-package org.retal.offgame.entity;
+package org.retal.offgame.entity.buildings;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.retal.offgame.entity.BuildingInstance;
 
 import java.util.Set;
 
@@ -15,11 +16,14 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Building {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "id", discriminatorType = DiscriminatorType.INTEGER)
+public abstract class Building {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
+    @Column(insertable=false, updatable=false)
     private Long id;
 
     @Column

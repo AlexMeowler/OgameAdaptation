@@ -2,8 +2,10 @@ package org.retal.offgame.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.retal.offgame.entity.Planet;
+import org.retal.offgame.entity.Resources;
 import org.retal.offgame.entity.User;
 import org.retal.offgame.repository.PlanetRepository;
+import org.retal.offgame.repository.ResourcesRepository;
 import org.retal.offgame.service.PlanetService;
 import org.retal.offgame.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,8 @@ import static java.util.Collections.emptyList;
 public class PlanetServiceImpl implements PlanetService {
 
     private final PlanetRepository planetRepository;
+    private final ResourcesRepository resourcesRepository;
+
     private final UserService userService;
 
     @Override
@@ -32,5 +36,10 @@ public class PlanetServiceImpl implements PlanetService {
                 .map(User::getId)
                 .map(planetRepository::findByOwnerIdOrderByCreatedAtAsc)
                 .orElse(emptyList());
+    }
+
+    @Override
+    public Resources getResources(Long planetId) {
+        return resourcesRepository.findByPlanetId(planetId);
     }
 }

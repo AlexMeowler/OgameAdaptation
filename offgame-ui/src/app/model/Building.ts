@@ -1,16 +1,8 @@
-export class Building {
-    public id: bigint
-    public name: string
-    public shortDescription: string
-    public fullDescription: string
-    public costMetal: bigint
-    public costCrystal: bigint
-    public costDeuterium: bigint
-    public costEnergy: bigint
-    public imageName: string
+export class BuildingImpl {
 
-    constructor(data: any) {
-        this.id = data.id
+    constructor(data: BuildingImpl) {
+        Object.assign(this, data);
+        /*this.id = data.id
         this.name = data.name
         this.shortDescription = data.shortDescription
         this.fullDescription = data.fullDescription
@@ -18,6 +10,16 @@ export class Building {
         this.costCrystal = data.costCrystal
         this.costDeuterium = data.costDeuterium
         this.costEnergy = data.costEnergy
-        this.imageName = data.imageName
+        this.imageName = data.imageName*/
     }
+
+    costCrystal!: bigint;
+    costDeuterium!: bigint;
+    costEnergy!: bigint;
+    costMetal!: bigint;
+    fullDescription!: string;
+    id!: bigint;
+    imageName!: string;
+    name!: string;
+    shortDescription!: string;
 }

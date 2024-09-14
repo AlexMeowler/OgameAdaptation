@@ -16,7 +16,7 @@
         <dependency>
             <groupId>org.retal</groupId>
             <artifactId>${ui.project.name}</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>

@@ -1,7 +1,7 @@
 package org.retal.offgame.service;
 
 import org.retal.offgame.dto.BuildingInstanceDTO;
-import org.retal.offgame.entity.Building;
+import org.retal.offgame.entity.buildings.Building;
 
 import java.util.List;
 import java.util.Set;

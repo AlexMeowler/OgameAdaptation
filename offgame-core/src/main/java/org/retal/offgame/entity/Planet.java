@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.OffsetDateTime;
 import java.util.Set;
@@ -28,5 +29,10 @@ public class Planet {
     private Set<BuildingInstance> buildings;
 
     @Column
+    @CreatedDate
     private OffsetDateTime createdAt;
+
+    @OneToOne(mappedBy = "planet", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private Resources resources;
 }

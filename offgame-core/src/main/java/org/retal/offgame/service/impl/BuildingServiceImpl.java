@@ -2,7 +2,7 @@ package org.retal.offgame.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.retal.offgame.dto.BuildingInstanceDTO;
-import org.retal.offgame.entity.Building;
+import org.retal.offgame.entity.buildings.Building;
 import org.retal.offgame.repository.BuildingInstanceRepository;
 import org.retal.offgame.repository.BuildingRepository;
 import org.retal.offgame.service.BuildingService;

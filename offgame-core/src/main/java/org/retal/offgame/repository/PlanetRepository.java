@@ -11,6 +11,6 @@ public interface PlanetRepository extends JpaRepository<Planet, Long> {
 
     List<Planet> findByOwnerIdOrderByCreatedAtAsc(Long ownerId);
 
-    //TODO retivov-a security for requests
+    //TODO
 
 }
