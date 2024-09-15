@@ -1,11 +1,11 @@
 export class Building {
 
-    costCrystal!: bigint;
-    costDeuterium!: bigint;
-    costEnergy!: bigint;
-    costMetal!: bigint;
+    costCrystal!: number;
+    costDeuterium!: number;
+    costEnergy!: number;
+    costMetal!: number;
     fullDescription!: string;
-    id!: bigint;
+    id!: number;
     imageName!: string;
     name!: string;
     shortDescription!: string;

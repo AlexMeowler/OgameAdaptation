@@ -5,7 +5,7 @@ import {DecimalPipe} from "@angular/common";
     name: "customNumber",
     standalone: true
 })
-export class Number implements PipeTransform {
+export class CustomNumberPipe implements PipeTransform {
 
     constructor(private decimalPipe:DecimalPipe) {
     }

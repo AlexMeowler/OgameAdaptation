@@ -1,10 +1,10 @@
 import {
+    AfterViewInit,
     ComponentRef,
     Directive,
     ElementRef,
     HostListener,
     Input,
-    OnInit,
     Renderer2,
     ViewContainerRef
 } from '@angular/core';
@@ -14,7 +14,7 @@ import {TooltipComponent} from "./tooltip.component";
     selector: '[text-tooltip]',
     standalone: true
 })
-export class TooltipDirective implements OnInit {
+export class TooltipDirective implements AfterViewInit {
 
     @Input() tooltipText! : string;
 
@@ -27,7 +27,7 @@ export class TooltipDirective implements OnInit {
         this.tooltip = this.viewContainerRef.createComponent(TooltipComponent);
     }
 
-    ngOnInit(): void {
+    ngAfterViewInit(): void {
         this.tooltip.setInput("text", this.tooltipText);
     }
 

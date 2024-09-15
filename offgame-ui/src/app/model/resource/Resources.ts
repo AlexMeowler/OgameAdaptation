@@ -1,8 +1,10 @@
+import {Resource} from "./Resource";
+
 export class Resources {
-    metal!: bigint
-    crystal!: bigint
-    deuterium!: bigint
-    energy?: bigint | null
+    metal!: Resource
+    crystal!: Resource
+    deuterium!: Resource
+    energy?: Resource | null
 
     constructor(data: Resources) {
         Object.assign(this, data);

@@ -1,8 +1,9 @@
 <ng-template #resourceField
              let-width="widthStyle"
-             let-amount="amount"
-             let-type="resType">
-    <div class="tbb_content {{width}}" style="color:white;" js-title="Металл<br>Вместимость: 82.500<br><br><small>Клик на иконку для просмотра деталей</small>" js-help="<div class=&quot;res-tooltip_header&quot;>Металл</div>
+             let-resource="resource"
+             let-type="resType"
+             let-tooltipText="tooltip">
+    <!-- js-help="<div class=&quot;res-tooltip_header&quot;>Металл</div>
                     <br>
                     <p>Используется как основной материал при строительстве, очень нужен в начале игры.<br>
                     Для повышения добычи стройте и улучшайте <b>Рудник по добыче металла</b><br>
@@ -11,7 +12,8 @@
                     Cамое дешёвое сырьё, но за то его требуется больше, чем всего остального.<br>
                     Для производства металла требуется меньше всего энергии.<br>
                     Добывается даже пока вас нет в игре.<br>
-                    </p>,,STICKY"><span id="metal" class="tbb_element res-icon res_{{type}}">{{ amount | bigint }}</span></div>
+                    </p>,,STICKY" -->
+    <div class="tbb_content {{width}}" style="color:white;" text-tooltip tooltipText="{{tooltipText}}"><span id="metal" class="tbb_element res-icon res_{{type}}">{{ resource.amount | customNumber }}</span></div>
     <div class="top_bar_next"></div>
 </ng-template>
 
@@ -24,6 +26,8 @@
             <div class="top_bar_center">
                 <div class="top_bar_open"></div>
                 <ng-container *ngTemplateOutlet="resourceField;context:contextMetal"/>
+                <ng-container *ngTemplateOutlet="resourceField;context:contextCrystal"/>
+                <ng-container *ngTemplateOutlet="resourceField;context:contextDeuterium"/>
                 <!--<div class="tbb_content w_80" style="color:white;" js-title="Металл<br>Вместимость: 82.500<br><br><small>Клик на иконку для просмотра деталей</small>" js-help="<div class=&quot;res-tooltip_header&quot;>Металл</div>
                     <br>
                     <p>Используется как основной материал при строительстве, очень нужен в начале игры.<br>

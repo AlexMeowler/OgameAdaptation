@@ -19,13 +19,13 @@ import {TooltipDirective} from "./tooltip/tooltip.directive";
 export class BuildComponent implements OnInit {
 
     buildingList: Building[] = []
-    buildingInstances!: Map<bigint, bigint>
+    buildingInstances!: Map<number, number>
 
     constructor(private planetService: PlanetService) {
     }
 
     ngOnInit() {
         this.planetService.getBuildingList().subscribe({next: (data: Building[]) => this.buildingList = data})
-        this.planetService.getPlanetBuildings(BigInt(1)).subscribe({next: (data: Map<bigint, bigint>) => this.buildingInstances = data})
+        this.planetService.getPlanetBuildings(1).subscribe({next: (data: Map<number, number>) => this.buildingInstances = data})
     }
 }
