@@ -1,4 +1,4 @@
-package org.retal.offgame.configuration.persistence;
+package org.retal.offgame.configuration.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
