@@ -13,6 +13,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.Duration;
 import java.time.Instant;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+import static org.retal.offgame.dto.ResourceDTO.withAmount;
+
 @Entity
 @Table(name = "planet_resource")
 @Getter
@@ -46,20 +50,22 @@ public class Resources {
 
     public ResourcesDTO toDTO() {
         return ResourcesDTO.builder()
-                .metal(new ResourceDTO(getMetal(), 0.0))
-                .crystal(new ResourceDTO(getCrystal(), 0.0))
-                .deuterium(new ResourceDTO(getDeuterium(), 0.0))
+                .metal(withAmount(getMetal()))
+                .crystal(withAmount(getCrystal()))
+                .deuterium(withAmount(getDeuterium()))
                 .build();
     }
 
-    public void updateResources(ResourcesDTO productionPerHour, Duration duration) {
+    public void updateResources(ResourcesDTO total, Duration duration) {
         double hours = 1.0 * duration.getSeconds() / 3600;
-        setMetal(getMetal() + calcResource(productionPerHour.getMetal(), hours));
-        setCrystal(getCrystal() + calcResource(productionPerHour.getCrystal(), hours));
-        setDeuterium(getDeuterium() + calcResource(productionPerHour.getDeuterium(), hours));
+        Double productionEffectiveness = total.calculateProductionEffectiveness();
+        setMetal(calcResource(getMetal(), total.getMetal(), hours, productionEffectiveness));
+        setCrystal(calcResource(getCrystal(), total.getCrystal(), hours, productionEffectiveness));
+        setDeuterium(calcResource(getDeuterium(), total.getDeuterium(), hours, productionEffectiveness));
     }
 
-    private double calcResource(ResourceDTO resourceDTO, double hours) {
-        return resourceDTO.getProductionPerHour() * hours;
+    private double calcResource(Double current, ResourceDTO resourceDTO, double hours, double effectiveness) {
+        double newValue = current + resourceDTO.productionPerHour() * hours * effectiveness;
+        return max(current, min(resourceDTO.maxAmount(), newValue));
     }
 }

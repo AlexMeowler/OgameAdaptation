@@ -51,16 +51,17 @@ public class PlanetServiceImpl implements PlanetService {
     }
 
     private ResourcesDTO updateResources(Planet planet) {
-        ResourcesDTO totalProductionPerHour = planet.getBuildings().stream()
-                //TODO температура планеты
-                .map(instance -> instance.getBuilding().getProductionPerHour(instance.getLevel(), 0))
-                .reduce(ResourcesDTO.defaultProduction(), ResourcesDTO::merge);
+        Integer temperature = planet.averageTemperature();
+        ResourcesDTO totalProductionPerHourWithLimit = planet.getBuildings().stream()
+                .map(instance -> instance.getBuilding().getResourceInfo(instance.getLevel(), temperature))
+                .reduce(ResourcesDTO.defaultDTO(), ResourcesDTO::merge);
 
         Resources resources = planet.getResources();
         Duration duration = Duration.between(resources.getUpdatedAt(), Instant.now());
-        resources.updateResources(totalProductionPerHour, duration);
+
+        resources.updateResources(totalProductionPerHourWithLimit, duration);
         resourcesRepository.save(resources);
 
-        return totalProductionPerHour.merge(resources.toDTO());
+        return totalProductionPerHourWithLimit.merge(resources.toDTO());
     }
 }

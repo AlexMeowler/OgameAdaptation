@@ -24,6 +24,12 @@ public class Planet {
     @JsonIgnore
     private User owner;
 
+    @Column(insertable = false, updatable = false)
+    private Integer minTemperature;
+
+    @Column(insertable = false, updatable = false)
+    private Integer maxTemperature;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "planet")
     @JsonIgnore
     private Set<BuildingInstance> buildings;
@@ -35,4 +41,8 @@ public class Planet {
     @OneToOne(mappedBy = "planet", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Resources resources;
+
+    public Integer averageTemperature() {
+        return (getMinTemperature() + getMaxTemperature()) / 2;
+    }
 }

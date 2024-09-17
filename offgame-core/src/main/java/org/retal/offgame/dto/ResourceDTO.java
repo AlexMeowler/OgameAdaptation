@@ -1,31 +1,31 @@
 package org.retal.offgame.dto;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
 import java.util.function.BinaryOperator;
 import java.util.stream.Stream;
 
-@RequiredArgsConstructor
-@Getter
-public class ResourceDTO {
+public record ResourceDTO(Double amount, Double productionPerHour, Double maxAmount) {
 
-    private final Double amount;
+    public static ResourceDTO withProduction(Double productionPerHour) {
+        return new ResourceDTO(0.0, productionPerHour, 0.0);
+    }
 
-    private final Double productionPerHour;
+    public static ResourceDTO withAmount(Double amount) {
+        return new ResourceDTO(amount, 0.0, 0.0);
+    }
 
-    public ResourceDTO(Double productionPerHour) {
-        this(0.0, productionPerHour);
+    public static ResourceDTO withMaxAmount(Double maxAmount) {
+        return new ResourceDTO(0.0, 0.0, maxAmount);
     }
 
     public static ResourceDTO empty() {
-        return new ResourceDTO(0.0, 0.0);
+        return new ResourceDTO(0.0, 0.0, 0.0);
     }
 
     public ResourceDTO merge(ResourceDTO change) {
-        Double newAmount = addValues(getAmount(), change.getAmount());
-        Double newProductionPerHour = addValues(getProductionPerHour(), change.getProductionPerHour());
-        return new ResourceDTO(newAmount, newProductionPerHour);
+        Double newAmount = addValues(amount(), change.amount());
+        Double newProductionPerHour = addValues(productionPerHour(), change.productionPerHour());
+        Double newMaxAmount = addValues(maxAmount(), change.maxAmount());
+        return new ResourceDTO(newAmount, newProductionPerHour, newMaxAmount);
     }
 
     private Double addValues(Double... values) {

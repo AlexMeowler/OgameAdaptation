@@ -1,7 +1,7 @@
 package org.retal.offgame.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.retal.offgame.dto.BuildingInstanceDTO;
+import org.retal.offgame.dto.BuildingDTO;
 import org.retal.offgame.dto.ResourcesDTO;
 import org.retal.offgame.entity.Planet;
 import org.retal.offgame.service.BuildingService;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/planet")
@@ -34,7 +33,7 @@ public class PlanetController {
     }
 
     @GetMapping("/{id}/buildings")
-    public Set<BuildingInstanceDTO> getPlanetBuildingsInfo(@PathVariable Long id) {
+    public List<BuildingDTO> getPlanetBuildingsInfo(@PathVariable Long id) {
         return buildingService.getPlanetBuildings(id);
     }
 

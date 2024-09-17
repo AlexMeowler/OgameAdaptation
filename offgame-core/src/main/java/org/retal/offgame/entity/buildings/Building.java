@@ -6,11 +6,16 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.retal.offgame.dto.ResourceDTO;
+import org.retal.offgame.dto.BuildingDTO;
 import org.retal.offgame.dto.ResourcesDTO;
 import org.retal.offgame.entity.BuildingInstance;
 
+import java.util.Iterator;
+import java.util.Optional;
 import java.util.Set;
+
+import static java.lang.Math.pow;
+import static org.retal.offgame.dto.ResourceDTO.withAmount;
 
 @Entity
 @Table(name = "building")
@@ -20,15 +25,14 @@ import java.util.Set;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "id", discriminatorType = DiscriminatorType.INTEGER)
-//TODO аннотация которая считывает при проверке считывает значение из дискриминатора, пихает имя класса в enum с константой
 public abstract class Building {
 
-    public static final int RESOURCE_PRODUCTION_MULTIPLIER = 4;
+    public static final int RESOURCE_PRODUCTION_MULTIPLIER = 1;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    @Column(insertable=false, updatable=false)
+    @Column(insertable = false, updatable = false)
     private Long id;
 
     @Column
@@ -59,13 +63,56 @@ public abstract class Building {
     @JsonIgnore
     private Set<BuildingInstance> instances;
 
-    public ResourcesDTO getProductionPerHour(long level, int temperature) {
-        return ResourcesDTO.builder()
-                .metal(ResourceDTO.empty())
-                .crystal(ResourceDTO.empty())
-                .deuterium(ResourceDTO.empty())
+    public BuildingDTO toDTO() {
+        Long level = Optional.ofNullable(getInstances())
+                .map(Set::iterator)
+                .map(Iterator::next)
+                .map(BuildingInstance::getLevel)
+                .orElse(0L);
+        ResourcesDTO buildingCost = calculateBuildingCost(level);
+        //todo когда считаем время, делим все пополам в конце по сравнению со стандартной формулой
+        //todo фабрика роботов и наниты
+        return BuildingDTO.builder()
+                .building(this)
+                .level(level)
+                .buildingCost(buildingCost)
+                .buildingTime(calculateBuildingTime(buildingCost))
                 .build();
     }
+
+    private ResourcesDTO calculateBuildingCost(Long level) {
+        return ResourcesDTO.builder()
+                .metal(withAmount(calcResource(getCostMetal(), level)))
+                .crystal(withAmount(calcResource(getCostCrystal(), level)))
+                .deuterium(withAmount(calcResource(getCostDeuterium(), level)))
+                .energy(withAmount(calcResource(getCostEnergy(), level)))
+                .build();
+    }
+
+    private Double calculateBuildingTime(ResourcesDTO buildingCost) {
+        Double metal = buildingCost.getMetal().amount();
+        Double crystal = buildingCost.getCrystal().amount();
+
+        return 3600.0 * (metal + crystal) / 2500 * pow(0.5, 1);
+    }
+
+    protected Double calcResource(Long base, Long level) {
+        return base * pow(2, level);
+    }
+
+    public ResourcesDTO getProductionPerHour(long level, int temperature) {
+        return ResourcesDTO.empty();
+    }
+
+    public ResourcesDTO getMaxAmount(long level) {
+        return ResourcesDTO.empty();
+    }
+
+    public ResourcesDTO getResourceInfo(long level, int temperature) {
+        return getProductionPerHour(level, temperature).merge(getMaxAmount(level));
+    }
+
+    //todo building activation filter with function implementation (if building should be active or not)
 
     protected int getMultiplier() {
         return RESOURCE_PRODUCTION_MULTIPLIER;

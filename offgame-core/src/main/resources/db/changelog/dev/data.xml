@@ -9,6 +9,8 @@
             <column name="owner_id" value="${ADMIN_ID}"/>
             <column name="diameter" value="5000"/>
             <column name="base_fields" value="150"/>
+            <column name="min_temperature" value="-10"/>
+            <column name="max_temperature" value="30"/>
             <column name="created_at" value="NOW()"/>
         </insert>
         <insert tableName="planet_resource">
@@ -33,6 +35,11 @@
             <column name="planet_id" value="1"/>
             <column name="building_id" value="${BUILDING_CRYSTAL_MINE_ID}"/>
             <column name="level" value="1"/>
+        </insert>
+        <insert tableName="planet_building">
+            <column name="planet_id" value="1"/>
+            <column name="building_id" value="${BUILDING_DEUTERIUM_MINE_ID}"/>
+            <column name="level" value="5"/>
         </insert>
     </changeSet>
 
