@@ -13,7 +13,10 @@
                     Для производства металла требуется меньше всего энергии.<br>
                     Добывается даже пока вас нет в игре.<br>
                     </p>,,STICKY" -->
-    <div class="tbb_content {{width}}" style="color:white;" text-tooltip tooltipText="{{tooltipText}}"><span id="metal" class="tbb_element res-icon res_{{type}}">{{ resource.amount | customNumber }}</span></div>
+    <div class="tbb_content {{width}}" style="color:white;"
+         text-tooltip tooltipText="{{ tooltipText }}<br>{{type === 'energy' ? 'Всего' : 'Вместимость' }}: {{ resource.maxAmount | customNumber }}<br><br><small>Клик на иконку для просмотра деталей</small>">
+        <span id="metal" class="tbb_element res-icon res_{{type}}" style="color:{{ resource.getColor() }};">{{ resource.amount | customNumber }}</span>
+    </div>
     <div class="top_bar_next"></div>
 </ng-template>
 
@@ -28,6 +31,7 @@
                 <ng-container *ngTemplateOutlet="resourceField;context:contextMetal"/>
                 <ng-container *ngTemplateOutlet="resourceField;context:contextCrystal"/>
                 <ng-container *ngTemplateOutlet="resourceField;context:contextDeuterium"/>
+                <ng-container *ngTemplateOutlet="resourceField;context:contextEnergy"/>
                 <!--<div class="tbb_content w_80" style="color:white;" js-title="Металл<br>Вместимость: 82.500<br><br><small>Клик на иконку для просмотра деталей</small>" js-help="<div class=&quot;res-tooltip_header&quot;>Металл</div>
                     <br>
                     <p>Используется как основной материал при строительстве, очень нужен в начале игры.<br>

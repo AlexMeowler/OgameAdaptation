@@ -9,6 +9,8 @@ import {Deuterium} from "../model/resource/Deuterium";
 import localeDe from '@angular/common/locales/de';
 import localeDeExtra from '@angular/common/locales/extra/de';
 import {TooltipDirective} from "./tooltip/tooltip.directive";
+import {ResourceContext} from "../model/resource/ResourceContext";
+import {Energy} from "../model/resource/Energy";
 
 @Component({
     selector: 'resource-header',
@@ -27,12 +29,11 @@ import {TooltipDirective} from "./tooltip/tooltip.directive";
 })
 export class ResourceHeaderComponent implements OnInit {
 
-    //todo other types
-    //and then tooltips
-    //and limits with highlighting
-    contextMetal!: Metal
-    contextCrystal!: Crystal
-    contextDeuterium!: Deuterium
+    //todo tooltips
+    contextMetal!: ResourceContext
+    contextCrystal!: ResourceContext
+    contextDeuterium!: ResourceContext
+    contextEnergy!: ResourceContext
 
     constructor(private planetService: PlanetService) {
         registerLocaleData(localeDe, "de-DE", localeDeExtra);
@@ -43,6 +44,7 @@ export class ResourceHeaderComponent implements OnInit {
                 this.contextMetal = new Metal(data, "w_80");
                 this.contextCrystal = new Crystal(data, "w_80");
                 this.contextDeuterium = new Deuterium(data, "w_80");
+                this.contextEnergy = new Energy(data, "w_60");
             }})
     }
 }

@@ -38,7 +38,7 @@ export class TooltipDirective implements AfterViewInit {
 
     @HostListener("mousemove", ['$event'])
     moveTooltip(event: MouseEvent): void {
-        this.tooltip.instance.moveTooltip(event.clientX, event.clientY);
+        this.tooltip.instance.moveTooltip(event.layerX, event.layerY);
     }
 
     @HostListener("mouseout")

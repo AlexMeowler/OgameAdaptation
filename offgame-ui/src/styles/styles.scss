@@ -191,6 +191,10 @@ body form table th table input {
     background: url(/img/ui/res/deuterium.png) no-repeat 0 0;
 }
 
+.res_energy {
+    background: url(/img/ui/res/energy.png) no-repeat 0 0;
+}
+
 .res-icon {
     display: inline-block;
     padding-left: 18px;
@@ -260,12 +264,8 @@ body form table th table input {
 }
 
 .planet_item, .moon_item {
-    border: 4px solid transparent;
+    border: 4px solid;
     border-image: url(/images/border.png) 4 stretch;
-    -moz-border-image: url(/images/border.png) 4 stretch;
-    -webkit-border-image: url(/images/border.png) 4 stretch;
-    -o-border-image: url(/images/border.png) 4 stretch;
-    -ms-border-image: url(/images/border.png) 4 stretch
 }
 
 .planet_item:hover, .moon_item:hover {
@@ -574,10 +574,10 @@ h2 {
     pointer-events: none;
     position: absolute;
     z-index: 9000;
-    border: 4px solid transparent;
+    border: 4px solid;
     border-image: url(/img/ui/border.png) 4 stretch;
-    background: -webkit-linear-gradient(to top, #357, #357) no-repeat !important;
-    box-shadow: inset 0 0 70px #135;
+    background: linear-gradient(to top, #357, #357) no-repeat !important;
+    box-shadow: inset 0 0 70px #113355;
     text-shadow: 0 1px 1px #111111;
     padding: 3px;
 }

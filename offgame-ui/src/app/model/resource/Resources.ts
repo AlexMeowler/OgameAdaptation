@@ -4,7 +4,7 @@ export class Resources {
     metal!: Resource
     crystal!: Resource
     deuterium!: Resource
-    energy?: Resource | null
+    energy!: Resource
 
     constructor(data: Resources) {
         Object.assign(this, data);

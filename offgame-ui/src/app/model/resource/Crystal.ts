@@ -7,5 +7,6 @@ export class Crystal extends ResourceContext {
     constructor(data: Resources, widthStyle:string) {
         super(data, TYPE_CRYSTAL, widthStyle);
         this.resource = new Resource(data.crystal);
+        this.tooltip = 'Кристалл';
     }
 }
