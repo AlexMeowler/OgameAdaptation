@@ -3,8 +3,10 @@ package org.retal.offgame.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.retal.offgame.entity.User;
 import org.retal.offgame.repository.UserRepository;
+import org.retal.offgame.service.AbstractCrudService;
 import org.retal.offgame.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +20,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
-public class UserServiceImpl implements UserDetailsService, UserService {
+public class UserServiceImpl extends AbstractCrudService<User> implements UserDetailsService, UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -33,7 +35,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public User saveOrUpdate(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        return super.saveOrUpdate(user);
     }
 
     @Override
@@ -42,5 +44,10 @@ public class UserServiceImpl implements UserDetailsService, UserService {
                 .map(SecurityContext::getAuthentication)
                 .map(Authentication::getName)
                 .flatMap(userRepository::findByUsername);
+    }
+
+    @Override
+    protected CrudRepository<User, ?> getRepository() {
+        return userRepository;
     }
 }

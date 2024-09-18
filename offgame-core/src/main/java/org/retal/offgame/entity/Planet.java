@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.Set;
 
 @Entity
@@ -36,7 +36,7 @@ public class Planet {
 
     @Column
     @CreatedDate
-    private OffsetDateTime createdAt;
+    private Instant createdAt;
 
     @OneToOne(mappedBy = "planet", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn

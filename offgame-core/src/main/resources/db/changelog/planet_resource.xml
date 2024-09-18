@@ -20,7 +20,7 @@
             <column name="deuterium" type="DOUBLE PRECISION" defaultValue="0">
                 <constraints nullable="false"/>
             </column>
-            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
+            <column name="updated_at" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
         </createTable>

@@ -13,6 +13,7 @@
     <include relativeToChangelogFile="true" file="planet.xml"/>
     <include relativeToChangelogFile="true" file="planet_resource.xml"/>
     <include relativeToChangelogFile="true" file="planet_building.xml"/>
+    <include relativeToChangelogFile="true" file="building_order.xml"/>
 
     <include relativeToChangelogFile="true" file="dev/data.xml"/>
 
