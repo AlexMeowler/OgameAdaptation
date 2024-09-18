@@ -10,9 +10,10 @@ export class CustomNumberPipe implements PipeTransform {
     constructor(private decimalPipe:DecimalPipe) {
     }
 
-    transform(value: number, args?: any): string | null {
+    transform(value: number, signPositive?:boolean): string | null {
         let rounded = Math.round(value);
-        return this.decimalPipe.transform(rounded, undefined, "de-DE");
+        let signStr = signPositive && rounded > 0 ? '+' : '';
+        return signStr + this.decimalPipe.transform(rounded, undefined, "de-DE");
     }
 
 }

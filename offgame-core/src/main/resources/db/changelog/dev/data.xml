@@ -36,11 +36,7 @@
             <column name="building_id" value="${BUILDING_CRYSTAL_MINE_ID}"/>
             <column name="level" value="1"/>
         </insert>
-        <insert tableName="planet_building">
-            <column name="planet_id" value="1"/>
-            <column name="building_id" value="${BUILDING_DEUTERIUM_MINE_ID}"/>
-            <column name="level" value="5"/>
-        </insert>
+
     </changeSet>
 
 </databaseChangeLog>

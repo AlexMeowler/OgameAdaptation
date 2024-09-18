@@ -5,6 +5,7 @@ export class BuildingInstance {
 
     building!: Building
     level!: number
+    energyDiff!: number
     buildingTime!: number
     buildingCost!: Resources
 

@@ -1,4 +1,4 @@
-* {
+*, :not(a) {
     cursor: default;
 }
 
@@ -468,7 +468,8 @@ div.z {
 a {
     color: #d8f4dd;
     text-decoration: underline;
-    font-weight: 700
+    font-weight: 700;
+    cursor: pointer;
 }
 
 a.s {

@@ -69,4 +69,17 @@ public class ResourcesDTO {
     private ResourceDTO merge(ResourcesDTO change, Function<ResourcesDTO, ResourceDTO> getter) {
         return getter.apply(this).merge(getter.apply(change));
     }
+
+    public ResourcesDTO negate() {
+        setMetal(negate(ResourcesDTO::getMetal));
+        setCrystal(negate(ResourcesDTO::getCrystal));
+        setDeuterium(negate(ResourcesDTO::getDeuterium));
+        setEnergy(negate(ResourcesDTO::getEnergy));
+
+        return this;
+    }
+
+    private ResourceDTO negate(Function<ResourcesDTO, ResourceDTO> getter) {
+        return getter.apply(this).negate();
+    }
 }

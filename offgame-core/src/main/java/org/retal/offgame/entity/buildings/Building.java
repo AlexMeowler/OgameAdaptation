@@ -6,12 +6,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.retal.offgame.dto.BuildingDTO;
 import org.retal.offgame.dto.ResourcesDTO;
 import org.retal.offgame.entity.BuildingInstance;
 
-import java.util.Iterator;
-import java.util.Optional;
 import java.util.Set;
 
 import static java.lang.Math.pow;
@@ -63,24 +60,9 @@ public abstract class Building {
     @JsonIgnore
     private Set<BuildingInstance> instances;
 
-    public BuildingDTO toDTO() {
-        Long level = Optional.ofNullable(getInstances())
-                .map(Set::iterator)
-                .map(Iterator::next)
-                .map(BuildingInstance::getLevel)
-                .orElse(0L);
-        ResourcesDTO buildingCost = calculateBuildingCost(level);
-        //todo когда считаем время, делим все пополам в конце по сравнению со стандартной формулой
-        //todo фабрика роботов и наниты
-        return BuildingDTO.builder()
-                .building(this)
-                .level(level)
-                .buildingCost(buildingCost)
-                .buildingTime(calculateBuildingTime(buildingCost))
-                .build();
-    }
 
-    private ResourcesDTO calculateBuildingCost(Long level) {
+
+    public ResourcesDTO calculateBuildingCost(Long level) {
         return ResourcesDTO.builder()
                 .metal(withAmount(calcResource(getCostMetal(), level)))
                 .crystal(withAmount(calcResource(getCostCrystal(), level)))
@@ -89,7 +71,7 @@ public abstract class Building {
                 .build();
     }
 
-    private Double calculateBuildingTime(ResourcesDTO buildingCost) {
+    public Double calculateBuildingTime(ResourcesDTO buildingCost) {
         Double metal = buildingCost.getMetal().amount();
         Double crystal = buildingCost.getCrystal().amount();
 
@@ -100,11 +82,11 @@ public abstract class Building {
         return base * pow(2, level);
     }
 
-    public ResourcesDTO getProductionPerHour(long level, int temperature) {
+    protected ResourcesDTO getProductionPerHour(long level, int temperature) {
         return ResourcesDTO.empty();
     }
 
-    public ResourcesDTO getMaxAmount(long level) {
+    protected ResourcesDTO getMaxAmount(long level) {
         return ResourcesDTO.empty();
     }
 

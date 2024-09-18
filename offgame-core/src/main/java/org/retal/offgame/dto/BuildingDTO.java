@@ -13,4 +13,5 @@ public class BuildingDTO {
     private Long level;
     private ResourcesDTO buildingCost;
     private Double buildingTime;
+    private Double energyDiff;
 }

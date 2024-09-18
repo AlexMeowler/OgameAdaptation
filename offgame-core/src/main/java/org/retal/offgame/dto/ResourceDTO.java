@@ -36,4 +36,8 @@ public record ResourceDTO(Double amount, Double productionPerHour, Double maxAmo
         return Stream.of(values)
                 .reduce(base, reductor);
     }
+
+    public ResourceDTO negate() {
+        return new ResourceDTO(-amount(), -productionPerHour(), -maxAmount());
+    }
 }

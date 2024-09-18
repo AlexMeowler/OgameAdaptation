@@ -1,7 +1,7 @@
 <ng-template #resourceCost
              let-resource="resource"
              let-resName="name">
-    <span *ngIf="resource.amount > 0">{{ resName }}: <b style="color: lime" js-title="-4.574"><span>{{ resource.amount | customNumber }}</span></b></span>
+    <span *ngIf="resource.amount > 0">{{ resName }}: <b style="color: lime" js-title="-4.574">{{ resource.amount | customNumber }}&nbsp;</b></span>
 </ng-template>
 <div style="padding-left: 93px;">
     <div style="text-align: center">
@@ -13,16 +13,16 @@
                                                    width="120" height="120"></a>
                 </td>
                 <td class="l">
-                    <a href="infos.php?gid=4">{{ obj.building.name }}</a>
-                    <span *ngIf="obj.level > 0"> (Уровень {{ obj.level }})</span>
-                    (<div style="color: #00FF00; display: inline-block" text-tooltip tooltipText="Будет произведено энергии при постройке следующего уровеня">+239 Энергия</div>)<br>
+                    <span><a href="infos.php?gid=4">{{ obj.building.name }}</a>&nbsp;</span>
+                    <span *ngIf="obj.level > 0">(Уровень {{ obj.level }}) </span>
+                    <div *ngIf="obj.energyDiff != 0" style="display: inline-block">(<div style="color: {{ obj.energyDiff > 0 ? 'lime' : 'red' }}; display: inline-block" text-tooltip tooltipText="{{ obj.energyDiff > 0 ? ENERGY_DIFF_POSITIVE_TOOLTIP : ENERGY_DIFF_NEGATIVE_TOOLTIP}}">{{ obj.energyDiff | customNumber:true }} Энергия</div>)</div><br>
                     {{ obj.building.shortDescription }}<br>
                     Необходимые ресурсы:
-                    <ng-container *ngTemplateOutlet="resourceCost;context:{resource:obj.buildingCost.metal,name:'Металл'}"/>&nbsp;
-                    <ng-container *ngTemplateOutlet="resourceCost;context:{resource:obj.buildingCost.crystal,name:'Кристалл'}"/>&nbsp;
-                    <ng-container *ngTemplateOutlet="resourceCost;context:{resource:obj.buildingCost.deuterium,name:'Дейтерий'}"/>&nbsp;
+                    <ng-container *ngTemplateOutlet="resourceCost;context:{resource:obj.buildingCost.metal,name:'Металл'}"/>
+                    <ng-container *ngTemplateOutlet="resourceCost;context:{resource:obj.buildingCost.crystal,name:'Кристалл'}"/>
+                    <ng-container *ngTemplateOutlet="resourceCost;context:{resource:obj.buildingCost.deuterium,name:'Дейтерий'}"/>
                     <ng-container *ngTemplateOutlet="resourceCost;context:{resource:obj.buildingCost.energy,name:'Энергия'}"/>
-                    <br>Время строительства: {{ obj.buildingTime * 1000 }}02 ч. 47 мин. 11 сек.
+                    <br>Время строительства: {{ obj.buildingTime | duration }}
                     <div class="color-gray">Останется ресурсов: Металл: <b class="cgred">-4.575</b> Кристалл: <b
                             class="cgred">-8.212</b></div>
                     <br>
