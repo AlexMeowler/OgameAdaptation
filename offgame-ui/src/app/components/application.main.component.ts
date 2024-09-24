@@ -12,7 +12,8 @@ import {RouterOutlet} from "@angular/router";
     providers: []
 })
 export class ApplicationMainComponent {
-
+    //TODO продумать иерархию, чтобы использовать ресурсы из верхней части экрана
+    // внешний компонент держит ресурсы и внутренний, а внутренний содержит роутер??
     constructor() {
     }
 }

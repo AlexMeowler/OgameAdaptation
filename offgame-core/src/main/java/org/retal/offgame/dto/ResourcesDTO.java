@@ -42,7 +42,7 @@ public class ResourcesDTO {
         Double energyCurrent = totalEnergy.amount();
         Double energyConsumed = totalEnergy.maxAmount() - energyCurrent;
         double effectiveness = min(1.0, max(0.0, 1 + energyCurrent / energyConsumed));
-        return !Double.isNaN(effectiveness) ? effectiveness : 1.0; //TODO use effectiveness in UI
+        return !Double.isNaN(effectiveness) ? effectiveness : 1.0;
     }
 
     public static ResourcesDTO.ResourcesDTOBuilder builder() {

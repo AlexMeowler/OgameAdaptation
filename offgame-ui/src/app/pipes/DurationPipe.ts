@@ -1,5 +1,3 @@
-//todo duration pipe i.e. x:number -> 30 дн. 02 ч. 47 мин. 11 сек.
-//if days = 0 them dont write them down
 import {Pipe, PipeTransform} from "@angular/core";
 
 @Pipe({
