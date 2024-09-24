@@ -71,7 +71,11 @@ public abstract class Building {
                 .build();
     }
 
-    public Double calculateBuildingTime(ResourcesDTO buildingCost) {
+    public Double calculateBuildingTime(Long level) {
+        return calculateBuildingTime(calculateBuildingCost(level));
+    }
+
+    private Double calculateBuildingTime(ResourcesDTO buildingCost) {
         Double metal = buildingCost.getMetal().amount();
         Double crystal = buildingCost.getCrystal().amount();
 
@@ -79,7 +83,7 @@ public abstract class Building {
     }
 
     protected Double calcResource(Long base, Long level) {
-        return base * pow(2, level);
+        return base * pow(2, level - 1);
     }
 
     protected ResourcesDTO getProductionPerHour(long level, int temperature) {

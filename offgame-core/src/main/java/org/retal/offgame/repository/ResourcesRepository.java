@@ -6,6 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ResourcesRepository extends JpaRepository<Resources, Long> {
-
-    Resources findByPlanetId(Long planetId);
 }

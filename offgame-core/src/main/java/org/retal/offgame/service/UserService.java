@@ -4,7 +4,7 @@ import org.retal.offgame.entity.User;
 
 import java.util.Optional;
 
-public interface UserService extends CrudService<User> {
+public interface UserService extends CrudService<User, Long> {
 
     Optional<User> getAuthenticatedUser();
 }

@@ -2,16 +2,18 @@ package org.retal.offgame.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.retal.offgame.entity.buildings.Building;
 
 import java.util.Set;
 
 @Entity
-@Table(name = "planet_building")
+@Table(name = "building_instance")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class BuildingInstance {
 
     @Id

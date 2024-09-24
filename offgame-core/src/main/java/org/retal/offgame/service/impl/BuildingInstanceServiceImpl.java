@@ -11,12 +11,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
-public class BuildingInstanceServiceImpl extends AbstractCrudService<BuildingInstance> implements BuildingInstanceService {
+public class BuildingInstanceServiceImpl extends AbstractCrudService<BuildingInstance, Long> implements BuildingInstanceService {
 
     private final BuildingInstanceRepository buildingInstanceRepository;
 
     @Override
-    protected CrudRepository<BuildingInstance, ?> getRepository() {
+    protected CrudRepository<BuildingInstance, Long> getRepository() {
         return buildingInstanceRepository;
     }
 }

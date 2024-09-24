@@ -11,21 +11,26 @@
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="planet_building_id" type="BIGINT">
-                <constraints nullable="false" references="planet_building(id)" foreignKeyName="fk_planet_building"/>
+            <column name="building_instance_id" type="BIGINT">
+                <constraints nullable="false" references="building_instance(id)" foreignKeyName="fk_building_instance"/>
+            </column>
+            <column name="order_value" type="BIGINT">
+                <constraints nullable="false"/>
             </column>
             <column name="created_at" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
-            <column name="finished_at" type="TIMESTAMP">
+            <column name="duration" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
+            <column name="finished_at" type="TIMESTAMP"/>
             <column name="status" type="VARCHAR(10)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
 
-        <sql>ALTER TABLE building_order ADD CONSTRAINT test_status CHECK (status in ('started', 'finished', 'cancelled'))</sql>
+        <sql>ALTER TABLE building_order ADD CONSTRAINT test_status CHECK (status in ('created', 'started'))</sql>
+        <addUniqueConstraint tableName="${tableName}" columnNames="building_instance_id, order_value"/>
     </changeSet>
 
 </databaseChangeLog>

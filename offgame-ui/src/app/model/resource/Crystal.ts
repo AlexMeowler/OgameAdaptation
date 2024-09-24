@@ -4,9 +4,9 @@ import {Resource} from "./Resource";
 
 export class Crystal extends ResourceContext {
 
-    constructor(data: Resources, widthStyle:string) {
+    constructor(data: Resources, widthStyle: string) {
         super(data, TYPE_CRYSTAL, widthStyle);
-        this.resource = new Resource(data.crystal);
+        this.resource = new Resource(data.crystal, data.globalEffectiveness);
         this.tooltip = 'Кристалл';
     }
 }

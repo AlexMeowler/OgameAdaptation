@@ -21,6 +21,6 @@ public class SolarPanel extends Building {
 
     @Override
     protected Double calcResource(Long base, Long level) {
-        return base * pow(1.5, level);
+        return base * pow(1.5, level - 1);
     }
 }

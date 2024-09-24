@@ -4,9 +4,9 @@ import {Resource} from "./Resource";
 
 export class Energy extends ResourceContext {
 
-    constructor(data: Resources, widthStyle:string) {
+    constructor(data: Resources, widthStyle: string) {
         super(data, TYPE_ENERGY, widthStyle);
-        this.resource = new Resource(data.energy, this.getColor);
+        this.resource = new Resource(data.energy, data.globalEffectiveness, this.getColor);
         this.tooltip = 'Энергия';
     }
 

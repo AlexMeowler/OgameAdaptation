@@ -1,9 +1,14 @@
 package org.retal.offgame.dto;
 
 import java.util.function.BinaryOperator;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
-public record ResourceDTO(Double amount, Double productionPerHour, Double maxAmount) {
+public record ResourceDTO(Double amount, Double productionPerHour, Double maxAmount, Double effectiveness) {
+
+    public ResourceDTO(Double amount, Double productionPerHour, Double maxAmount) {
+        this(amount, productionPerHour, maxAmount, 1.0);
+    }
 
     public static ResourceDTO withProduction(Double productionPerHour) {
         return new ResourceDTO(0.0, productionPerHour, 0.0);
@@ -39,5 +44,9 @@ public record ResourceDTO(Double amount, Double productionPerHour, Double maxAmo
 
     public ResourceDTO negate() {
         return new ResourceDTO(-amount(), -productionPerHour(), -maxAmount());
+    }
+
+    public int compareTo(Function<ResourceDTO, Double> getter, ResourceDTO target) {
+        return getter.apply(this).compareTo(getter.apply(target));
     }
 }

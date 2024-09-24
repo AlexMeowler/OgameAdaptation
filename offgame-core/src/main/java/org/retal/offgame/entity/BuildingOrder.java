@@ -1,9 +1,7 @@
 package org.retal.offgame.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
+import lombok.*;
 
 import java.time.Instant;
 
@@ -11,29 +9,36 @@ import java.time.Instant;
 @Table(name = "building_order")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class BuildingOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "planet_building_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "building_instance_id", nullable = false)
     private BuildingInstance buildingInstance;
 
     @Enumerated(EnumType.STRING)
     private Status status;
 
     @Column
-    @CreatedDate
+    private Long orderValue;
+
+    @Column
     private Instant createdAt;
+
+    @Column
+    private Long duration;
 
     @Column
     private Instant finishedAt;
 
     public enum Status {
-        started,
-        finished,
-        cancelled
+        created,
+        started
     }
 }

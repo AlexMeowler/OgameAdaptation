@@ -4,6 +4,7 @@ import {apiUrl} from "../app.config";
 import {map, Observable} from "rxjs";
 import {Resources} from "../model/resource/Resources";
 import {BuildingInstance} from "../model/BuildingInstance";
+import {BuildingOrder} from "../model/BuildingOrder";
 
 @Injectable()
 export class PlanetService {
@@ -20,5 +21,18 @@ export class PlanetService {
         return this.http.get(`${apiUrl}/planet/${planetId}/resources`).pipe(map((data: any) => {
             return new Resources(data)
         }))
+    }
+
+    getActiveOrders(planetId: number): Observable<BuildingOrder[]> {
+        return this.http.get(`${apiUrl}/planet/${planetId}/orders`).pipe(map((data: any) => {
+            return data.map((object: any) => new BuildingOrder(object))
+        }))
+    }
+
+    createOrder(buildingId: number, planetId: number) {
+        return this.http.post(`${apiUrl}/planet/build`, {
+            buildingId: buildingId,
+            planetId: planetId
+        })
     }
 }

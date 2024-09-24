@@ -4,11 +4,16 @@ export class Resource {
     productionPerSecond: number = 0
     productionPerHour!: number
     maxAmount!: number
+    effectiveness!: number
+    globalEffectiveness!: number
+
     private readonly colorFunction: ((resource: Resource) => string);
 
-    constructor(data: Resource, colorFunction?: (resource:Resource) => string) {
+    constructor(data: Resource, globalEffectiveness: number, colorFunction?: (resource: Resource) => string) {
         Object.assign(this, data);
-        this.productionPerSecond = this.productionPerHour / 3600;
+
+        this.globalEffectiveness = globalEffectiveness;
+        this.productionPerSecond = this.productionPerHour * this.effectiveness * this.globalEffectiveness / 3600;
         this.colorFunction = colorFunction ? colorFunction : this.getColorDefault;
 
         setInterval(this.updateAmount(), 1000);
@@ -24,7 +29,7 @@ export class Resource {
 
     updateAmount() {
         return () => {
-            if(this.amount < this.maxAmount) {
+            if (this.amount < this.maxAmount) {
                 let newAmount = this.amount + this.productionPerSecond;
                 this.amount = Math.min(this.maxAmount, newAmount);
             }

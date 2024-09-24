@@ -7,9 +7,11 @@ import org.retal.offgame.entity.Resources;
 import org.retal.offgame.entity.User;
 import org.retal.offgame.repository.PlanetRepository;
 import org.retal.offgame.repository.ResourcesRepository;
+import org.retal.offgame.service.AbstractCrudService;
 import org.retal.offgame.service.PlanetService;
 import org.retal.offgame.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +23,7 @@ import static java.util.Collections.emptyList;
 
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
-public class PlanetServiceImpl implements PlanetService {
+public class PlanetServiceImpl extends AbstractCrudService<Planet, Long> implements PlanetService {
 
     private final PlanetRepository planetRepository;
     private final ResourcesRepository resourcesRepository;
@@ -55,6 +57,7 @@ public class PlanetServiceImpl implements PlanetService {
         ResourcesDTO totalProductionPerHourWithLimit = planet.getBuildings().stream()
                 .map(instance -> instance.getBuilding().getResourceInfo(instance.getLevel(), temperature))
                 .reduce(ResourcesDTO.defaultDTO(), ResourcesDTO::merge);
+        totalProductionPerHourWithLimit.setGlobalEffectiveness();
 
         Resources resources = planet.getResources();
         Duration duration = Duration.between(resources.getUpdatedAt(), Instant.now());
@@ -63,5 +66,10 @@ public class PlanetServiceImpl implements PlanetService {
         resourcesRepository.save(resources);
 
         return totalProductionPerHourWithLimit.merge(resources.toDTO());
+    }
+
+    @Override
+    protected CrudRepository<Planet, Long> getRepository() {
+        return planetRepository;
     }
 }

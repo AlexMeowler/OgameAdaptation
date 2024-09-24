@@ -2,6 +2,8 @@ package org.retal.offgame.dto;
 
 import lombok.*;
 
+import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static java.lang.Math.max;
@@ -21,12 +23,26 @@ public class ResourcesDTO {
     private ResourceDTO deuterium;
     private ResourceDTO energy;
 
-    public Double calculateProductionEffectiveness() {
+    private Double globalEffectiveness;
+
+    private final Map<Function<ResourcesDTO, ResourceDTO>, Consumer<ResourceDTO>> ACCESSOR_MAP = Map.of(
+            ResourcesDTO::getMetal, this::setMetal,
+            ResourcesDTO::getCrystal, this::setCrystal,
+            ResourcesDTO::getDeuterium, this::setDeuterium,
+            ResourcesDTO::getEnergy, this::setEnergy
+    );
+
+
+    public void setGlobalEffectiveness() {
+        setGlobalEffectiveness(calculateGlobalEffectiveness());
+    }
+
+    private Double calculateGlobalEffectiveness() {
         ResourceDTO totalEnergy = getEnergy();
         Double energyCurrent = totalEnergy.amount();
         Double energyConsumed = totalEnergy.maxAmount() - energyCurrent;
-
-        return min(1.0, max(0.0, 1 - energyCurrent / energyConsumed));
+        double effectiveness = min(1.0, max(0.0, 1 + energyCurrent / energyConsumed));
+        return !Double.isNaN(effectiveness) ? effectiveness : 1.0; //TODO use effectiveness in UI
     }
 
     public static ResourcesDTO.ResourcesDTOBuilder builder() {
@@ -58,10 +74,7 @@ public class ResourcesDTO {
     }
 
     public ResourcesDTO merge(ResourcesDTO change) {
-        setMetal(merge(change, ResourcesDTO::getMetal));
-        setCrystal(merge(change, ResourcesDTO::getCrystal));
-        setDeuterium(merge(change, ResourcesDTO::getDeuterium));
-        setEnergy(merge(change, ResourcesDTO::getEnergy));
+        ACCESSOR_MAP.forEach((getter, setter) -> setter.accept(merge(change, getter)));
 
         return this;
     }
@@ -71,15 +84,32 @@ public class ResourcesDTO {
     }
 
     public ResourcesDTO negate() {
-        setMetal(negate(ResourcesDTO::getMetal));
-        setCrystal(negate(ResourcesDTO::getCrystal));
-        setDeuterium(negate(ResourcesDTO::getDeuterium));
-        setEnergy(negate(ResourcesDTO::getEnergy));
+        ACCESSOR_MAP.forEach((getter, setter) -> setter.accept(negate(getter)));
 
         return this;
     }
 
     private ResourceDTO negate(Function<ResourcesDTO, ResourceDTO> getter) {
         return getter.apply(this).negate();
+    }
+
+    public boolean isLessOrEqualThan(ResourcesDTO target) {
+        return compareTo(target, -1) == -1;
+    }
+
+    public boolean isMoreOrEqualThan(ResourcesDTO target) {
+        return compareTo(target, 1) == 1;
+    }
+
+    private int compareTo(ResourcesDTO target, int startValue) {
+        for (Function<ResourcesDTO, ResourceDTO> getter : ACCESSOR_MAP.keySet()) {
+            int compareResult = getter.apply(this).compareTo(ResourceDTO::amount, getter.apply(target));
+
+            if (compareResult != 0 && compareResult != startValue) {
+                return 0;
+            }
+        }
+
+        return startValue;
     }
 }

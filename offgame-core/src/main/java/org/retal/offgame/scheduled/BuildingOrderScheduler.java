@@ -10,9 +10,11 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
+import java.util.Collection;
+import java.util.Map;
+import java.util.function.Function;
 
-import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Collectors.toMap;
 
 @Component
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
@@ -24,11 +26,25 @@ public class BuildingOrderScheduler {
     @Async
     @Scheduled(fixedRate = 1000)
     public void processOrders() {
-        Set<BuildingInstance> instances = buildingOrderService.getUnprocessedPresentOrders().stream()
-                .map(BuildingOrder::getBuildingInstance)
-                .map(BuildingInstance::incrementLevel)
-                .collect(toSet());
+        buildingOrderService.initCreatedOrders();
 
-        buildingInstanceService.saveAll(instances);
+        Map<BuildingOrder, BuildingInstance> orderWithInstance = buildingOrderService.getUnprocessedOrders().stream()
+                .collect(toMap(
+                        Function.identity(),
+                        BuildingOrder::getBuildingInstance
+                ));
+
+        processBuildingOrders(orderWithInstance.keySet());
+        processBuildingInstances(orderWithInstance.values());
+    }
+
+    private void processBuildingInstances(Collection<BuildingInstance> buildingInstances) {
+        buildingInstances.forEach(BuildingInstance::incrementLevel);
+
+        buildingInstanceService.saveAll(buildingInstances);
+    }
+
+    private void processBuildingOrders(Collection<BuildingOrder> buildingOrders) {
+        buildingOrderService.deleteAll(buildingOrders);
     }
 }

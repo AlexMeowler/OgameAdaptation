@@ -6,6 +6,8 @@ export class Resources {
     deuterium!: Resource
     energy!: Resource
 
+    globalEffectiveness!: number
+
     constructor(data: Resources) {
         Object.assign(this, data);
     }

@@ -1,12 +1,19 @@
 <ng-template #resourceCost
              let-resource="resource"
              let-resName="name">
-    <span *ngIf="resource.amount > 0">{{ resName }}: <b style="color: lime" js-title="-4.574">{{ resource.amount | customNumber }}&nbsp;</b></span>
+    <span *ngIf="resource.amount > 0">{{ resName }}: <b style="color: lime">{{ resource.amount | customNumber }}&nbsp;</b></span>
 </ng-template>
 <div style="padding-left: 93px;">
     <div style="text-align: center">
         <table width="750">
             <tbody>
+            <tr *ngFor="let order of buildingOrders; let i = index">
+                <td class="l" colspan="2">{{ i + 1 }}.: {{order.name}} {{order.value}}</td>
+                <td class="k"><div class="z">{{order.timeLeft | duration:':'}}
+                    <br><a href="javascript:void(0);" (click)="deleteOrder(order.id)">Отменить</a></div>
+                    <strong style="color: lime"><br>{{ order.endTimeDate | date:'dd/MM HH:mm:ss' }}</strong>
+                </td>
+            </tr>
             <tr *ngFor="let obj of buildingInstances">
                 <td class="l">
                     <a href="infos.php?gid=4"><img border="0" ngSrc="/img/{{ obj.building.imageName }}" align="top"
@@ -27,7 +34,10 @@
                             class="cgred">-8.212</b></div>
                     <br>
                 </td>
-                <td class="k" width="76"><font color="#FF0000">Недостаточно ресурсов!</font></td>
+                <td class="k" width="76">
+                    <span *ngIf="!canBuild(obj)" style="color: red">Недостаточно ресурсов!</span>
+                    <a *ngIf="canBuild(obj)" style="color: lime" href="javascript:void(0);" (click)="createOrder(obj.building.id)">{{ buildingOrders.length === 0 ? 'Построить следующий уровень ' + (obj.level + 1) : 'В очередь построек' }}</a>
+                </td>
             </tr>
             </tbody>
         </table>

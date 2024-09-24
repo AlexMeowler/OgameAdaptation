@@ -22,6 +22,6 @@ public class CrystalMine extends Building {
 
     @Override
     protected Double calcResource(Long base, Long level) {
-        return base * pow(1.6, level);
+        return base * pow(1.6, level - 1);
     }
 }

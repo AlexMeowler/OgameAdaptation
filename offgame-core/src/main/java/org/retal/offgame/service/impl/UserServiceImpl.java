@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
-public class UserServiceImpl extends AbstractCrudService<User> implements UserDetailsService, UserService {
+public class UserServiceImpl extends AbstractCrudService<User, Long> implements UserDetailsService, UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -47,7 +47,7 @@ public class UserServiceImpl extends AbstractCrudService<User> implements UserDe
     }
 
     @Override
-    protected CrudRepository<User, ?> getRepository() {
+    protected CrudRepository<User, Long> getRepository() {
         return userRepository;
     }
 }

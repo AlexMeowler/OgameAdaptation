@@ -2,15 +2,17 @@ package org.retal.offgame.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.retal.offgame.dto.BuildingDTO;
+import org.retal.offgame.dto.BuildingOrderDTO;
+import org.retal.offgame.dto.BuildingOrderInfo;
 import org.retal.offgame.dto.ResourcesDTO;
 import org.retal.offgame.entity.Planet;
+import org.retal.offgame.service.BuildingOrderService;
 import org.retal.offgame.service.BuildingService;
 import org.retal.offgame.service.PlanetService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,6 +23,7 @@ public class PlanetController {
 
     private final PlanetService planetService;
     private final BuildingService buildingService;
+    private final BuildingOrderService buildingOrderService;
 
     @GetMapping("/{id}")
     public Planet getPlanetInfo(@PathVariable Long id) {
@@ -40,5 +43,18 @@ public class PlanetController {
     @GetMapping("/list")
     public List<Planet> getPlanetList() {
         return planetService.getPlanetList();
+    }
+
+    @PostMapping("/build")
+    public ResponseEntity<BuildingOrderInfo> createBuildingOrder(@RequestBody BuildingOrderDTO buildingOrderDTO) {
+        BuildingOrderInfo result = buildingOrderService.createBuildingOrder(buildingOrderDTO);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(result);
+    }
+
+    @GetMapping("/{id}/orders")
+    public List<BuildingOrderInfo> getActiveOrders(@PathVariable Long id) {
+        return buildingOrderService.getPlanetBuildingOrders(id);
     }
 }

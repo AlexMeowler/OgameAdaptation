@@ -1,16 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import {PlanetService} from "../services/planet.service";
 import {DecimalPipe, NgForOf, NgIf, NgTemplateOutlet, registerLocaleData} from "@angular/common";
-import {Resources} from "../model/resource/Resources";
 import {CustomNumberPipe} from "../pipes/CustomNumberPipe";
-import {Metal} from "../model/resource/Metal";
-import {Crystal} from "../model/resource/Crystal";
-import {Deuterium} from "../model/resource/Deuterium";
 import localeDe from '@angular/common/locales/de';
 import localeDeExtra from '@angular/common/locales/extra/de';
 import {TooltipDirective} from "./tooltip/tooltip.directive";
 import {ResourceContext} from "../model/resource/ResourceContext";
+import {Resources} from "../model/resource/Resources";
+import {Metal} from "../model/resource/Metal";
+import {Crystal} from "../model/resource/Crystal";
+import {Deuterium} from "../model/resource/Deuterium";
 import {Energy} from "../model/resource/Energy";
+import {PlanetService} from "../services/planet.service";
 
 @Component({
     selector: 'resource-header',
@@ -37,14 +37,16 @@ export class ResourceHeaderComponent implements OnInit {
 
     constructor(private planetService: PlanetService) {
         registerLocaleData(localeDe, "de-DE", localeDeExtra);
-    }
 
-    ngOnInit() {
         this.planetService.getPlanetResources(1).subscribe({next: (data: Resources) => {
                 this.contextMetal = new Metal(data, "w_80");
                 this.contextCrystal = new Crystal(data, "w_80");
                 this.contextDeuterium = new Deuterium(data, "w_80");
                 this.contextEnergy = new Energy(data, "w_60");
             }})
+    }
+
+    ngOnInit() {
+
     }
 }

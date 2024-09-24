@@ -5,7 +5,7 @@ import org.retal.offgame.entity.Planet;
 
 import java.util.List;
 
-public interface PlanetService {
+public interface PlanetService extends CrudService<Planet, Long> {
 
     Planet getPlanetInfo(Long planetId);
 

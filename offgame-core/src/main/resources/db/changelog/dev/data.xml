@@ -21,17 +21,17 @@
             <column name="updated_at" value="NOW()"/>
         </insert>
 
-        <insert tableName="planet_building">
+        <insert tableName="building_instance">
             <column name="planet_id" value="1"/>
             <column name="building_id" value="${BUILDING_SOLAR_PANEL_ID}"/>
             <column name="level" value="3"/>
         </insert>
-        <insert tableName="planet_building">
+        <insert tableName="building_instance">
             <column name="planet_id" value="1"/>
             <column name="building_id" value="${BUILDING_METAL_MINE_ID}"/>
             <column name="level" value="1"/>
         </insert>
-        <insert tableName="planet_building">
+        <insert tableName="building_instance">
             <column name="planet_id" value="1"/>
             <column name="building_id" value="${BUILDING_CRYSTAL_MINE_ID}"/>
             <column name="level" value="1"/>

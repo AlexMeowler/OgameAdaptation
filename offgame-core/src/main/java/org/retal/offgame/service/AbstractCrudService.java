@@ -7,9 +7,9 @@ import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.toSet;
 
-public abstract class AbstractCrudService<T> implements CrudService<T> {
+public abstract class AbstractCrudService<T, ID> implements CrudService<T, ID> {
 
-    abstract protected CrudRepository<T, ?> getRepository();
+    abstract protected CrudRepository<T, ID> getRepository();
 
     @Override
     public T saveOrUpdate(T object) {
@@ -19,6 +19,22 @@ public abstract class AbstractCrudService<T> implements CrudService<T> {
     @Override
     public Collection<T> saveAll(Iterable<T> entities) {
         return StreamSupport.stream(getRepository().saveAll(entities).spliterator(), false)
+                .collect(toSet());
+    }
+
+    @Override
+    public void deleteAll(Iterable<T> entities) {
+        getRepository().deleteAll(entities);
+    }
+
+    @Override
+    public void deleteById(ID id) {
+        getRepository().deleteById(id);
+    }
+
+    @Override
+    public Collection<T> findAll() {
+        return StreamSupport.stream(getRepository().findAll().spliterator(), false)
                 .collect(toSet());
     }
 }
