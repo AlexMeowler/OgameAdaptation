@@ -36,12 +36,12 @@ export class BuildComponent implements OnDestroy {
     buildingOrders: BuildingOrder[] = []
     currentBuildTimer!: number
 
-    resourcesSubscription:Subscription
+    resourcesSubscription: Subscription
     resources!: Resources
 
     constructor(private planetService: PlanetService,
                 private resourceService: ResourceService,
-                private orderService:OrderService) {
+                private orderService: OrderService) {
         this.planetService.getPlanetBuildings(1).subscribe({
             next: (data: BuildingInstance[]) => this.buildingInstances = data
         })
@@ -85,6 +85,10 @@ export class BuildComponent implements OnDestroy {
 
     hasResource(cost: Resource, resource: Resource): boolean {
         return cost.amount <= Math.max(0, resource.amount)
+    }
+
+    getColor(condition: boolean): string {
+        return condition ? 'lime' : 'red'
     }
 
     private refreshOrders() {
