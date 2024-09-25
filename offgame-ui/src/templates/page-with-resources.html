@@ -21,12 +21,13 @@
 </ng-template>
 
 <div class="top_bar_fake">
-    <div class="top_bar_bg ">
-        <div class="top_bar ">
+    <div class="top_bar_bg">
+        <div class="top_bar">
+            <div class="left_menu_top"></div>
             <div class="top_bar_left">
                 <div style="margin-left:1px;margin-top:5px;"></div>
             </div>
-            <div class="top_bar_center">
+            <div class="top_bar_center" style="display: inline-flex">
                 <div class="top_bar_open"></div>
                 <ng-container *ngTemplateOutlet="resourceField;context:contextMetal"/>
                 <ng-container *ngTemplateOutlet="resourceField;context:contextCrystal"/>
@@ -134,9 +135,194 @@
 <div style='color: #08a6a9;' messcat='99'>Сообщения очереди построек <span class='fright'>0</span></div>
 <div style='color: #ABABAB;' messcat='100'>Все сообщения <span class='fright'>0</span></div>
 </div>">[ 0 ]</a> </span></div>-->
-                <div class="top_bar_close "></div>
+                <div class="top_bar_close"></div>
             </div>
         </div>
     </div>
 </div>
-<router-outlet/>
+
+<div class="nobgmove prime" style="user-select: auto; display: flex">
+    <div id="overDiv" style="position: absolute;visibility: hidden;z-index: 9000;"></div>
+    <div class="leftmenu" ondragstart="return false;">
+        <div style="text-align: left">
+            <div class="menu">
+                <table width="114" cellspacing="0" cellpadding="0" class="lefttable">
+                    <tbody>
+                    <tr>
+                        <th colspan="2" style="padding:0;"><img ngSrc="/img/ui/menu.png" priority alt="Меню" width="114"
+                                                                height="15"></th>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="http://battlespace.ru/lib" accesskey="g" target="_blank" style="color:white">Библиотека</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="techtree.php" accesskey="g" target="Hauptframe">Технологии</a></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="overview.php" accesskey="g" target="Hauptframe"
+                                    style="color:#eedc82;">Обзор</a></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="resources.php" accesskey="r" target="Hauptframe" style="color:#eedc82;">Ресурсы</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="buildings.php?loc=building" accesskey="b" target="Hauptframe"
+                                    style="color:#eedc82;">Постройки</a></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="buildings.php?loc=research" accesskey="r" target="Hauptframe"
+                                    style="color:#eedc82;">Исследования</a></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="buildings.php?loc=fleet" accesskey="f" target="Hauptframe"
+                                    style="color:#eedc82;">Верфь</a></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="buildings.php?loc=defense" accesskey="d" target="Hauptframe"
+                                    style="color:#eedc82;">Оборона</a></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="fleet.php" accesskey="t" target="Hauptframe" style="color:#eedc82;">Флот</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="galaxy.php" accesskey="s" target="Hauptframe"
+                                    style="color:#ECD300;">Галактика</a></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="imperium.php" accesskey="i" target="Hauptframe"
+                                    style="color:#ECD300;">Империя</a></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="allys.php" accesskey="a" target="Hauptframe" style="color:#ECD300;">Альянс</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="/rank.php#cmine" accesskey="k" target="Hauptframe" style="color:#5BC8FF;">Рейтинг</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="records.php" accesskey="3" target="Hauptframe">Рекорды</a></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="quids.php" accesskey="o" target="Hauptframe" style="color:#ff9900;">Пополнить
+                                счёт</a></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="officer.php" accesskey="o" target="Hauptframe"
+                                    style="color:#ff9900;">Офицеры</a></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="services.php" accesskey="o" target="Hauptframe"
+                                    style="color:#ff9900;">Сервисы</a></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="qwin.php" accesskey="o" target="Hauptframe" style="color:#ff9900;">Выиграть
+                                Куиды</a></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div style="position:relative;"><a href="refsystem.html" class="js-menu-link" accesskey="c"
+                                                               target="Hauptframe" style="color:#ff9900;">Рефералка</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="ticket.php" accesskey="3" target="Hauptframe"
+                                    style="color:lime;">Поддержка</a></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="sim.php" accesskey="b" target="Hauptframe">Симулятор боя</a></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="messages.php" accesskey="b" target="Hauptframe">Сообщения</a></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="search.php" accesskey="b" target="Hauptframe">Поиск</a></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="contacts.php" accesskey="c" target="Hauptframe">Контакты</a></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="#" onclick="f('notes.php', 'Report');" accesskey="n">Заметки</a></div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="http://battlespace.ru/lastnews" accesskey="1" target="_blank">Новости</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="/rules.html" accesskey="1" target="_blank">Правила игры</a></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="options.php" accesskey="o" target="Hauptframe">Опции</a></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div><a href="javascript:void(0)" onclick="Logout();" accesskey="s" title="ЛК">Личный
+                                кабинет</a></div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <router-outlet/>
+</div>

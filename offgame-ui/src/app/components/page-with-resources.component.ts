@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {DecimalPipe, NgForOf, NgIf, NgTemplateOutlet, registerLocaleData} from "@angular/common";
+import {DecimalPipe, NgForOf, NgIf, NgOptimizedImage, NgTemplateOutlet, registerLocaleData} from "@angular/common";
 import {CustomNumberPipe} from "../pipes/CustomNumberPipe";
 import localeDe from '@angular/common/locales/de';
 import localeDeExtra from '@angular/common/locales/extra/de';
@@ -24,7 +24,8 @@ import {Subscription} from "rxjs";
         NgTemplateOutlet,
         CustomNumberPipe,
         TooltipDirective,
-        RouterOutlet
+        RouterOutlet,
+        NgOptimizedImage
     ],
     templateUrl: '../../templates/page-with-resources.html',
     styleUrl: '../../styles/styles.scss',

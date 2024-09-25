@@ -91,10 +91,11 @@ body form table th table input {
     width: 60px
 }
 
-#top_bar {
+.top_bar {
     top: 0;
     height: 32px;
-    background-color: #040e1e
+    background-color: #040e1e;
+    display: flex;
 }
 
 .top_bar_fake {
@@ -104,18 +105,18 @@ body form table th table input {
 }
 
 .top_bar_bg {
-    position: fixed;
     width: 100%;
     height: 32px;
     background: #051d2e url(/img/ui/header/top_r_bg.png) repeat-x;
     z-index: 1;
+    display: flex;
 }
 
 .top_bar_left {
-    display: inline-block;
+    display: flex;
     float: left;
     position: relative;
-    width: 45px;
+    width: 100px;
     height: 32px;
     background: #051d2e url(/img/ui/header/top_l_bg.png) repeat-x;
     padding: 0;
@@ -216,29 +217,27 @@ body form table th table input {
     height: 32px
 }
 
-#left_menu_top {
+.left_menu_top {
     z-index: 1;
     top: 0;
     padding: 5px;
     font-size: 16px;
     font-weight: 700;
-    background: #051d2e url(/img/top_l_bg.png) repeat-x;
-    width: 100%;
-    height: 22px
-}
-
-#left_menu_top center {
-    margin-left: -11px;
-    margin-top: 7px;
+    background: #051d2e url(/img/ui/header/top_l_bg.png) repeat-x;
+    width: 40px;
+    text-align: center;
+    height: 22px;
     color: #ffea00
 }
 
-#leftmenu {
-    margin: 0
+.leftmenu {
+    margin: 0;
+    width: fit-content;
 }
 
-#menu {
-    margin: 0
+.menu {
+    margin: 0;
+    padding: 0 5px;
 }
 
 #planetlist_container {
@@ -485,14 +484,14 @@ a:hover {
     text-decoration: none
 }
 
-#menu td {
+.menu td {
     color: #fff;
     border-top: 0;
     font-size: 10px;
     font-family: Tahoma, sans-serif
 }
 
-#menu div a {
+.menu div a {
     padding-left: 7px;
     height: 100%;
     width: 100%;
@@ -500,22 +499,22 @@ a:hover {
     font-family: Tahoma, sans-serif
 }
 
-#menu div a:link {
+.menu div a:link {
     height: 100%;
     width: 100%;
     font-size: 10px;
     font-family: Tahoma, sans-serif
 }
 
-#menu div a:visited {
+.menu div a:visited {
     height: 100%;
     width: 100%;
     font-size: 10px;
     font-family: Tahoma, sans-serif
 }
 
-#menu div a:hover {
-    background-image: url(/img/link.gif);
+.menu div a:hover {
+    background-image: url(/img/ui/link.gif);
     background-repeat: no-repeat;
     background-position: left;
     height: 100%;
@@ -523,10 +522,6 @@ a:hover {
     text-decoration: none;
     font-size: 10px;
     font-family: Tahoma, sans-serif
-}
-
-#menu {
-    margin-top: 0
 }
 
 .right {
