@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {DecimalPipe, NgForOf, NgIf, NgTemplateOutlet, registerLocaleData} from "@angular/common";
 import {CustomNumberPipe} from "../pipes/CustomNumberPipe";
 import localeDe from '@angular/common/locales/de';
@@ -10,10 +10,12 @@ import {Metal} from "../model/resource/Metal";
 import {Crystal} from "../model/resource/Crystal";
 import {Deuterium} from "../model/resource/Deuterium";
 import {Energy} from "../model/resource/Energy";
-import {PlanetService} from "../services/planet.service";
+import {RouterOutlet} from "@angular/router";
+import {ResourceService} from "../services/resource.service";
+import {Subscription} from "rxjs";
 
 @Component({
-    selector: 'resource-header',
+    selector: 'offgame-app',
     standalone: true,
     imports: [
         NgForOf,
@@ -21,24 +23,27 @@ import {PlanetService} from "../services/planet.service";
         DecimalPipe,
         NgTemplateOutlet,
         CustomNumberPipe,
-        TooltipDirective
+        TooltipDirective,
+        RouterOutlet
     ],
-    templateUrl: '../../templates/resource-header.html',
+    templateUrl: '../../templates/page-with-resources.html',
     styleUrl: '../../styles/styles.scss',
-    providers: [PlanetService, DecimalPipe]
+    providers: [ResourceService, DecimalPipe]
 })
-export class ResourceHeaderComponent implements OnInit {
+export class PageWithResourcesComponent implements OnInit, OnDestroy {
 
+    resourcesSubscription:Subscription
     //todo tooltips
     contextMetal!: ResourceContext
     contextCrystal!: ResourceContext
     contextDeuterium!: ResourceContext
     contextEnergy!: ResourceContext
 
-    constructor(private planetService: PlanetService) {
+    constructor(private resourceService: ResourceService) {
         registerLocaleData(localeDe, "de-DE", localeDeExtra);
 
-        this.planetService.getPlanetResources(1).subscribe({next: (data: Resources) => {
+        this.resourceService.updateResources(1);
+        this.resourcesSubscription = this.resourceService.getPlanetResources(1).subscribe({next: (data: Resources) => {
                 this.contextMetal = new Metal(data, "w_80");
                 this.contextCrystal = new Crystal(data, "w_80");
                 this.contextDeuterium = new Deuterium(data, "w_80");
@@ -49,4 +54,10 @@ export class ResourceHeaderComponent implements OnInit {
     ngOnInit() {
 
     }
+
+    ngOnDestroy(): void {
+        this.resourcesSubscription.unsubscribe()
+    }
+
+
 }

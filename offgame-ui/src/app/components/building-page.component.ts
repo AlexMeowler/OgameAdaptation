@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {PlanetService} from "../services/planet.service";
 import {DatePipe, DecimalPipe, NgForOf, NgIf, NgOptimizedImage, NgTemplateOutlet} from "@angular/common";
 import {TooltipDirective} from "./tooltip/tooltip.directive";
@@ -10,6 +10,8 @@ import {BuildingOrder} from "../model/BuildingOrder";
 import {Resources} from "../model/resource/Resources";
 import {Resource} from "../model/resource/Resource";
 import {OrderService} from "../services/order.service";
+import {ResourceService} from "../services/resource.service";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'build-page',
@@ -28,20 +30,23 @@ import {OrderService} from "../services/order.service";
     styleUrl: '../../styles/styles.scss',
     providers: [PlanetService, OrderService, DecimalPipe]
 })
-export class BuildComponent {
+export class BuildComponent implements OnDestroy {
 
     buildingInstances: BuildingInstance[] = []
     buildingOrders: BuildingOrder[] = []
     currentBuildTimer!: number
 
+    resourcesSubscription:Subscription
     resources!: Resources
 
-    constructor(private planetService: PlanetService, private orderService:OrderService) {
+    constructor(private planetService: PlanetService,
+                private resourceService: ResourceService,
+                private orderService:OrderService) {
         this.planetService.getPlanetBuildings(1).subscribe({
             next: (data: BuildingInstance[]) => this.buildingInstances = data
         })
 
-        this.planetService.getPlanetResources(1).subscribe({
+        this.resourcesSubscription = this.resourceService.getPlanetResources(1).subscribe({
             next: (data: Resources) => {
                 this.resources = data;
             }
@@ -50,9 +55,16 @@ export class BuildComponent {
         this.refreshOrders()
     }
 
+    ngOnDestroy(): void {
+        this.resourcesSubscription.unsubscribe()
+    }
+
     createOrder(buildingId: number) {
         this.planetService.createOrder(buildingId, 1).subscribe({
-            next: ignore => this.refreshOrders()
+            next: ignore => {
+                this.refreshOrders();
+                this.resourceService.updateResources(1)
+            }
         })
     }
 
