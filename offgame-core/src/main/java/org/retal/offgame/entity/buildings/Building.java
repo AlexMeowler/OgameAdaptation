@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.retal.offgame.dto.ResourcesDTO;
 import org.retal.offgame.entity.BuildingInstance;
 
+import java.util.Map;
 import java.util.Set;
 
 import static java.lang.Math.pow;
@@ -22,7 +23,7 @@ import static org.retal.offgame.dto.ResourceDTO.withAmount;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "id", discriminatorType = DiscriminatorType.INTEGER)
-public abstract class Building {
+public class Building {
 
     public static final int RESOURCE_PRODUCTION_MULTIPLIER = 1;
 
@@ -71,8 +72,10 @@ public abstract class Building {
                 .build();
     }
 
-    public Double calculateBuildingTime(Long level) {
-        return calculateBuildingTime(calculateBuildingCost(level));
+    public Double calculateBuildingTime(Long level, Map<Class<? extends Building>, Long> specialBuildingLevels) {
+        Long robotFactoryLevel = specialBuildingLevels.get(RobotFactory.class);
+        Long naniteFactoryLevel = specialBuildingLevels.get(NaniteFactory.class);
+        return calculateBuildingTime(calculateBuildingCost(level)) / (robotFactoryLevel + 1) * pow(0.5, naniteFactoryLevel);
     }
 
     private Double calculateBuildingTime(ResourcesDTO buildingCost) {

@@ -12,6 +12,7 @@ import {Resource} from "../model/resource/Resource";
 import {OrderService} from "../services/order.service";
 import {ResourceService} from "../services/resource.service";
 import {Subscription} from "rxjs";
+import {RouterLink} from "@angular/router";
 
 @Component({
     selector: 'build-page',
@@ -24,7 +25,8 @@ import {Subscription} from "rxjs";
         CustomNumberPipe,
         NgTemplateOutlet,
         DurationPipe,
-        DatePipe
+        DatePipe,
+        RouterLink
     ],
     templateUrl: '../../templates/build-page.html',
     styleUrl: '../../styles/styles.scss',

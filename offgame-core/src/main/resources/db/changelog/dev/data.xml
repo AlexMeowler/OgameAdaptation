@@ -24,12 +24,12 @@
         <insert tableName="building_instance">
             <column name="planet_id" value="1"/>
             <column name="building_id" value="${BUILDING_SOLAR_PANEL_ID}"/>
-            <column name="level" value="3"/>
+            <column name="level" value="8"/>
         </insert>
         <insert tableName="building_instance">
             <column name="planet_id" value="1"/>
             <column name="building_id" value="${BUILDING_METAL_MINE_ID}"/>
-            <column name="level" value="1"/>
+            <column name="level" value="15"/>
         </insert>
         <insert tableName="building_instance">
             <column name="planet_id" value="1"/>

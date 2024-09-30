@@ -25,6 +25,7 @@ public class ResourcesDTO {
 
     private Double globalEffectiveness;
 
+    @Getter(AccessLevel.NONE)
     private final Map<Function<ResourcesDTO, ResourceDTO>, Consumer<ResourceDTO>> ACCESSOR_MAP = Map.of(
             ResourcesDTO::getMetal, this::setMetal,
             ResourcesDTO::getCrystal, this::setCrystal,
@@ -111,5 +112,9 @@ public class ResourcesDTO {
         }
 
         return startValue;
+    }
+
+    public ResourcesDTO copy() {
+        return ResourcesDTO.empty().merge(this);
     }
 }

@@ -1,0 +1,82 @@
+<ng-template #rowDisplay
+             let-value="resource"
+             let-resName="name"
+             let-diff="diff">
+    <ng-container *ngIf="isResourceAffected(resName)">
+        <th><span>{{ value | customNumber }}</span><span></span></th>
+        <th style="color: {{ diff != 0 ? getColor(diff > 0) : 'white' }}">{{ diff | customNumber }}</th>
+    </ng-container>
+</ng-template>
+<div style="padding-left: 93px;">
+    <div>
+        <table width="750">
+            <tbody>
+            <tr>
+                <td class="c"> {{ building.name }}</td>
+            </tr><tr>
+                <th>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td valign="top"><img ngSrc="/img/building/{{ building.imageName }}" align="top" border="0" height="120" width="120"></td>
+                            <td>{{ building.description }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </th>
+            </tr><tr>
+                <th>
+                    <div style="text-align: center">
+                        <table border="1">
+                            <tbody>
+                                <tr>
+                                    <th class="c">Уровень</th>
+                                    <ng-container *ngIf="isResourceAffected('metal')">
+                                        <th class="c">Производство металла</th>
+                                        <th class="c">Разница</th>
+                                    </ng-container>
+                                    <ng-container *ngIf="isResourceAffected('crystal')">
+                                        <th class="c">Производство кристалла</th>
+                                        <th class="c">Разница</th>
+                                    </ng-container>
+                                    <ng-container *ngIf="isResourceAffected('deuterium')">
+                                        <th class="c">Производство дейтерия</th>
+                                        <th class="c">Разница</th>
+                                    </ng-container>
+                                    <ng-container *ngIf="isResourceAffected('energy')">
+                                        <th class="c">Производство энергии</th>
+                                        <th class="c">Разница</th>
+                                    </ng-container>
+                                </tr>
+                                <tr *ngFor="let row of building.productionByLevel | keyvalue">
+                                    <th>{{ row.key }}</th>
+                                    <ng-container *ngTemplateOutlet="rowDisplay;context:{
+                                        resource:row.value.metal.productionPerHour,
+                                        name:'metal',
+                                        diff:building.differenceByLevel.get(row.key)!.metal.productionPerHour
+                                    }"/>
+                                    <ng-container *ngTemplateOutlet="rowDisplay;context:{
+                                        resource:row.value.crystal.productionPerHour,
+                                        name:'crystal',
+                                        diff:building.differenceByLevel.get(row.key)!.crystal.productionPerHour
+                                    }"/>
+                                    <ng-container *ngTemplateOutlet="rowDisplay;context:{
+                                        resource:row.value.deuterium.productionPerHour,
+                                        name:'deuterium',
+                                        diff:building.differenceByLevel.get(row.key)!.deuterium.productionPerHour
+                                    }"/>
+                                    <ng-container *ngTemplateOutlet="rowDisplay;context:{
+                                        resource:row.value.energy.amount,
+                                        name:'energy',
+                                        diff:building.differenceByLevel.get(row.key)!.energy.amount
+                                    }"/>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -2,6 +2,10 @@
     cursor: default;
 }
 
+a * {
+    cursor: pointer;
+}
+
 td, th, textarea, body, table {
     font-family: Tahoma, sans-serif;
     font-size: 10px
@@ -27,6 +31,10 @@ table table {
 table table td {
     font-size: 10px;
     font-family: Tahoma, sans-serif
+}
+
+td {
+    text-align: left;
 }
 
 body {
@@ -354,7 +362,7 @@ td.c {
     font-weight: 700;
     color: #fff;
     padding-left: 3px;
-    background: #19273a url(/img/bg2.gif) repeat-x
+    background: #19273a url(/img/ui/bg2.gif) repeat-x
 }
 
 td.f, select, textarea, input {

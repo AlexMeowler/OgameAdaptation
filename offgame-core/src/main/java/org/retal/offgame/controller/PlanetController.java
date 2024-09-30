@@ -1,10 +1,7 @@
 package org.retal.offgame.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.retal.offgame.dto.BuildingDTO;
-import org.retal.offgame.dto.BuildingOrderDTO;
-import org.retal.offgame.dto.BuildingOrderInfo;
-import org.retal.offgame.dto.ResourcesDTO;
+import org.retal.offgame.dto.*;
 import org.retal.offgame.entity.Planet;
 import org.retal.offgame.service.BuildingOrderService;
 import org.retal.offgame.service.BuildingService;
@@ -38,6 +35,11 @@ public class PlanetController {
     @GetMapping("/{id}/buildings")
     public List<BuildingDTO> getPlanetBuildingsInfo(@PathVariable Long id) {
         return buildingService.getPlanetBuildings(id);
+    }
+
+    @GetMapping("/{planetId}/buildings/{buildingId}/details")
+    public BuildingDetails getPlanetBuildingsInfo(@PathVariable Long planetId, @PathVariable Long buildingId) {
+        return buildingService.getBuildingDetails(planetId, buildingId);
     }
 
     @GetMapping("/list")

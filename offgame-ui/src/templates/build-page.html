@@ -23,11 +23,12 @@
             </tr>
             <tr *ngFor="let obj of buildingInstances">
                 <td class="l">
-                    <a href="infos.php?gid=4"><img border="0" ngSrc="/img/{{ obj.building.imageName }}" align="top"
-                                                   width="120" height="120"></a>
+                    <a routerLink="building/{{ obj.building.id }}" skipLocationChange="true">
+                        <img border="0" ngSrc="/img/building/{{ obj.building.imageName }}" align="top" width="120" height="120" alt="{{ obj.building.name }}">
+                    </a>
                 </td>
                 <td class="l">
-                    <span><a href="infos.php?gid=4">{{ obj.building.name }}</a>&nbsp;</span>
+                    <span><a routerLink="building/{{ obj.building.id }}" skipLocationChange="true">{{ obj.building.name }}</a>&nbsp;</span>
                     <span *ngIf="obj.level > 0">(Уровень {{ obj.level }}) </span>
                     <div *ngIf="obj.energyDiff != 0" style="display: inline-block">(<div style="color: {{ getColor(obj.energyDiff > 0) }}; display: inline-block" text-tooltip tooltipText="{{ obj.energyDiff > 0 ? ENERGY_DIFF_POSITIVE_TOOLTIP : ENERGY_DIFF_NEGATIVE_TOOLTIP}}">{{ obj.energyDiff | customNumber:true }} Энергия</div>)</div><br>
                     {{ obj.building.shortDescription }}<br>

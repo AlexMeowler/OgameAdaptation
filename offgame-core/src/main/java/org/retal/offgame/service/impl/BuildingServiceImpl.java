@@ -2,6 +2,8 @@ package org.retal.offgame.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.retal.offgame.dto.BuildingDTO;
+import org.retal.offgame.dto.BuildingDetails;
+import org.retal.offgame.dto.ResourcesDTO;
 import org.retal.offgame.entity.BuildingInstance;
 import org.retal.offgame.entity.Planet;
 import org.retal.offgame.entity.buildings.Building;
@@ -11,13 +13,19 @@ import org.retal.offgame.service.BuildingService;
 import org.retal.offgame.service.PlanetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.LongStream;
+
+import static java.util.stream.Collectors.*;
 
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
@@ -29,40 +37,93 @@ public class BuildingServiceImpl extends AbstractCrudService<Building, Long> imp
     @Override
     public List<BuildingDTO> getPlanetBuildings(Long planetId) {
         Planet planet = planetService.getPlanetInfo(planetId);
-        return buildingRepository.findByPlanetId(planetId).stream()
-                .map(building -> toDTO(building, planet))
+        List<Building> buildings = buildingRepository.findByPlanetId(planetId);
+        Map<Class<? extends Building>, Long> specialBuildingLevels = buildings.stream()
+                .filter(building -> building.getClass() != Building.class)
+                .collect(toMap(
+                        Building::getClass,
+                        building -> getLevel(building, planet)
+                ));
+
+        return buildings.stream()
+                .map(building -> toDTO(building, planet, specialBuildingLevels))
                 .collect(Collectors.toList());
     }
 
-    private BuildingDTO toDTO(Building building, Planet planet) {
-        Long level = Optional.ofNullable(building)
-                .map(Building::getInstances)
-                .map(Set::iterator)
-                .filter(Iterator::hasNext)
-                .map(Iterator::next)
-                .map(BuildingInstance::getLevel)
-                .orElse(0L);
-        /*
-        TODO check with second planet in DB, if joined instances are correct only for given planet
-        .flatMap(instances -> instances.stream()
-                        .filter(instance -> instance.getPlanet().equals(planet))
-                        .findFirst())
-        also check cost calculation and time ????
-         */
+    private BuildingDTO toDTO(Building building, Planet planet, Map<Class<? extends Building>, Long> specialBuildingLevels) {
+        Long level = getLevel(building, planet);
         int temperature = planet.averageTemperature();
         Double energyDiff = building.getResourceInfo(level + 1, temperature)
                 .merge(building.getResourceInfo(level, temperature).negate())
                 .getEnergy().amount();
 
-        //todo фабрика роботов и наниты
-        //todo может сразу брать все планеты в методе и возвращать список, проще использовать данные построек
         return BuildingDTO.builder()
                 .building(building)
                 .level(level)
                 .buildingCost(building.calculateBuildingCost(level + 1))
-                .buildingTime(building.calculateBuildingTime(level + 1))
+                .buildingTime(building.calculateBuildingTime(level + 1, specialBuildingLevels))
                 .energyDiff(energyDiff)
                 .build();
+    }
+
+    private Long getLevel(Building building, Planet planet) {
+        return Optional.ofNullable(building)
+                .map(Building::getInstances)
+                .flatMap(instances -> instances.stream()
+                        .filter(instance -> instance.getPlanet().equals(planet))
+                        .findFirst())
+                .map(BuildingInstance::getLevel)
+                .orElse(0L);
+    }
+
+    @Override
+    @Transactional
+    public BuildingDetails getBuildingDetails(Long planetId, Long buildingId) {
+        Planet planet = planetService.getPlanetInfo(planetId);
+        return buildingRepository.findById(buildingId)
+                .map(building -> toDetails(building, planet))
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
+    }
+
+    private BuildingDetails toDetails(Building building, Planet planet) {
+        Long level = getLevel(building, planet);
+        int temperature = planet.averageTemperature();
+        Long a = Math.max(1, level - 2);
+        Long b = level + 10;
+
+        Map<Long, ResourcesDTO> productionByLevel = LongStream.range(a, b + 1)
+                .boxed()
+                .collect(toMap(
+                        Function.identity(),
+                        i -> building.getResourceInfo(i, temperature)
+                ));
+
+        ResourcesDTO currentProduction = productionByLevel.get(level);
+        Map<Long, ResourcesDTO> differenceByLevel = productionByLevel.entrySet().stream()
+                .collect(toMap(
+                        Map.Entry::getKey,
+                        entry -> currentProduction.copy().negate().merge(entry.getValue())
+                ));
+
+        return BuildingDetails.builder()
+                .name(building.getName())
+                .description(building.getFullDescription())
+                .imageName(building.getImageName())
+                .productionByLevel(productionByLevel)
+                .differenceByLevel(differenceByLevel)
+                .build();
+    }
+
+    @Override
+    public Map<Class<? extends Building>, Long> getSpecialBuildingLevels(Long planetId) {
+        Planet planet = planetService.getPlanetInfo(planetId);
+        List<Building> buildings = buildingRepository.findByPlanetId(planetId);
+        return buildings.stream()
+                .filter(building -> building.getClass() != Building.class)
+                .collect(toMap(
+                        Building::getClass,
+                        building -> getLevel(building, planet)
+                ));
     }
 
     @Override

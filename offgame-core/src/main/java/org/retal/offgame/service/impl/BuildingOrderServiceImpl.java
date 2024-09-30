@@ -7,10 +7,12 @@ import org.retal.offgame.dto.ResourcesDTO;
 import org.retal.offgame.entity.BuildingInstance;
 import org.retal.offgame.entity.BuildingOrder;
 import org.retal.offgame.entity.Resources;
+import org.retal.offgame.entity.buildings.Building;
 import org.retal.offgame.repository.BuildingInstanceRepository;
 import org.retal.offgame.repository.BuildingOrderRepository;
 import org.retal.offgame.service.AbstractCrudService;
 import org.retal.offgame.service.BuildingOrderService;
+import org.retal.offgame.service.BuildingService;
 import org.retal.offgame.service.ResourcesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
@@ -38,6 +40,7 @@ public class BuildingOrderServiceImpl extends AbstractCrudService<BuildingOrder,
     private final BuildingOrderRepository buildingOrderRepository;
     private final BuildingInstanceRepository buildingInstanceRepository;
     private final ResourcesService resourcesService;
+    private final BuildingService buildingService;
 
     @Override
     public Collection<BuildingOrder> getUnprocessedOrders() {
@@ -46,6 +49,7 @@ public class BuildingOrderServiceImpl extends AbstractCrudService<BuildingOrder,
 
     @Override
     public void initCreatedOrders() {
+        //todo validation when trying to subtract
         Map<BuildingOrder, Resources> ordersToInit = getBuildingOrdersToInit().stream()
                 .filter(order -> canStartOrder(order.getBuildingInstance()))
                 .map(this::processOrder)
@@ -83,10 +87,12 @@ public class BuildingOrderServiceImpl extends AbstractCrudService<BuildingOrder,
 
     @Override
     public BuildingOrderInfo createBuildingOrder(BuildingOrderDTO dto) {
-        //todo validation and subtract resources
-        return buildingInstanceRepository.findByPlanetIdAndBuildingId(dto.getPlanetId(), dto.getBuildingId())
+        Long planetId = dto.getPlanetId();
+        Map<Class<? extends Building>, Long> specialBuildingLevels = buildingService.getSpecialBuildingLevels(planetId);
+
+        return buildingInstanceRepository.findByPlanetIdAndBuildingId(planetId, dto.getBuildingId())
                 .filter(this::canStartOrder)
-                .map(this::toBuildingOrder)
+                .map(buildingInstance -> toBuildingOrder(buildingInstance, specialBuildingLevels))
                 .map(this::createOrder)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
     }
@@ -100,13 +106,13 @@ public class BuildingOrderServiceImpl extends AbstractCrudService<BuildingOrder,
         return currentResources.isMoreOrEqualThan(cost);
     }
 
-    private BuildingOrder toBuildingOrder(BuildingInstance buildingInstance) {
+    private BuildingOrder toBuildingOrder(BuildingInstance buildingInstance, Map<Class<? extends Building>, Long> specialBuildingLevels) {
         Long level = buildingInstance.getLevel();
         Long lastOrderedLevel = buildingOrderRepository.findLatestActiveOrderForBuildingInstance(buildingInstance)
                 .map(BuildingOrder::getOrderValue)
                 .orElse(level) + 1;
 
-        long buildingTime = buildingInstance.getBuilding().calculateBuildingTime(lastOrderedLevel).longValue();
+        long buildingTime = buildingInstance.getBuilding().calculateBuildingTime(lastOrderedLevel, specialBuildingLevels).longValue();
         Instant createdAt = Instant.now();
 
         return BuildingOrder.builder()
