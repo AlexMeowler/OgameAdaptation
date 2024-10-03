@@ -9,7 +9,7 @@ import static java.lang.Math.pow;
 
 @Entity
 @DiscriminatorValue("1")
-public class SolarPanel extends Building {
+public class SolarPowerPlant extends Building {
 
     @Override
     public ResourcesDTO getProductionPerHour(long level, int temperature) {
