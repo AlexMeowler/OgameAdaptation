@@ -1,11 +1,10 @@
 import {
     AfterViewInit,
+    ApplicationRef,
     ComponentRef,
     Directive,
-    ElementRef,
     HostListener,
     Input,
-    Renderer2,
     ViewContainerRef
 } from '@angular/core';
 import {TooltipComponent} from "./tooltip.component";
@@ -18,16 +17,15 @@ export class TooltipDirective implements AfterViewInit {
 
     @Input() tooltipText! : string;
 
-    private readonly tooltip : ComponentRef<TooltipComponent>;
+    private tooltip! : ComponentRef<TooltipComponent>;
 
-    constructor(private elementRef: ElementRef,
-                private renderer: Renderer2,
-                private viewContainerRef: ViewContainerRef) {
-
-        this.tooltip = this.viewContainerRef.createComponent(TooltipComponent);
+    constructor(private applicationRef: ApplicationRef) {
     }
 
     ngAfterViewInit(): void {
+        let rootContainerRef = this.applicationRef.components[0].injector.get(ViewContainerRef)
+        this.tooltip = rootContainerRef.createComponent(TooltipComponent);
+        this.tooltip.changeDetectorRef.detectChanges();
         this.tooltip.setInput("text", this.tooltipText);
     }
 
@@ -38,7 +36,7 @@ export class TooltipDirective implements AfterViewInit {
 
     @HostListener("mousemove", ['$event'])
     moveTooltip(event: MouseEvent): void {
-        this.tooltip.instance.moveTooltip(event.layerX, event.layerY);
+        this.tooltip.instance.moveTooltip(event.pageX, event.pageY);
     }
 
     @HostListener("mouseout")

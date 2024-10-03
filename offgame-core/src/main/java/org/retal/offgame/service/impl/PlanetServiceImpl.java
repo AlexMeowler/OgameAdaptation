@@ -1,6 +1,7 @@
 package org.retal.offgame.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.retal.offgame.dto.PlanetItem;
 import org.retal.offgame.dto.ResourcesDTO;
 import org.retal.offgame.entity.Planet;
 import org.retal.offgame.entity.Resources;
@@ -20,6 +21,7 @@ import java.time.Instant;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
@@ -37,11 +39,22 @@ public class PlanetServiceImpl extends AbstractCrudService<Planet, Long> impleme
     }
 
     @Override
-    public List<Planet> getPlanetList() {
+    public List<PlanetItem> getPlanetItemList() {
         return userService.getAuthenticatedUser()
                 .map(User::getId)
                 .map(planetRepository::findByOwnerIdOrderByCreatedAtAsc)
+                .map(planets -> planets.stream()
+                        .map(this::toPlanetItem)
+                        .collect(toList()))
                 .orElse(emptyList());
+    }
+
+    private PlanetItem toPlanetItem(Planet planet) {
+        return PlanetItem.builder()
+                .id(planet.getId())
+                .name(planet.getName())
+                .imageName(planet.getImageName())
+                .build();
     }
 
     @Override

@@ -5,7 +5,9 @@ import {map, Observable} from "rxjs";
 import {BuildingInstance} from "../model/BuildingInstance";
 import {BuildingOrder} from "../model/BuildingOrder";
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class PlanetService {
     constructor(private http: HttpClient) {
     }

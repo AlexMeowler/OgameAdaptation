@@ -102,6 +102,13 @@ public class ResourcesDTO {
         return compareTo(target, 1) == 1;
     }
 
+    public boolean isEmpty() {
+        return ACCESSOR_MAP.keySet().stream()
+                .map(getter -> getter.apply(this))
+                .map(ResourceDTO::isEmpty)
+                .reduce(true, Boolean::logicalAnd);
+    }
+
     private int compareTo(ResourcesDTO target, int startValue) {
         for (Function<ResourcesDTO, ResourceDTO> getter : ACCESSOR_MAP.keySet()) {
             int compareResult = getter.apply(this).compareTo(ResourceDTO::amount, getter.apply(target));

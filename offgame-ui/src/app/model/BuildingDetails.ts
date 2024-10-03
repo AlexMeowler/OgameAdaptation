@@ -6,6 +6,7 @@ export class BuildingDetails {
     description!: string;
     imageName!: string;
     name!: string;
+    currentLevel!: number;
     productionByLevel!:Map<number, Resources>;
     differenceByLevel!:Map<number, Resources>;
 
@@ -23,12 +24,14 @@ export class BuildingDetails {
         }
     }
 
-    isResourceAffected(getter: (resource: Resources) => Resource):boolean {
-        let result = false;
+    isResourceAffected(getter: (resource: Resources) => Resource):number {
+        let result = 0;
 
         for (let value of this.productionByLevel.values()) {
             let res = getter(value);
-            result ||= res.productionPerHour != 0 || res.amount != 0;
+            let x = res.productionPerHour != 0 ? res.productionPerHour : res.amount;
+
+            result = Math.sign(x);
         }
 
         return result;

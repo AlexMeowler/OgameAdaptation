@@ -4,7 +4,9 @@ import {apiUrl} from "../app.config";
 import {map, Observable, Subject} from "rxjs";
 import {Resources} from "../model/resource/Resources";
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class ResourceService {
 
     private resources: Map<number, Subject<Resources>> = new Map<number, Subject<Resources>>();

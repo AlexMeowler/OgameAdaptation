@@ -4,7 +4,9 @@ import {apiUrl} from "../app.config";
 import {map, Observable} from "rxjs";
 import {BuildingDetails} from "../model/BuildingDetails";
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class BuildingService {
 
     constructor(private http: HttpClient) {

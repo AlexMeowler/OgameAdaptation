@@ -13,6 +13,8 @@ import {OrderService} from "../services/order.service";
 import {ResourceService} from "../services/resource.service";
 import {Subscription} from "rxjs";
 import {RouterLink} from "@angular/router";
+import {User} from "../model/User";
+import {UserService} from "../services/user.service";
 
 @Component({
     selector: 'build-page',
@@ -30,7 +32,7 @@ import {RouterLink} from "@angular/router";
     ],
     templateUrl: '../../templates/build-page.html',
     styleUrl: '../../styles/styles.scss',
-    providers: [PlanetService, OrderService, DecimalPipe]
+    providers: [DecimalPipe]
 })
 export class BuildComponent implements OnDestroy {
 
@@ -38,27 +40,46 @@ export class BuildComponent implements OnDestroy {
     buildingOrders: BuildingOrder[] = []
     currentBuildTimer!: number
 
-    resourcesSubscription: Subscription
+    resourcesSubscription!: Subscription
     resources!: Resources
+
+    userSubscription: Subscription
+    user!: User
 
     constructor(private planetService: PlanetService,
                 private resourceService: ResourceService,
+                private userService: UserService,
                 private orderService: OrderService) {
-        this.planetService.getPlanetBuildings(1).subscribe({
-            next: (data: BuildingInstance[]) => this.buildingInstances = data
-        })
 
-        this.resourcesSubscription = this.resourceService.getPlanetResources(1).subscribe({
-            next: (data: Resources) => {
-                this.resources = data;
+        this.userSubscription = this.userService.getUserInfo().subscribe({
+            next: (data: User) => {
+                this.user = data;
+                this.updatePlanetBuildings(this.user.activePlanet)
+                this.resourceService.updateResources(this.user.activePlanet);
+                this.resourcesSubscription = this.initResourceSubscription(this.user.activePlanet);
             }
         })
 
         this.refreshOrders()
     }
 
+    private updatePlanetBuildings(planetId: number) {
+        this.planetService.getPlanetBuildings(planetId).subscribe({
+            next: (data: BuildingInstance[]) => this.buildingInstances = data
+        })
+    }
+
+    private initResourceSubscription(planetId: number) {
+        return this.resourceService.getPlanetResources(planetId).subscribe({
+            next: (data: Resources) => {
+                this.resources = data;
+            }
+        })
+    }
+
     ngOnDestroy(): void {
-        this.resourcesSubscription.unsubscribe()
+        this.resourcesSubscription.unsubscribe();
+        this.userSubscription.unsubscribe();
     }
 
     createOrder(buildingId: number) {

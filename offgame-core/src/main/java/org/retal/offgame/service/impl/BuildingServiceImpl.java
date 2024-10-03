@@ -13,6 +13,7 @@ import org.retal.offgame.service.BuildingService;
 import org.retal.offgame.service.PlanetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,11 +22,10 @@ import org.springframework.web.client.HttpClientErrorException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toMap;
 
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
@@ -93,12 +93,14 @@ public class BuildingServiceImpl extends AbstractCrudService<Building, Long> imp
 
         Map<Long, ResourcesDTO> productionByLevel = LongStream.range(a, b + 1)
                 .boxed()
+                .map(i -> Pair.of(i, building.getResourceInfo(i, temperature)))
+                .filter(pair -> !pair.getSecond().isEmpty())
                 .collect(toMap(
-                        Function.identity(),
-                        i -> building.getResourceInfo(i, temperature)
+                        Pair::getFirst,
+                        Pair::getSecond
                 ));
 
-        ResourcesDTO currentProduction = productionByLevel.get(level);
+        ResourcesDTO currentProduction = productionByLevel.getOrDefault(level, ResourcesDTO.empty());
         Map<Long, ResourcesDTO> differenceByLevel = productionByLevel.entrySet().stream()
                 .collect(toMap(
                         Map.Entry::getKey,
@@ -109,6 +111,7 @@ public class BuildingServiceImpl extends AbstractCrudService<Building, Long> imp
                 .name(building.getName())
                 .description(building.getFullDescription())
                 .imageName(building.getImageName())
+                .currentLevel(level)
                 .productionByLevel(productionByLevel)
                 .differenceByLevel(differenceByLevel)
                 .build();

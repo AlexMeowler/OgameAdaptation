@@ -7,11 +7,13 @@
     <changeSet id="1" author="alexMeowler">
         <insert tableName="planet">
             <column name="owner_id" value="${ADMIN_ID}"/>
+            <column name="name" value="Planet A"/>
             <column name="diameter" value="5000"/>
             <column name="base_fields" value="150"/>
             <column name="min_temperature" value="-10"/>
             <column name="max_temperature" value="30"/>
             <column name="created_at" value="NOW()"/>
+            <column name="image_name" value="5.jpg"/>
         </insert>
         <insert tableName="planet_resource">
             <column name="id" value="1"/>
@@ -35,6 +37,44 @@
             <column name="planet_id" value="1"/>
             <column name="building_id" value="${BUILDING_CRYSTAL_MINE_ID}"/>
             <column name="level" value="1"/>
+        </insert>
+
+        <insert tableName="planet">
+            <column name="owner_id" value="${ADMIN_ID}"/>
+            <column name="name" value="Planet B"/>
+            <column name="diameter" value="5000"/>
+            <column name="base_fields" value="150"/>
+            <column name="min_temperature" value="-10"/>
+            <column name="max_temperature" value="30"/>
+            <column name="created_at" value="NOW()"/>
+            <column name="image_name" value="10.jpg"/>
+        </insert>
+
+        <insert tableName="planet_resource">
+            <column name="id" value="2"/>
+            <column name="metal" value="5000"/>
+            <column name="crystal" value="2500"/>
+            <column name="deuterium" value="1250"/>
+            <column name="updated_at" value="NOW()"/>
+        </insert>
+
+        <insert tableName="planet">
+            <column name="owner_id" value="${ADMIN_ID}"/>
+            <column name="name" value="Planet C"/>
+            <column name="diameter" value="5000"/>
+            <column name="base_fields" value="150"/>
+            <column name="min_temperature" value="-10"/>
+            <column name="max_temperature" value="30"/>
+            <column name="created_at" value="NOW()"/>
+            <column name="image_name" value="15.jpg"/>
+        </insert>
+
+        <insert tableName="planet_resource">
+            <column name="id" value="3"/>
+            <column name="metal" value="5000"/>
+            <column name="crystal" value="2500"/>
+            <column name="deuterium" value="1250"/>
+            <column name="updated_at" value="NOW()"/>
         </insert>
 
     </changeSet>

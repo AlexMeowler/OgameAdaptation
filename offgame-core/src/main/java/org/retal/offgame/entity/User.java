@@ -24,9 +24,15 @@ public class User implements UserDetails {
     private Long id;
 
     @NotBlank
+    @Column
     private String username;
 
+    @Column
     private String password;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "active_planet_id")
+    private Planet activePlanet;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -36,7 +42,7 @@ public class User implements UserDetails {
     )
     private Set<Role> roles;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     private Set<Planet> planets;
 
     @Override

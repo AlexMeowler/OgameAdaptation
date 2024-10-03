@@ -43,8 +43,8 @@ public class PlanetController {
     }
 
     @GetMapping("/list")
-    public List<Planet> getPlanetList() {
-        return planetService.getPlanetList();
+    public List<PlanetItem> getPlanetList() {
+        return planetService.getPlanetItemList();
     }
 
     @PostMapping("/build")

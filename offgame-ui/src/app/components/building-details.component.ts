@@ -27,7 +27,7 @@ import {Resource} from "../model/resource/Resource";
     ],
     templateUrl: '../../templates/building-details-page.html',
     styleUrl: '../../styles/styles.scss',
-    providers: [BuildingService, DecimalPipe]
+    providers: [DecimalPipe]
 })
 export class BuildingDetailsComponent implements OnDestroy {
 
@@ -47,7 +47,7 @@ export class BuildingDetailsComponent implements OnDestroy {
             });
     }
 
-    isResourceAffected(resourceName: string): boolean {
+    isResourceAffected(resourceName: string): number {
         let getter: (resource: Resources) => Resource;
         switch (resourceName) {
             case TYPE_METAL:
@@ -63,7 +63,7 @@ export class BuildingDetailsComponent implements OnDestroy {
                 getter = (res: Resources) => res.energy;
                 break;
             default:
-                return false;
+                return 0;
         }
 
         return this.building.isResourceAffected(getter);

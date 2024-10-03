@@ -49,4 +49,10 @@ public record ResourceDTO(Double amount, Double productionPerHour, Double maxAmo
     public int compareTo(Function<ResourceDTO, Double> getter, ResourceDTO target) {
         return getter.apply(this).compareTo(getter.apply(target));
     }
+
+    public boolean isEmpty() {
+        return Stream.of(amount, productionPerHour, maxAmount)
+                .map(x -> x == 0.0)
+                .reduce(true, Boolean::logicalAnd);
+    }
 }

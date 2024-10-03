@@ -14,6 +14,7 @@ public class BuildingDetails {
     private String name;
     private String imageName;
     private String description;
+    private Long currentLevel;
     private Map<Long, ResourcesDTO> productionByLevel;
     private Map<Long, ResourcesDTO> differenceByLevel;
 }

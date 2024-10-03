@@ -2,6 +2,7 @@ package org.retal.offgame.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,6 +30,10 @@ public class Planet {
     @JsonIgnore
     private User owner;
 
+    @Column
+    @NotBlank
+    private String name;
+
     @Column(insertable = false, updatable = false)
     private Integer minTemperature;
 
@@ -42,6 +47,9 @@ public class Planet {
     @Column
     @CreatedDate
     private Instant createdAt;
+
+    @Column
+    private String imageName;
 
     @OneToOne(mappedBy = "planet", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn

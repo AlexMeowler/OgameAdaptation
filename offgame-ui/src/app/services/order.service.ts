@@ -2,7 +2,9 @@ import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {apiUrl} from "../app.config";
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class OrderService {
     constructor(private http: HttpClient) {
     }

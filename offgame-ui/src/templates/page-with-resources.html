@@ -141,9 +141,8 @@
     </div>
 </div>
 
-<div class="nobgmove prime" style="user-select: auto; display: flex">
-    <div id="overDiv" style="position: absolute;visibility: hidden;z-index: 9000;"></div>
-    <div class="leftmenu" ondragstart="return false;">
+<div class="controlPanel" style="user-select: auto; display: flex">
+    <div class="leftMenu" ondragstart="return false;">
         <div style="text-align: left">
             <div class="menu">
                 <table width="114" cellspacing="0" cellpadding="0" class="lefttable">
@@ -151,12 +150,6 @@
                     <tr>
                         <th colspan="2" style="padding:0;"><img ngSrc="/img/ui/menu.png" priority alt="Меню" width="114"
                                                                 height="15"></th>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div><a href="http://battlespace.ru/lib" accesskey="g" target="_blank" style="color:white">Библиотека</a>
-                            </div>
-                        </td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -219,56 +212,8 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <div><a href="allys.php" accesskey="a" target="Hauptframe" style="color:#ECD300;">Альянс</a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div><a href="/rank.php#cmine" accesskey="k" target="Hauptframe" style="color:#5BC8FF;">Рейтинг</a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div><a href="records.php" accesskey="3" target="Hauptframe">Рекорды</a></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div><a href="quids.php" accesskey="o" target="Hauptframe" style="color:#ff9900;">Пополнить
-                                счёт</a></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
                             <div><a href="officer.php" accesskey="o" target="Hauptframe"
                                     style="color:#ff9900;">Офицеры</a></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div><a href="services.php" accesskey="o" target="Hauptframe"
-                                    style="color:#ff9900;">Сервисы</a></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div><a href="qwin.php" accesskey="o" target="Hauptframe" style="color:#ff9900;">Выиграть
-                                Куиды</a></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div style="position:relative;"><a href="refsystem.html" class="js-menu-link" accesskey="c"
-                                                               target="Hauptframe" style="color:#ff9900;">Рефералка</a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div><a href="ticket.php" accesskey="3" target="Hauptframe"
-                                    style="color:lime;">Поддержка</a></div>
                         </td>
                     </tr>
                     <tr>
@@ -281,48 +226,28 @@
                             <div><a href="messages.php" accesskey="b" target="Hauptframe">Сообщения</a></div>
                         </td>
                     </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div><a href="search.php" accesskey="b" target="Hauptframe">Поиск</a></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div><a href="contacts.php" accesskey="c" target="Hauptframe">Контакты</a></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div><a href="#" onclick="f('notes.php', 'Report');" accesskey="n">Заметки</a></div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td colspan="2">
-                            <div><a href="http://battlespace.ru/lastnews" accesskey="1" target="_blank">Новости</a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div><a href="/rules.html" accesskey="1" target="_blank">Правила игры</a></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div><a href="options.php" accesskey="o" target="Hauptframe">Опции</a></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div><a href="javascript:void(0)" onclick="Logout();" accesskey="s" title="ЛК">Личный
-                                кабинет</a></div>
-                        </td>
-                    </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-    <router-outlet/>
+    <div class="planetlist_container ps" style="height: 420px;">
+        <div class="planetlist">
+            <ng-container *ngFor="let planet of planetList">
+                <div class="planet_container">
+                    <a class="planet_item {{ user.activePlanet === planet.id ? 'current_item' : '' }}" href="javascript:void(0);" (click)="selectPlanet(planet.id)" text-tooltip tooltipText="{{ planet.name }}">
+                        <img ngSrc="/img/planet/{{ planet.imageName }}" width="52" height="52">
+                    </a>
+                </div>
+            </ng-container>
+        </div>
+        <!--<div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+            <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+        </div>
+        <div class="ps__rail-y" style="top: 0px; right: 0px;">
+            <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+        </div>-->
+    </div>
 </div>
+
+<div class="center"><router-outlet/></div>

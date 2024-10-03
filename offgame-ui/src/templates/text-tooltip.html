@@ -1,21 +1,5 @@
 <div #tooltip class="tooltip">
-    <table width="324" border="0" cellpadding="1" cellspacing="0">
-        <tbody>
-        <tr>
-            <td>
-                <table width="100%" border="0" cellpadding="0" cellspacing="0">
-                    <tbody>
-                    <tr>
-                        <td valign="top">
-                            <div style="color:#FFFFFF;font-family:Verdana,Arial,Helvetica,serif;font-size:10px;" [innerHTML]="text">
-                                {{ text }}
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div style="color:#FFFFFF;font-family:Verdana,Arial,Helvetica,serif;font-size:10px;" [innerHTML]="text">
+        {{ text }}
+    </div>
 </div>
