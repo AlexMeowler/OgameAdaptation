@@ -77,6 +77,12 @@
             <column name="updated_at" value="NOW()"/>
         </insert>
 
+        <insert tableName="technology_instance">
+            <column name="user_id" value="${ADMIN_ID}"/>
+            <column name="technology_id" value="2"/>
+            <column name="level" value="4"/>
+        </insert>
+
     </changeSet>
 
 </databaseChangeLog>

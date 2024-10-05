@@ -10,7 +10,7 @@ import {Metal} from "../model/resource/Metal";
 import {Crystal} from "../model/resource/Crystal";
 import {Deuterium} from "../model/resource/Deuterium";
 import {Energy} from "../model/resource/Energy";
-import {RouterOutlet} from "@angular/router";
+import {RouterLink, RouterOutlet} from "@angular/router";
 import {ResourceService} from "../services/resource.service";
 import {Subscription} from "rxjs";
 import {UserService} from "../services/user.service";
@@ -28,7 +28,8 @@ import {User} from "../model/User";
         CustomNumberPipe,
         TooltipDirective,
         RouterOutlet,
-        NgOptimizedImage
+        NgOptimizedImage,
+        RouterLink
     ],
     templateUrl: '../../templates/page-with-resources.html',
     styleUrl: '../../styles/styles.scss',
@@ -55,10 +56,12 @@ export class PageWithResourcesComponent implements OnInit, OnDestroy {
         registerLocaleData(localeDe, "de-DE", localeDeExtra);
 
         this.userSubscription = this.userService.getUserInfo().subscribe({
-            next: (data: User) => {
-                this.user = data;
-                this.resourceService.updateResources(this.user.activePlanet);
-                this.resourcesSubscription = this.initResourceSubscription(this.user.activePlanet);
+            next: (data?: User) => {
+                if (data) {
+                    this.user = data;
+                    this.resourceService.updateResources(this.user.activePlanet);
+                    this.resourcesSubscription = this.initResourceSubscription();
+                }
             }
         })
 
@@ -69,8 +72,8 @@ export class PageWithResourcesComponent implements OnInit, OnDestroy {
         })
     }
 
-    private initResourceSubscription(planetId: number) {
-        return this.resourceService.getPlanetResources(planetId).subscribe({
+    private initResourceSubscription() {
+        return this.resourceService.getPlanetResources(this.user.activePlanet).subscribe({
             next: (data: Resources) => {
                 this.contextMetal = new Metal(data, "w_80");
                 this.contextCrystal = new Crystal(data, "w_80");

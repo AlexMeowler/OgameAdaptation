@@ -14,6 +14,8 @@
     <include relativeToChangelogFile="true" file="tables/planet_resource.xml"/>
     <include relativeToChangelogFile="true" file="tables/building_instance.xml"/>
     <include relativeToChangelogFile="true" file="tables/building_order.xml"/>
+    <include relativeToChangelogFile="true" file="tables/technology.xml"/>
+    <include relativeToChangelogFile="true" file="tables/technology_instance.xml"/>
 
     <include relativeToChangelogFile="true" file="foreign-keys/foreign-keys.xml"/>
 

@@ -6,6 +6,7 @@ import org.retal.offgame.entity.Planet;
 import org.retal.offgame.service.BuildingOrderService;
 import org.retal.offgame.service.BuildingService;
 import org.retal.offgame.service.PlanetService;
+import org.retal.offgame.service.TechnologyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ public class PlanetController {
     private final PlanetService planetService;
     private final BuildingService buildingService;
     private final BuildingOrderService buildingOrderService;
+    private final TechnologyService technologyService;
 
     @GetMapping("/{id}")
     public Planet getPlanetInfo(@PathVariable Long id) {
@@ -35,6 +37,11 @@ public class PlanetController {
     @GetMapping("/{id}/buildings")
     public List<BuildingDTO> getPlanetBuildingsInfo(@PathVariable Long id) {
         return buildingService.getPlanetBuildings(id);
+    }
+
+    @GetMapping("/{id}/technologies")
+    public List<TechnologyDTO> getPlanetTechnologiesInfo(@PathVariable Long id) {
+        return technologyService.getPlayerTechnologies(id);
     }
 
     @GetMapping("/{planetId}/buildings/{buildingId}/details")

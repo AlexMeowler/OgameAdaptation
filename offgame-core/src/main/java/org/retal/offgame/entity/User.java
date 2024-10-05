@@ -45,6 +45,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     private Set<Planet> planets;
 
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
+    private Set<TechnologyInstance> technologies;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();

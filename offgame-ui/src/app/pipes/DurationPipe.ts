@@ -10,7 +10,7 @@ export class DurationPipe implements PipeTransform {
     }
 
     transform(value?: number, delimiter?: string): string {
-        if (!value) {
+        if (value === undefined) {
             return ""
         }
 

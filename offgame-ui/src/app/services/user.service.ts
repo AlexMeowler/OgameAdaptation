@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {apiUrl} from "../app.config";
-import {map, Observable, Subject} from "rxjs";
+import {BehaviorSubject, map, Observable, Subject} from "rxjs";
 import {User} from "../model/User";
 import {PlanetItem} from "../model/PlanetItem";
 
@@ -10,10 +10,10 @@ import {PlanetItem} from "../model/PlanetItem";
 })
 export class UserService {
 
-    private userInfo: Subject<User> = new Subject<User>();
-    private userInfo$: Observable<User> = this.userInfo.asObservable();
+    private userInfo: Subject<User | undefined> = new BehaviorSubject<User | undefined>(undefined);
+    private userInfo$: Observable<User | undefined> = this.userInfo.asObservable();
 
-    private planetList: Subject<PlanetItem[]> = new Subject<PlanetItem[]>();
+    private planetList: Subject<PlanetItem[]> = new BehaviorSubject<PlanetItem[]>([]);
     private planetList$: Observable<PlanetItem[]> = this.planetList.asObservable();
 
     constructor(private http: HttpClient) {
@@ -21,7 +21,7 @@ export class UserService {
         this.updateUserInfo();
     }
 
-    getUserInfo(): Observable<User> {
+    getUserInfo(): Observable<User | undefined> {
         return this.userInfo$;
     }
 

@@ -13,64 +13,56 @@
 <div style="text-align: center">
     <table width="750">
         <tbody>
-        <tr *ngFor="let order of buildingOrders; let i = index">
-            <td class="l" colspan="2">{{ i + 1 }}.: {{order.name}} {{order.value}}</td>
-            <td class="k"><div class="z">{{order.timeLeft | duration:':'}}
-                <br><a href="javascript:void(0);" (click)="deleteOrder(order.id)">Отменить</a></div>
-                <strong style="color: lime"><br>{{ order.endTimeDate | date:'dd/MM HH:mm:ss' }}</strong>
-            </td>
-        </tr>
-        <tr *ngFor="let obj of buildingInstances">
+        <tr *ngFor="let obj of technologyInstances">
             <td class="l">
-                <a routerLink="/buildings/{{ obj.building.id }}">
-                    <img border="0" ngSrc="/img/building/{{ obj.building.imageName }}" align="top" width="120" height="120" alt="{{ obj.building.name }}">
+                <a routerLink="/research/{{ obj.technology.id }}">
+                    <img border="0" ngSrc="/img/technology/{{ obj.technology.imageName }}" align="top" width="120" height="120" alt="{{ obj.technology.name }}">
                 </a>
             </td>
             <td class="l">
-                <span><a routerLink="/buildings/{{ obj.building.id }}">{{ obj.building.name }}</a>&nbsp;</span>
-                <span *ngIf="obj.level > 0">(Уровень {{ obj.level }}) </span>
-                <div *ngIf="obj.energyDiff != 0" style="display: inline-block">(<div style="color: {{ getColor(obj.energyDiff > 0) }}; display: inline-block" text-tooltip tooltipText="{{ obj.energyDiff > 0 ? ENERGY_DIFF_POSITIVE_TOOLTIP : ENERGY_DIFF_NEGATIVE_TOOLTIP}}">{{ obj.energyDiff | customNumber:true }} Энергия</div>)</div><br>
-                {{ obj.building.shortDescription }}<br>
+                <span><a routerLink="/research/{{ obj.technology.id }}">{{ obj.technology.name }}</a>&nbsp;</span>
+                <span *ngIf="obj.level > 0">(Уровень {{ obj.level }}) </span><br>
+                {{ obj.technology.shortDescription }}<br>
                 Необходимые ресурсы:
                 <ng-container *ngTemplateOutlet="resourceCost;context:{
-                        resource:obj.buildingCost.metal,
+                        resource:obj.researchCost.metal,
                         planetStock:resources.metal,
                         name:'Металл'
                     }"/>
                 <ng-container *ngTemplateOutlet="resourceCost;context:{
-                        resource:obj.buildingCost.crystal,
+                        resource:obj.researchCost.crystal,
                         planetStock:resources.crystal,
                         name:'Кристалл',
                     }"/>
                 <ng-container *ngTemplateOutlet="resourceCost;context:{
-                        resource:obj.buildingCost.deuterium,
+                        resource:obj.researchCost.deuterium,
                         planetStock:resources.deuterium,
                         name:'Дейтерий'
                     }"/>
                 <ng-container *ngTemplateOutlet="resourceCost;context:{
-                        resource:obj.buildingCost.energy,
+                        resource:obj.researchCost.energy,
                         planetStock:resources.energy,
                         name:'Энергия'
                     }"/>
-                <br>Время строительства: {{ obj.buildingTime | duration }}
+                <br>Время строительства: {{ obj.researchTime | duration }}
                 <div style="color: gray">Останется ресурсов:
                     <ng-container *ngTemplateOutlet="resourceRemaining;context:{
-                            resource:obj.buildingCost.metal,
+                            resource:obj.researchCost.metal,
                             planetStock:resources.metal,
                             name:'Металл'
                         }"/>
                     <ng-container *ngTemplateOutlet="resourceRemaining;context:{
-                            resource:obj.buildingCost.crystal,
+                            resource:obj.researchCost.crystal,
                             planetStock:resources.crystal,
                             name:'Кристалл',
                         }"/>
                     <ng-container *ngTemplateOutlet="resourceRemaining;context:{
-                            resource:obj.buildingCost.deuterium,
+                            resource:obj.researchCost.deuterium,
                             planetStock:resources.deuterium,
                             name:'Дейтерий'
                         }"/>
                     <ng-container *ngTemplateOutlet="resourceRemaining;context:{
-                            resource:obj.buildingCost.energy,
+                            resource:obj.researchCost.energy,
                             planetStock:resources.energy,
                             name:'Энергия'
                         }"/><br>
@@ -78,7 +70,7 @@
             </td>
             <td class="k" width="76">
                 <span *ngIf="!canBuild(obj)" style="color: red">Недостаточно ресурсов!</span>
-                <a *ngIf="canBuild(obj)" style="color: lime" href="javascript:void(0);" (click)="createOrder(obj.building.id)">{{ buildingOrders.length === 0 ? 'Построить следующий уровень ' + (obj.level + 1) : 'В очередь построек' }}</a>
+                <a *ngIf="canBuild(obj)" style="color: lime" href="javascript:void(0);">{{ 'Исследовать уровень ' + (obj.level + 1) }}</a>
             </td>
         </tr>
         </tbody>

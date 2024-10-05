@@ -1,4 +1,6 @@
-export class Building {
+import {Building} from "./Building";
+
+export class Technology {
 
     id!: number;
     imageName!: string;

@@ -4,6 +4,7 @@ import {apiUrl} from "../app.config";
 import {map, Observable} from "rxjs";
 import {BuildingInstance} from "../model/BuildingInstance";
 import {BuildingOrder} from "../model/BuildingOrder";
+import {TechnologyInstance} from "../model/TechnologyInstance";
 
 @Injectable({
     providedIn: 'root'
@@ -29,5 +30,11 @@ export class PlanetService {
             buildingId: buildingId,
             planetId: planetId
         })
+    }
+
+    getPlanetTechnologies(planetId: number): Observable<TechnologyInstance[]> {
+        return this.http.get(`${apiUrl}/planet/${planetId}/technologies`).pipe(map((data: any) => {
+            return data.map((object: any) => new TechnologyInstance(object))
+        }))
     }
 }

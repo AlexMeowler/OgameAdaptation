@@ -1,5 +1,6 @@
 package org.retal.offgame.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.util.Map;
@@ -102,6 +103,7 @@ public class ResourcesDTO {
         return compareTo(target, 1) == 1;
     }
 
+    @JsonIgnore
     public boolean isEmpty() {
         return ACCESSOR_MAP.keySet().stream()
                 .map(getter -> getter.apply(this))
