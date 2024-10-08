@@ -84,7 +84,7 @@ export class BuildComponent implements OnDestroy {
     }
 
     createOrder(buildingId: number) {
-        this.planetService.createOrder(buildingId, this.user.activePlanet).subscribe({
+        this.orderService.createBuildOrder(buildingId, this.user.activePlanet).subscribe({
             next: ignore => {
                 this.refreshOrders();
                 this.resourceService.updateResources(this.user.activePlanet)
@@ -93,7 +93,7 @@ export class BuildComponent implements OnDestroy {
     }
 
     deleteOrder(orderId: number) {
-        this.orderService.deleteOrder(orderId).subscribe({
+        this.orderService.deleteBuildOrder(orderId).subscribe({
             next: ignore => this.refreshOrders()
         })
     }
@@ -116,7 +116,7 @@ export class BuildComponent implements OnDestroy {
     }
 
     private refreshOrders() {
-        this.planetService.getActiveOrders(this.user.activePlanet).subscribe({
+        this.orderService.getActiveBuildingOrders(this.user.activePlanet).subscribe({
             next: (data: BuildingOrder[]) => {
                 clearInterval(this.currentBuildTimer)
                 this.buildingOrders = data

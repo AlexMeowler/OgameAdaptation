@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
@@ -71,6 +72,7 @@ public class UserServiceImpl extends AbstractCrudService<User, Long> implements 
     }
 
     @Override
+    @Transactional
     public UserDTO setActivePlanet(Long planetId) {
         User user = getAuthenticatedUserOrThrow();
         Planet activePlanet = user.getPlanets().stream()

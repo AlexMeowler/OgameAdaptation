@@ -118,14 +118,14 @@ public class BuildingServiceImpl extends AbstractCrudService<Building, Long> imp
     }
 
     @Override
+    @Transactional
     public Map<Class<? extends Building>, Long> getSpecialBuildingLevels(Long planetId) {
         Planet planet = planetService.getPlanetInfo(planetId);
-        List<Building> buildings = buildingRepository.findByPlanetId(planetId);
-        return buildings.stream()
-                .filter(building -> building.getClass() != Building.class)
+        return planet.getBuildings().stream()
+                .filter(buildingInstance -> buildingInstance.getBuilding().getClass() != Building.class)
                 .collect(toMap(
-                        Building::getClass,
-                        building -> getLevel(building, planet)
+                        buildingInstance -> buildingInstance.getBuilding().getClass(),
+                        BuildingInstance::getLevel
                 ));
     }
 

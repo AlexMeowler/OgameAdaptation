@@ -15,8 +15,11 @@
         <tbody>
         <tr *ngFor="let order of buildingOrders; let i = index">
             <td class="l" colspan="2">{{ i + 1 }}.: {{order.name}} {{order.value}}</td>
-            <td class="k"><div class="z">{{order.timeLeft | duration:':'}}
-                <br><a href="javascript:void(0);" (click)="deleteOrder(order.id)">Отменить</a></div>
+            <td class="k">
+                <div class="x">
+                    {{order.timeLeft | duration:':'}}<br>
+                    <a href="javascript:void(0);" (click)="deleteOrder(order.id)">Отменить</a>
+                </div>
                 <strong style="color: lime"><br>{{ order.endTimeDate | date:'dd/MM HH:mm:ss' }}</strong>
             </td>
         </tr>

@@ -14,6 +14,7 @@ import org.retal.offgame.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
@@ -39,6 +40,7 @@ public class PlanetServiceImpl extends AbstractCrudService<Planet, Long> impleme
     }
 
     @Override
+    @Transactional
     public List<PlanetItem> getPlanetItemList() {
         return userService.getAuthenticatedUser()
                 .map(User::getId)
@@ -58,7 +60,7 @@ public class PlanetServiceImpl extends AbstractCrudService<Planet, Long> impleme
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ResourcesDTO getResourcesInfo(Long planetId) {
         return planetRepository.findById(planetId)
                 .map(this::updateResources)

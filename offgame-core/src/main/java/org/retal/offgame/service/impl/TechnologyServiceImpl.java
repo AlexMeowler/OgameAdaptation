@@ -14,6 +14,7 @@ import org.retal.offgame.service.TechnologyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,7 @@ public class TechnologyServiceImpl extends AbstractCrudService<Technology, Long>
     private final BuildingService buildingService;
 
     @Override
+    @Transactional
     public List<TechnologyDTO> getPlayerTechnologies(Long planetId) {
         Map<Class<? extends Building>, Long> specialBuildingLevels = buildingService.getSpecialBuildingLevels(planetId);
         User owner = planetService.getPlanetInfo(planetId).getOwner();

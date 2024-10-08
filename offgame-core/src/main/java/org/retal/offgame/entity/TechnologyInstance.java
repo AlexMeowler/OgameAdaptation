@@ -34,6 +34,10 @@ public class TechnologyInstance {
     @Column
     private Long level;
 
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "technologyInstance")
+    @JsonIgnore
+    private TechnologyOrder order;
+
     public TechnologyInstance incrementLevel() {
         setLevel(getLevel() + 1);
         return this;

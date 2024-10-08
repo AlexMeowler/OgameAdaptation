@@ -3,7 +3,6 @@ import {HttpClient} from "@angular/common/http";
 import {apiUrl} from "../app.config";
 import {map, Observable} from "rxjs";
 import {BuildingInstance} from "../model/BuildingInstance";
-import {BuildingOrder} from "../model/BuildingOrder";
 import {TechnologyInstance} from "../model/TechnologyInstance";
 
 @Injectable({
@@ -17,19 +16,6 @@ export class PlanetService {
         return this.http.get(`${apiUrl}/planet/${planetId}/buildings`).pipe(map((data: any) => {
             return data.map((object: any) => new BuildingInstance(object))
         }))
-    }
-
-    getActiveOrders(planetId: number): Observable<BuildingOrder[]> {
-        return this.http.get(`${apiUrl}/planet/${planetId}/orders`).pipe(map((data: any) => {
-            return data.map((object: any) => new BuildingOrder(object))
-        }))
-    }
-
-    createOrder(buildingId: number, planetId: number) {
-        return this.http.post(`${apiUrl}/planet/build`, {
-            buildingId: buildingId,
-            planetId: planetId
-        })
     }
 
     getPlanetTechnologies(planetId: number): Observable<TechnologyInstance[]> {

@@ -11,6 +11,7 @@ import org.retal.offgame.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Set;
@@ -34,6 +35,7 @@ public class InstancesFiller implements CommandLineRunner {
     private final TechnologyInstanceService technologyInstanceService;
 
     @Override
+    @Transactional
     public void run(String... args) {
         createMissingBuildingInstances();
         createMissingTechnologyInstances();
@@ -80,7 +82,7 @@ public class InstancesFiller implements CommandLineRunner {
                 .map(TechnologyInstance::getTechnology)
                 .collect(toSet());
 
-        return technologies.stream()
+        return technologyList.stream()
                 .filter(not(technologies::contains))
                 .map(technology -> toTechnologyInstance(user, technology));
     }

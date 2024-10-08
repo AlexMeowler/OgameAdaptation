@@ -40,7 +40,7 @@ public class Planet {
     @Column(insertable = false, updatable = false)
     private Integer maxTemperature;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "planet")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "planet")
     @JsonIgnore
     private Set<BuildingInstance> buildings;
 
@@ -51,9 +51,13 @@ public class Planet {
     @Column
     private String imageName;
 
-    @OneToOne(mappedBy = "planet", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "planet", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Resources resources;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "researchingPlanet")
+    @JsonIgnore
+    private TechnologyOrder technologyOrder;
 
     public Integer averageTemperature() {
         return (getMinTemperature() + getMaxTemperature()) / 2;
