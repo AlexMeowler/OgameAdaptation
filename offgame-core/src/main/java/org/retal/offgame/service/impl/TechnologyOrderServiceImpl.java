@@ -4,11 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.retal.offgame.dto.ResourcesDTO;
 import org.retal.offgame.dto.TechnologyOrderDTO;
 import org.retal.offgame.dto.TechnologyOrderInfo;
-import org.retal.offgame.entity.Planet;
-import org.retal.offgame.entity.Resources;
-import org.retal.offgame.entity.TechnologyInstance;
-import org.retal.offgame.entity.TechnologyOrder;
-import org.retal.offgame.entity.buildings.Building;
+import org.retal.offgame.entity.*;
 import org.retal.offgame.repository.TechnologyInstanceRepository;
 import org.retal.offgame.repository.TechnologyOrderRepository;
 import org.retal.offgame.service.*;
@@ -31,7 +27,6 @@ public class TechnologyOrderServiceImpl extends AbstractCrudService<TechnologyOr
     private final TechnologyOrderRepository technologyOrderRepository;
     private final TechnologyInstanceRepository technologyInstanceRepository;
     private final ResourcesService resourcesService;
-    private final BuildingService buildingService;
     private final PlanetService planetService;
 
     @Override
@@ -54,11 +49,12 @@ public class TechnologyOrderServiceImpl extends AbstractCrudService<TechnologyOr
     @Transactional
     public TechnologyOrderInfo createTechnologyOrder(TechnologyOrderDTO dto) {
         Long planetId = dto.getPlanetId();
-        Map<Class<? extends Building>, Long> specialBuildingLevels = buildingService.getSpecialBuildingLevels(planetId);
+        Map<Class<? extends Upgradeable>, Long> specialEntityLevels = planetService.getSpecialEntityLevels(planetId);
         Planet planet = planetService.getPlanetInfo(planetId);
+
         return technologyInstanceRepository.findByOwnerIdAndTechnologyId(planet.getOwner().getId(), dto.getTechnologyId())
                 .filter(technologyInstance -> canStartOrder(technologyInstance, planet))
-                .map(technologyInstance -> toTechnologyOrder(technologyInstance, planet, specialBuildingLevels))
+                .map(technologyInstance -> toTechnologyOrder(technologyInstance, planet, specialEntityLevels))
                 .map(technologyOrder -> createOrder(technologyOrder, planet))
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
     }
@@ -72,7 +68,7 @@ public class TechnologyOrderServiceImpl extends AbstractCrudService<TechnologyOr
         return currentResources.isMoreOrEqualThan(cost);
     }
 
-    private TechnologyOrder toTechnologyOrder(TechnologyInstance technologyInstance, Planet planet, Map<Class<? extends Building>, Long> specialBuildingLevels) {
+    private TechnologyOrder toTechnologyOrder(TechnologyInstance technologyInstance, Planet planet, Map<Class<? extends Upgradeable>, Long> specialBuildingLevels) {
         Long level = technologyInstance.getLevel() + 1;
 
         long researchTime = technologyInstance.getTechnology().calculateBuildingTime(level, specialBuildingLevels).longValue();

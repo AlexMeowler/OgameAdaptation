@@ -7,13 +7,9 @@ import org.retal.offgame.dto.ResourcesDTO;
 import org.retal.offgame.entity.BuildingInstance;
 import org.retal.offgame.entity.BuildingOrder;
 import org.retal.offgame.entity.Resources;
-import org.retal.offgame.entity.buildings.Building;
-import org.retal.offgame.repository.BuildingInstanceRepository;
+import org.retal.offgame.entity.Upgradeable;
 import org.retal.offgame.repository.BuildingOrderRepository;
-import org.retal.offgame.service.AbstractCrudService;
-import org.retal.offgame.service.BuildingOrderService;
-import org.retal.offgame.service.BuildingService;
-import org.retal.offgame.service.ResourcesService;
+import org.retal.offgame.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpStatus;
@@ -38,9 +34,9 @@ import static org.retal.offgame.entity.BuildingOrder.Status.started;
 public class BuildingOrderServiceImpl extends AbstractCrudService<BuildingOrder, Long> implements BuildingOrderService {
 
     private final BuildingOrderRepository buildingOrderRepository;
-    private final BuildingInstanceRepository buildingInstanceRepository;
+    private final BuildingInstanceService buildingInstanceService;
     private final ResourcesService resourcesService;
-    private final BuildingService buildingService;
+    private final PlanetService planetService;
 
     @Override
     public Collection<BuildingOrder> getUnprocessedOrders() {
@@ -88,11 +84,11 @@ public class BuildingOrderServiceImpl extends AbstractCrudService<BuildingOrder,
     @Override
     public BuildingOrderInfo createBuildingOrder(BuildingOrderDTO dto) {
         Long planetId = dto.getPlanetId();
-        Map<Class<? extends Building>, Long> specialBuildingLevels = buildingService.getSpecialBuildingLevels(planetId);
+        Map<Class<? extends Upgradeable>, Long> specialEntityLevels = planetService.getSpecialEntityLevels(planetId);
 
-        return buildingInstanceRepository.findByPlanetIdAndBuildingId(planetId, dto.getBuildingId())
+        return buildingInstanceService.findByPlanetIdAndBuildingId(planetId, dto.getBuildingId())
                 .filter(this::canStartOrder)
-                .map(buildingInstance -> toBuildingOrder(buildingInstance, specialBuildingLevels))
+                .map(buildingInstance -> toBuildingOrder(buildingInstance, specialEntityLevels))
                 .map(this::createOrder)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
     }
@@ -106,7 +102,7 @@ public class BuildingOrderServiceImpl extends AbstractCrudService<BuildingOrder,
         return currentResources.isMoreOrEqualThan(cost);
     }
 
-    private BuildingOrder toBuildingOrder(BuildingInstance buildingInstance, Map<Class<? extends Building>, Long> specialBuildingLevels) {
+    private BuildingOrder toBuildingOrder(BuildingInstance buildingInstance, Map<Class<? extends Upgradeable>, Long> specialBuildingLevels) {
         Long level = buildingInstance.getLevel();
         Long lastOrderedLevel = buildingOrderRepository.findLatestActiveOrderForBuildingInstance(buildingInstance)
                 .map(BuildingOrder::getOrderValue)

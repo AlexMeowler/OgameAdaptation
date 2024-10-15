@@ -5,7 +5,10 @@ import org.retal.offgame.dto.PlanetItem;
 import org.retal.offgame.dto.ResourcesDTO;
 import org.retal.offgame.entity.Planet;
 import org.retal.offgame.entity.Resources;
+import org.retal.offgame.entity.Upgradeable;
 import org.retal.offgame.entity.User;
+import org.retal.offgame.entity.buildings.Building;
+import org.retal.offgame.entity.technologies.Technology;
 import org.retal.offgame.repository.PlanetRepository;
 import org.retal.offgame.repository.ResourcesRepository;
 import org.retal.offgame.service.AbstractCrudService;
@@ -19,10 +22,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.AbstractMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
@@ -81,6 +89,26 @@ public class PlanetServiceImpl extends AbstractCrudService<Planet, Long> impleme
         resourcesRepository.save(resources);
 
         return totalProductionPerHourWithLimit.merge(resources.toDTO());
+    }
+
+    @Override
+    @Transactional
+    public Map<Class<? extends Upgradeable>, Long> getSpecialEntityLevels(Long planetId) {
+        Planet planet = getPlanetInfo(planetId);
+        Stream<AbstractMap.SimpleEntry<Class<? extends Upgradeable>, Long>> buildings = planet.getBuildings().stream()
+                .filter(buildingInstance -> buildingInstance.getBuilding().getClass() != Building.class)
+                .map(buildingInstance -> new AbstractMap.SimpleEntry<>(buildingInstance.getBuilding().getClass(), buildingInstance.getLevel()));
+
+        Stream<AbstractMap.SimpleEntry<Class<? extends Upgradeable>, Long>> technologies = planet.getOwner().getTechnologies().stream()
+                .filter(technologyInstance -> technologyInstance.getTechnology().getClass() != Technology.class)
+                .map(technologyInstance -> new AbstractMap.SimpleEntry<>(technologyInstance.getTechnology().getClass(), technologyInstance.getLevel()));
+
+        return Stream.of(buildings, technologies)
+                .flatMap(Function.identity())
+                .collect(toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue
+                ));
     }
 
     @Override

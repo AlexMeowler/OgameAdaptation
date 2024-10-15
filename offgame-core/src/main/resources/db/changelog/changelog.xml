@@ -17,6 +17,7 @@
     <include relativeToChangelogFile="true" file="tables/technology.xml"/>
     <include relativeToChangelogFile="true" file="tables/technology_instance.xml"/>
     <include relativeToChangelogFile="true" file="tables/technology_order.xml"/>
+    <include relativeToChangelogFile="true" file="tables/requirement.xml"/>
 
     <include relativeToChangelogFile="true" file="foreign-keys/foreign-keys.xml"/>
 

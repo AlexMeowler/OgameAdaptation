@@ -80,8 +80,27 @@
                 </div>
             </td>
             <td class="k" width="76">
-                <span *ngIf="!canBuild(obj)" style="color: red">Недостаточно ресурсов!</span>
-                <a *ngIf="canBuild(obj)" style="color: lime" href="javascript:void(0);" (click)="createOrder(obj.building.id)">{{ buildingOrders.length === 0 ? 'Построить следующий уровень ' + (obj.level + 1) : 'В очередь построек' }}</a>
+                <ng-container *ngIf="obj.requirements.length === 0">
+                    <span *ngIf="!canBuild(obj)" style="color: red">Недостаточно ресурсов!</span>
+                    <a *ngIf="canBuild(obj)" style="color: lime" href="javascript:void(0);" (click)="createOrder(obj.building.id)">
+                        {{ buildingOrders.length === 0 ? 'Построить' + (obj.level !== 0 ? ' следующий уровень ' + (obj.level + 1) : '') : 'В очередь построек' }}
+                    </a>
+                </ng-container>
+                <ng-container *ngIf="obj.requirements.length !== 0">
+                    <div>
+                        <ng-container *ngFor="let req of obj.requirements">
+                            <div class="el-require" routerLink="/{{ req.detailsPath }}" text-tooltip tooltipText="Требуется: {{ req.name }} {{ req.requiredLevel }} уровня (у Вас {{ req.currentLevel }})">
+                                <a>
+                                    <img border="0" ngSrc="/img/{{ req.imagePath }}" align="top" width="32" height="32" alt="{{ req.name }}"/>
+                                </a>
+                                <div class="el-require-block">
+                                    <div class="el-require-skos"></div>
+                                    <div class="el-require-bg"><span style="color:red">{{ req.currentLevel }}/{{ req.requiredLevel }}</span></div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </ng-container>
             </td>
         </tr>
         </tbody>

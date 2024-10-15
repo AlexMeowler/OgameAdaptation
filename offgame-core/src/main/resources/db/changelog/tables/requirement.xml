@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <property name="tableName" value="requirement" global="false"/>
+
+    <changeSet id="1" author="alexMeowler">
+        <createTable tableName="${tableName}">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="building_id" type="BIGINT">
+                <constraints references="building(id)" foreignKeyName="fk_building_requirement"/>
+            </column>
+            <column name="technology_id" type="BIGINT">
+                <constraints references="technology(id)" foreignKeyName="fk_technology_requirement"/>
+            </column>
+            <column name="required_building_id" type="BIGINT">
+                <constraints references="building(id)" foreignKeyName="fk_required_building_requirement"/>
+            </column>
+            <column name="required_technology_id" type="BIGINT">
+                <constraints references="technology(id)" foreignKeyName="fk_required_technology_requirement"/>
+            </column>
+            <column name="required_level" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <sql>
+            ALTER TABLE requirement
+                ADD CONSTRAINT test_mutual_exclusive_requirements_columns CHECK (
+                    (building_id IS NOT NULL) != (technology_id IS NOT NULL)
+                AND (required_building_id IS NOT NULL) != (required_technology_id IS NOT NULL)
+                )
+        </sql>
+    </changeSet>
+
+    <changeSet id="2" author="alexMeowler">
+        <!--     buildings     -->
+        <insert tableName="${tableName}">
+            <column name="building_id" value="2"/>
+            <column name="required_building_id" value="1"/>
+            <column name="required_level" value="1"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="building_id" value="3"/>
+            <column name="required_building_id" value="2"/>
+            <column name="required_level" value="2"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="building_id" value="4"/>
+            <column name="required_building_id" value="2"/>
+            <column name="required_level" value="4"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="building_id" value="4"/>
+            <column name="required_building_id" value="3"/>
+            <column name="required_level" value="2"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="building_id" value="5"/>
+            <column name="required_building_id" value="4"/>
+            <column name="required_level" value="2"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="building_id" value="6"/>
+            <column name="required_building_id" value="5"/>
+            <column name="required_level" value="2"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="building_id" value="7"/>
+            <column name="required_building_id" value="1"/>
+            <column name="required_level" value="3"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="building_id" value="8"/>
+            <column name="required_building_id" value="2"/>
+            <column name="required_level" value="4"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="building_id" value="9"/>
+            <column name="required_building_id" value="3"/>
+            <column name="required_level" value="5"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="building_id" value="10"/>
+            <column name="required_building_id" value="4"/>
+            <column name="required_level" value="6"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="building_id" value="11"/>
+            <column name="required_building_id" value="4"/>
+            <column name="required_level" value="5"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="building_id" value="11"/>
+            <column name="required_technology_id" value="2"/>
+            <column name="required_level" value="3"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="building_id" value="12"/>
+            <column name="required_building_id" value="5"/>
+            <column name="required_level" value="10"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="building_id" value="12"/>
+            <column name="required_technology_id" value="5"/>
+            <column name="required_level" value="10"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="building_id" value="13"/>
+            <column name="required_building_id" value="12"/>
+            <column name="required_level" value="1"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="building_id" value="13"/>
+            <column name="required_technology_id" value="2"/>
+            <column name="required_level" value="12"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="building_id" value="14"/>
+            <column name="required_building_id" value="6"/>
+            <column name="required_level" value="5"/>
+        </insert>
+
+        <!--     technologies     -->
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="1"/>
+            <column name="required_building_id" value="7"/>
+            <column name="required_level" value="3"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="2"/>
+            <column name="required_building_id" value="7"/>
+            <column name="required_level" value="1"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="3"/>
+            <column name="required_building_id" value="7"/>
+            <column name="required_level" value="1"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="3"/>
+            <column name="required_technology_id" value="2"/>
+            <column name="required_level" value="1"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="4"/>
+            <column name="required_building_id" value="7"/>
+            <column name="required_level" value="2"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="4"/>
+            <column name="required_technology_id" value="2"/>
+            <column name="required_level" value="1"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="5"/>
+            <column name="required_building_id" value="7"/>
+            <column name="required_level" value="1"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="6"/>
+            <column name="required_building_id" value="7"/>
+            <column name="required_level" value="4"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="7"/>
+            <column name="required_building_id" value="7"/>
+            <column name="required_level" value="6"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="7"/>
+            <column name="required_technology_id" value="2"/>
+            <column name="required_level" value="3"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="8"/>
+            <column name="required_building_id" value="7"/>
+            <column name="required_level" value="2"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="9"/>
+            <column name="required_building_id" value="7"/>
+            <column name="required_level" value="3"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="9"/>
+            <column name="required_technology_id" value="2"/>
+            <column name="required_level" value="5"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="9"/>
+            <column name="required_technology_id" value="8"/>
+            <column name="required_level" value="2"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="10"/>
+            <column name="required_building_id" value="7"/>
+            <column name="required_level" value="3"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="10"/>
+            <column name="required_technology_id" value="5"/>
+            <column name="required_level" value="4"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="10"/>
+            <column name="required_technology_id" value="4"/>
+            <column name="required_level" value="3"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="11"/>
+            <column name="required_building_id" value="7"/>
+            <column name="required_level" value="7"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="11"/>
+            <column name="required_technology_id" value="2"/>
+            <column name="required_level" value="5"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="11"/>
+            <column name="required_technology_id" value="7"/>
+            <column name="required_level" value="5"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="12"/>
+            <column name="required_building_id" value="7"/>
+            <column name="required_level" value="7"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="12"/>
+            <column name="required_technology_id" value="11"/>
+            <column name="required_level" value="3"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="13"/>
+            <column name="required_building_id" value="7"/>
+            <column name="required_level" value="1"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="13"/>
+            <column name="required_technology_id" value="2"/>
+            <column name="required_level" value="2"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="14"/>
+            <column name="required_building_id" value="7"/>
+            <column name="required_level" value="4"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="14"/>
+            <column name="required_technology_id" value="13"/>
+            <column name="required_level" value="5"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="14"/>
+            <column name="required_technology_id" value="2"/>
+            <column name="required_level" value="4"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="15"/>
+            <column name="required_building_id" value="7"/>
+            <column name="required_level" value="5"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="15"/>
+            <column name="required_technology_id" value="2"/>
+            <column name="required_level" value="8"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="15"/>
+            <column name="required_technology_id" value="13"/>
+            <column name="required_level" value="10"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="15"/>
+            <column name="required_technology_id" value="14"/>
+            <column name="required_level" value="5"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="16"/>
+            <column name="required_building_id" value="7"/>
+            <column name="required_level" value="10"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="16"/>
+            <column name="required_technology_id" value="5"/>
+            <column name="required_level" value="8"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="16"/>
+            <column name="required_technology_id" value="11"/>
+            <column name="required_level" value="8"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="technology_id" value="17"/>
+            <column name="required_building_id" value="7"/>
+            <column name="required_level" value="12"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

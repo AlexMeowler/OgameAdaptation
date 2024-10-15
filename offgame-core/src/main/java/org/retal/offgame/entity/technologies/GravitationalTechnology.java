@@ -7,7 +7,7 @@ import static java.lang.Math.pow;
 
 @Entity
 @DiscriminatorValue("17")
-public class GravityTechnology extends Technology {
+public class GravitationalTechnology extends Technology {
 
     @Override
     protected Double calcResource(Long base, Long level) {

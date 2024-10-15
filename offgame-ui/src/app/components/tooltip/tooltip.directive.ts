@@ -40,6 +40,7 @@ export class TooltipDirective implements AfterViewInit {
     }
 
     @HostListener("mouseout")
+    @HostListener("click")
     hideTooltip(): void {
         this.tooltip.instance.hideTooltip();
     }

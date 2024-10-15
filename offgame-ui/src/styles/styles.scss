@@ -575,3 +575,30 @@ h2 {
     padding: 3px;
     width: fit-content;
 }
+
+.el-require {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    padding: 3px;
+    float: left;
+}
+
+.el-require-block {
+    position: absolute;
+    bottom: 3px;
+    right: 3px;
+    height: 12px;
+}
+
+.el-require-skos {
+    height: 12px;
+    width: 6px;
+    float: left;
+    background: url(/img/ui/skos.gif);
+}
+
+.el-require-bg {
+    float: left;
+    background: #252525;
+}

@@ -1,5 +1,5 @@
 import {ApplicationConfig, provideZoneChangeDetection} from '@angular/core';
-import {provideRouter} from '@angular/router';
+import {provideRouter, withInMemoryScrolling, withRouterConfig} from '@angular/router';
 
 import {routes} from './app.routes';
 import {provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
@@ -15,7 +15,14 @@ export const appConfig: ApplicationConfig = {
         ENVIRONMENT_SPECIFIC_PROVIDERS,
         provideHttpClient(withInterceptorsFromDi()),
         provideZoneChangeDetection({eventCoalescing: true}),
-        provideRouter(routes)
+        provideRouter(routes,
+            withInMemoryScrolling({
+                scrollPositionRestoration: 'top',
+                anchorScrolling: 'enabled',
+            }),
+            withRouterConfig({
+                onSameUrlNavigation: "reload",
+            }))
     ]
 };
 

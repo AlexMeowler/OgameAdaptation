@@ -7,9 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.retal.offgame.dto.ResourcesDTO;
+import org.retal.offgame.entity.Requirement;
 import org.retal.offgame.entity.TechnologyInstance;
 import org.retal.offgame.entity.Upgradeable;
-import org.retal.offgame.entity.buildings.Building;
 import org.retal.offgame.entity.buildings.ResearchLaboratory;
 
 import java.util.Map;
@@ -63,13 +63,17 @@ public class Technology extends Upgradeable {
     @JsonIgnore
     private Set<TechnologyInstance> instances;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "technology")
+    @JsonIgnore
+    private Set<Requirement> requirements;
+
     @Override
     protected Double calcResource(Long base, Long level) {
         return base * pow(2, level - 1);
     }
 
     @Override
-    public Double calculateBuildingTime(Long level, Map<Class<? extends Building>, Long> specialBuildingLevels) {
+    public Double calculateBuildingTime(Long level, Map<Class<? extends Upgradeable>, Long> specialBuildingLevels) {
         Long researchLabLevel = specialBuildingLevels.get(ResearchLaboratory.class);
         return calculateBuildingTime(calculateBuildingCost(level)) / (researchLabLevel + 1);
     }
@@ -79,6 +83,16 @@ public class Technology extends Upgradeable {
         Double crystal = buildingCost.getCrystal().amount();
 
         return 3600.0 * (metal + crystal) / 1000 * pow(0.5, 1);
+    }
+
+    @Override
+    public String getDetailsPath() {
+        return String.format("%s/%d", TECHNOLOGIES, getId());
+    }
+
+    @Override
+    public String getImagePath() {
+        return String.format("%s/%s", TECHNOLOGY, getImageName());
     }
 
 }

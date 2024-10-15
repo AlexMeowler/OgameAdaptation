@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.retal.offgame.dto.ResourcesDTO;
 import org.retal.offgame.entity.BuildingInstance;
+import org.retal.offgame.entity.Requirement;
 import org.retal.offgame.entity.Upgradeable;
 
 import java.util.Map;
@@ -61,13 +62,17 @@ public class Building extends Upgradeable {
     @JsonIgnore
     private Set<BuildingInstance> instances;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "building")
+    @JsonIgnore
+    private Set<Requirement> requirements;
+
     @Override
     protected Double calcResource(Long base, Long level) {
         return base * pow(2, level - 1);
     }
 
     @Override
-    public Double calculateBuildingTime(Long level, Map<Class<? extends Building>, Long> specialBuildingLevels) {
+    public Double calculateBuildingTime(Long level, Map<Class<? extends Upgradeable>, Long> specialBuildingLevels) {
         Long robotFactoryLevel = specialBuildingLevels.get(RobotFactory.class);
         Long naniteFactoryLevel = specialBuildingLevels.get(NaniteFactory.class);
         return calculateBuildingTime(calculateBuildingCost(level)) / (robotFactoryLevel + 1) * pow(0.5, naniteFactoryLevel);
@@ -98,4 +103,13 @@ public class Building extends Upgradeable {
         return RESOURCE_PRODUCTION_MULTIPLIER;
     }
 
+    @Override
+    public String getDetailsPath() {
+        return String.format("%s/%d", BUILDINGS, getId());
+    }
+
+    @Override
+    public String getImagePath() {
+        return String.format("%s/%s", BUILDING, getImageName());
+    }
 }

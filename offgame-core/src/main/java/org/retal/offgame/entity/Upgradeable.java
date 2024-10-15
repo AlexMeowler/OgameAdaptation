@@ -1,13 +1,17 @@
 package org.retal.offgame.entity;
 
 import org.retal.offgame.dto.ResourcesDTO;
-import org.retal.offgame.entity.buildings.Building;
 
 import java.util.Map;
 
 import static org.retal.offgame.dto.ResourceDTO.withAmount;
 
 public abstract class Upgradeable {
+
+    protected static final String BUILDING = "building";
+    protected static final String BUILDINGS = "buildings";
+    protected static final String TECHNOLOGY = "technology";
+    protected static final String TECHNOLOGIES = "technologies";
 
     public ResourcesDTO calculateBuildingCost(Long level) {
         return ResourcesDTO.builder()
@@ -17,6 +21,14 @@ public abstract class Upgradeable {
                 .energy(withAmount(calcResource(getCostEnergy(), level)))
                 .build();
     }
+
+    public abstract Long getId();
+
+    public abstract String getName();
+
+    public abstract String getDetailsPath();
+
+    public abstract String getImagePath();
 
     protected abstract Double calcResource(Long base, Long level);
 
@@ -28,5 +40,5 @@ public abstract class Upgradeable {
 
     protected abstract Long getCostEnergy();
 
-    public abstract Double calculateBuildingTime(Long level, Map<Class<? extends Building>, Long> specialBuildingLevels);
+    public abstract Double calculateBuildingTime(Long level, Map<Class<? extends Upgradeable>, Long> specialBuildingLevels);
 }
