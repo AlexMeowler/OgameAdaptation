@@ -66,7 +66,12 @@ export class BuildComponent implements OnDestroy {
 
     private updatePlanetBuildings() {
         this.planetService.getPlanetBuildings(this.user.activePlanet).subscribe({
-            next: (data: BuildingInstance[]) => this.buildingInstances = data
+            next: (data: BuildingInstance[]) => {
+                this.buildingInstances = data;
+                this.buildingInstances.forEach(bi => {
+                    bi.requirements = bi.requirements.filter(req => req.requiredLevel >= req.currentLevel)
+                })
+            }
         })
     }
 

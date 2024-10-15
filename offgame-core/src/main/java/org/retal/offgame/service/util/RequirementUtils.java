@@ -19,7 +19,7 @@ public final class RequirementUtils {
 
     public static List<RequirementDTO> getRequirements(Collection<Requirement> requirements, Map<Class<? extends Upgradeable>, Long> specialEntityLevels) {
         return requirements.stream()
-                .filter(requirement -> isRequirementNotMet(requirement, specialEntityLevels))
+                //.filter(requirement -> isRequirementNotMet(requirement, specialEntityLevels))
                 .map(requirement -> toRequirementDTO(requirement, specialEntityLevels))
                 .sorted(comparing((RequirementDTO requirementDTO) -> requirementDTO.getImagePath().split("/")[0])
                         .thenComparingLong(RequirementDTO::getId))

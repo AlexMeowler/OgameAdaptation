@@ -75,7 +75,12 @@ export class ResearchComponent implements OnDestroy {
 
     private updatePlanetTechnologies() {
         this.planetService.getPlanetTechnologies(this.user.activePlanet).subscribe({
-            next: (data: TechnologyInstance[]) => this.technologyInstances = data
+            next: (data: TechnologyInstance[]) => {
+                this.technologyInstances = data;
+                this.technologyInstances.forEach(ti => {
+                    ti.requirements = ti.requirements.filter(req => req.requiredLevel >= req.currentLevel)
+                })
+            }
         })
     }
 
