@@ -9,9 +9,9 @@ import static org.retal.offgame.dto.ResourceDTO.withAmount;
 public abstract class Upgradeable {
 
     protected static final String BUILDING = "building";
-    protected static final String BUILDINGS = "buildings";
+    protected static final String BUILDING_URL_PATH = "buildings";
     protected static final String TECHNOLOGY = "technology";
-    protected static final String TECHNOLOGIES = "technologies";
+    protected static final String TECHNOLOGY_URL_PATH = "research";
 
     public ResourcesDTO calculateBuildingCost(Long level) {
         return ResourcesDTO.builder()

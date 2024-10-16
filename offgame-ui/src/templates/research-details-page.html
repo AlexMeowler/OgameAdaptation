@@ -1,0 +1,39 @@
+<div>
+    <table width="750">
+        <tbody>
+        <tr>
+            <td class="c"> {{ technology.name }}</td>
+        </tr>
+        <tr>
+            <th>
+                <table>
+                    <tbody>
+                    <tr>
+                        <td valign="top">
+                            <img ngSrc="/img/technology/{{ technology.imageName }}" align="top" border="0" height="120" width="120" alt="{{ technology.name }}">
+                        </td>
+                        <td>{{ technology.description }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </th>
+        </tr>
+        <tr>
+            <th colspan="2">
+                <table>
+                    <tbody>
+                    <tr>
+                        <th>Требования</th>
+                        <th style="text-align:left;">
+                            <ng-container *ngFor="let req of technology.requirements">
+                                <div style="color: {{ getColor(req.currentLevel >= req.requiredLevel) }}">{{ req.name }} (уровень {{ req.requiredLevel }}) Ваш уровень: {{ req.currentLevel }}</div>
+                            </ng-container>
+                        </th>
+                    </tr>
+                    </tbody>
+                </table>
+            </th>
+        </tr>
+        </tbody>
+    </table>
+</div>

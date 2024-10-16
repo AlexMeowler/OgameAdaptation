@@ -73,16 +73,17 @@ public class BuildingServiceImpl extends AbstractCrudService<Building, Long> imp
     @Override
     @Transactional
     public BuildingDetails getBuildingDetails(Long planetId, Long buildingId) {
+        Map<Class<? extends Upgradeable>, Long> specialEntityLevels = planetService.getSpecialEntityLevels(planetId);
         return buildingInstanceService.findByPlanetIdAndBuildingId(planetId, buildingId)
-                .map(this::toDetails)
+                .map(buildingInstance -> toDetails(buildingInstance, specialEntityLevels))
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
     }
 
-    private BuildingDetails toDetails(BuildingInstance buildingInstance) {
+    private BuildingDetails toDetails(BuildingInstance buildingInstance, Map<Class<? extends Upgradeable>, Long> specialEntityLevels) {
         Long level = buildingInstance.getLevel();
         int temperature = buildingInstance.getPlanet().averageTemperature();
-        Long a = Math.max(1, level - 2);
-        Long b = level + 10;
+        long a = Math.max(1, level - 2);
+        long b = level + 10;
         Building building = buildingInstance.getBuilding();
 
         Map<Long, ResourcesDTO> productionByLevel = LongStream.range(a, b + 1)
@@ -108,6 +109,7 @@ public class BuildingServiceImpl extends AbstractCrudService<Building, Long> imp
                 .currentLevel(level)
                 .productionByLevel(productionByLevel)
                 .differenceByLevel(differenceByLevel)
+                .requirements(RequirementUtils.getRequirements(building.getRequirements(), specialEntityLevels))
                 .build();
     }
 

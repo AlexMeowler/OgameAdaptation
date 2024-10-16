@@ -87,7 +87,7 @@ public class Technology extends Upgradeable {
 
     @Override
     public String getDetailsPath() {
-        return String.format("%s/%d", TECHNOLOGIES, getId());
+        return String.format("%s/%d", TECHNOLOGY_URL_PATH, getId());
     }
 
     @Override

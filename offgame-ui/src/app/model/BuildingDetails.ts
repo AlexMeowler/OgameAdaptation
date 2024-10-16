@@ -1,5 +1,6 @@
 import {Resources} from "./resource/Resources";
 import {Resource} from "./resource/Resource";
+import {Requirement} from "./Requirement";
 
 export class BuildingDetails {
 
@@ -9,8 +10,9 @@ export class BuildingDetails {
     currentLevel!: number;
     productionByLevel!:Map<number, Resources>;
     differenceByLevel!:Map<number, Resources>;
+    requirements: Requirement[];
 
-    constructor(data: BuildingDetails) {
+    constructor(data: any) {
         Object.assign(this, data);
 
         this.productionByLevel = new Map<number, Resources>();
@@ -22,6 +24,8 @@ export class BuildingDetails {
         for (let [key, value] of Object.entries(data.differenceByLevel)) {
             this.differenceByLevel.set(Number(key), new Resources(value))
         }
+
+        this.requirements = data.requirements.map((object: any) => new Requirement(object))
     }
 
     isResourceAffected(getter: (resource: Resources) => Resource):number {

@@ -38,6 +38,11 @@
             <column name="building_id" value="${BUILDING_CRYSTAL_MINE_ID}"/>
             <column name="level" value="1"/>
         </insert>
+        <insert tableName="building_instance">
+            <column name="planet_id" value="1"/>
+            <column name="building_id" value="7"/>
+            <column name="level" value="3"/>
+        </insert>
 
         <insert tableName="planet">
             <column name="owner_id" value="${ADMIN_ID}"/>

@@ -24,9 +24,7 @@
                     <tbody>
                     <tr>
                         <td style="background-color: transparent; text-align: left">
-                            <ng-container *ngFor="let req of obj.requirements">
-                                <div style="color: {{ req.currentLevel >= req.requiredLevel ? 'lime' : 'red' }}">{{ req.name }} (уровень {{ req.requiredLevel }}) Ваш уровень: {{ req.currentLevel }}</div>
-                            </ng-container>
+
                         </td>
                     </tr>
                     </tbody>

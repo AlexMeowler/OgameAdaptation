@@ -8,7 +8,7 @@ export class Resources {
 
     globalEffectiveness!: number
 
-    constructor(data: Resources) {
+    constructor(data: any) {
         Object.assign(this, data);
     }
 }

@@ -105,7 +105,7 @@ public class Building extends Upgradeable {
 
     @Override
     public String getDetailsPath() {
-        return String.format("%s/%d", BUILDINGS, getId());
+        return String.format("%s/%d", BUILDING_URL_PATH, getId());
     }
 
     @Override

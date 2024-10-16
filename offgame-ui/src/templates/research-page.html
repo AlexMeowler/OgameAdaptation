@@ -72,7 +72,7 @@
                 <ng-container *ngIf="obj.requirements.length === 0">
                     <ng-container *ngIf="!technologyOrder">
                         <span *ngIf="!canBuild(obj)" style="color: red">Недостаточно ресурсов!</span>
-                        <a *ngIf="canBuild(obj)" style="color: lime" href="javascript:void(0);" (click)="createOrder(obj.technology.id)">{{ 'Исследовать уровень ' + (obj.level + 1) }}</a>
+                        <a *ngIf="canBuild(obj)" style="color: lime" href="javascript:void(0);" (click)="createOrder(obj.technology.id)">{{ 'Исследовать' + (obj.level !== 0 ? ' уровень ' + (obj.level + 1) : '') }}</a>
                     </ng-container>
                 </ng-container>
                 <ng-container *ngIf="obj.requirements.length !== 0">
