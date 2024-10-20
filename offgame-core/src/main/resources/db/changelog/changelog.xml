@@ -9,14 +9,21 @@
     <include relativeToChangelogFile="true" file="tables/users.xml"/>
     <include relativeToChangelogFile="true" file="tables/roles.xml"/>
     <include relativeToChangelogFile="true" file="tables/user_role.xml"/>
-    <include relativeToChangelogFile="true" file="tables/building.xml"/>
     <include relativeToChangelogFile="true" file="tables/planet.xml"/>
     <include relativeToChangelogFile="true" file="tables/planet_resource.xml"/>
+
+    <include relativeToChangelogFile="true" file="tables/building.xml"/>
     <include relativeToChangelogFile="true" file="tables/building_instance.xml"/>
     <include relativeToChangelogFile="true" file="tables/building_order.xml"/>
+
     <include relativeToChangelogFile="true" file="tables/technology.xml"/>
     <include relativeToChangelogFile="true" file="tables/technology_instance.xml"/>
     <include relativeToChangelogFile="true" file="tables/technology_order.xml"/>
+
+    <include relativeToChangelogFile="true" file="tables/unit.xml"/>
+    <include relativeToChangelogFile="true" file="tables/unit_instance.xml"/>
+    <include relativeToChangelogFile="true" file="tables/unit_order.xml"/>
+
     <include relativeToChangelogFile="true" file="tables/requirement.xml"/>
 
     <include relativeToChangelogFile="true" file="foreign-keys/foreign-keys.xml"/>

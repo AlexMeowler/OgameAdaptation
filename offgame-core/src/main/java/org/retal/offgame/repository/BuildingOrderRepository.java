@@ -1,8 +1,8 @@
 package org.retal.offgame.repository;
 
 import org.retal.offgame.entity.BuildingInstance;
-import org.retal.offgame.entity.BuildingOrder;
-import org.retal.offgame.entity.BuildingOrder.Status;
+import org.retal.offgame.entity.orders.BuildingOrder;
+import org.retal.offgame.entity.orders.OrderStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,14 +16,14 @@ import java.util.Set;
 public interface BuildingOrderRepository extends JpaRepository<BuildingOrder, Long> {
 
     @Query("select bo from BuildingOrder bo " +
-            "where bo.status = org.retal.offgame.entity.BuildingOrder$Status.started and bo.finishedAt < instant")
+            "where bo.status = org.retal.offgame.entity.orders.OrderStatus.started and bo.finishedAt < instant")
     Set<BuildingOrder> findUnprocessedFinishedOrders();
 
-    List<BuildingOrder> findBuildingOrdersByBuildingInstancePlanetIdAndStatusInOrderByCreatedAt(Long planetId, Set<Status> statuses);
+    List<BuildingOrder> findBuildingOrdersByBuildingInstancePlanetIdAndStatusInOrderByCreatedAt(Long planetId, Set<OrderStatus> statuses);
 
     @Query("select bo from BuildingOrder bo " +
             "join bo.buildingInstance bi " +
-            "where bi = :buildingInstance and bo.status = org.retal.offgame.entity.BuildingOrder$Status.created " +
+            "where bi = :buildingInstance and bo.status = org.retal.offgame.entity.orders.OrderStatus.created " +
             "order by bo.createdAt desc " +
             "limit 1")
     Optional<BuildingOrder> findLatestActiveOrderForBuildingInstance(@Param("buildingInstance") BuildingInstance buildingInstance);

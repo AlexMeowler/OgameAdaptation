@@ -2,7 +2,7 @@ package org.retal.offgame.service;
 
 import org.retal.offgame.dto.BuildingOrderDTO;
 import org.retal.offgame.dto.BuildingOrderInfo;
-import org.retal.offgame.entity.BuildingOrder;
+import org.retal.offgame.entity.orders.BuildingOrder;
 
 import java.util.Collection;
 import java.util.List;

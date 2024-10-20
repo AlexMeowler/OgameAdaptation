@@ -29,7 +29,7 @@
             </column>
         </createTable>
 
-        <sql>ALTER TABLE building_order ADD CONSTRAINT test_status CHECK (status in ('created', 'started'))</sql>
+        <sql>ALTER TABLE building_order ADD CONSTRAINT bo_test_status CHECK (status in ('created', 'started'))</sql>
         <addUniqueConstraint tableName="${tableName}" columnNames="building_instance_id, order_value"/>
     </changeSet>
 

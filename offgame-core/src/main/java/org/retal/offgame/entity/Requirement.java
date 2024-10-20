@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.retal.offgame.entity.buildings.Building;
 import org.retal.offgame.entity.technologies.Technology;
+import org.retal.offgame.entity.units.Unit;
 
 @Entity
 @Table(name = "requirement")
@@ -29,6 +30,11 @@ public class Requirement {
     @JoinColumn(name = "technology_id")
     @JsonIgnore
     private Technology technology;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "unit_id")
+    @JsonIgnore
+    private Unit unit;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "required_building_id")

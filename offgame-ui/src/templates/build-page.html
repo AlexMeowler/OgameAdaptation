@@ -10,8 +10,8 @@
              let-stock="planetStock">
     <span *ngIf="cost.amount > 0">{{ resName }}: <b style="color: color-mix(in xyz, gray 100%, {{  getColor(stock.amount - cost.amount >= 0) }} 20%)">{{ stock.amount - cost.amount | customNumber }}&nbsp;</b></span>
 </ng-template>
-<div style="text-align: center">
-    <table width="750">
+<div style="text-align: center; width: 750px">
+    <table>
         <tbody>
         <tr *ngFor="let order of buildingOrders; let i = index">
             <td class="l" colspan="2">{{ i + 1 }}.: {{order.name}} {{order.value}}</td>
@@ -24,9 +24,9 @@
             </td>
         </tr>
         <tr *ngFor="let obj of buildingInstances">
-            <td class="l">
+            <td class="l" style="vertical-align: middle">
                 <a routerLink="/buildings/{{ obj.building.id }}">
-                    <img border="0" ngSrc="/img/building/{{ obj.building.imageName }}" align="top" width="120" height="120" alt="{{ obj.building.name }}">
+                    <img style="border: 0" ngSrc="/img/building/{{ obj.building.imageName }}" width="120" height="120" alt="{{ obj.building.name }}">
                 </a>
             </td>
             <td class="l">
@@ -79,7 +79,7 @@
                         }"/><br>
                 </div>
             </td>
-            <td class="k" width="76">
+            <td class="k w_76">
                 <ng-container *ngIf="obj.requirements.length === 0">
                     <span *ngIf="!canBuild(obj)" style="color: red">Недостаточно ресурсов!</span>
                     <a *ngIf="canBuild(obj)" style="color: lime" href="javascript:void(0);" (click)="createOrder(obj.building.id)">
@@ -91,7 +91,7 @@
                         <ng-container *ngFor="let req of obj.requirements">
                             <div class="el-require" routerLink="/{{ req.detailsPath }}" text-tooltip tooltipText="Требуется: {{ req.name }} {{ req.requiredLevel }} уровня (у Вас {{ req.currentLevel }})">
                                 <a>
-                                    <img border="0" ngSrc="/img/{{ req.imagePath }}" align="top" width="32" height="32" alt="{{ req.name }}"/>
+                                    <img border="0" ngSrc="/img/{{ req.imagePath }}" width="32" height="32" alt="{{ req.name }}"/>
                                 </a>
                                 <div class="el-require-block">
                                     <div class="el-require-skos"></div>

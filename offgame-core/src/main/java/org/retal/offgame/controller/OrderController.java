@@ -1,12 +1,10 @@
 package org.retal.offgame.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.retal.offgame.dto.BuildingOrderDTO;
-import org.retal.offgame.dto.BuildingOrderInfo;
-import org.retal.offgame.dto.TechnologyOrderDTO;
-import org.retal.offgame.dto.TechnologyOrderInfo;
+import org.retal.offgame.dto.*;
 import org.retal.offgame.service.BuildingOrderService;
 import org.retal.offgame.service.TechnologyOrderService;
+import org.retal.offgame.service.UnitOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +18,7 @@ import java.util.List;
 public class OrderController {
 
     private final BuildingOrderService buildingOrderService;
+    private final UnitOrderService unitOrderService;
     private final TechnologyOrderService technologyOrderService;
 
     @GetMapping("/build/{planetId}/list")
@@ -58,6 +57,26 @@ public class OrderController {
     @DeleteMapping("/research/{id}")
     public ResponseEntity<?> cancelTechnologyOrder(@PathVariable Long id) {
         technologyOrderService.deleteById(id);
+        return ResponseEntity.noContent()
+                .build();
+    }
+
+    @GetMapping("/construct/{planetId}/list")
+    public List<UnitOrderInfo> getActiveUnitOrders(@PathVariable Long planetId) {
+        return unitOrderService.getPlanetUnitOrders(planetId);
+    }
+
+    @PostMapping("/construct")
+    public ResponseEntity<UnitOrderInfo> createUnitOrder(@RequestBody UnitOrderDTO unitOrderDTO) {
+        UnitOrderInfo result = unitOrderService.createUnitOrder(unitOrderDTO);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(result);
+    }
+
+    @DeleteMapping("/construct/{id}")
+    public ResponseEntity<?> cancelUnitOrder(@PathVariable Long id) {
+        unitOrderService.deleteById(id);
         return ResponseEntity.noContent()
                 .build();
     }

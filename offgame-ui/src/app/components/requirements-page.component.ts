@@ -10,6 +10,7 @@ import {RouterLink} from "@angular/router";
 import {User} from "../model/User";
 import {UserService} from "../services/user.service";
 import {TechnologyInstance} from "../model/TechnologyInstance";
+import {UnitInstance} from "../model/UnitInstance";
 
 @Component({
     selector: 'requirements-page',
@@ -33,6 +34,8 @@ export class RequirementsComponent implements OnDestroy {
 
     buildingInstances: BuildingInstance[] = []
     technologyInstances: TechnologyInstance[] = []
+    fleetInstances: UnitInstance[] = []
+    defenseInstances: UnitInstance[] = []
 
     userSubscription: Subscription
     user!: User
@@ -46,6 +49,7 @@ export class RequirementsComponent implements OnDestroy {
                     this.user = data;
                     this.updatePlanetBuildings();
                     this.updatePlanetTechnologies();
+                    this.updatePlanetUnits();
                 }
             }
         })
@@ -59,12 +63,16 @@ export class RequirementsComponent implements OnDestroy {
 
     private updatePlanetTechnologies() {
         this.planetService.getPlanetTechnologies(this.user.activePlanet).subscribe({
-            next: (data: TechnologyInstance[]) => {
-                this.technologyInstances = data;
-                this.technologyInstances.forEach(ti => {
-                    ti.requirements = ti.requirements.filter(req => req.requiredLevel >= req.currentLevel)
-                })
-            }
+            next: (data: TechnologyInstance[]) => this.technologyInstances = data
+        })
+    }
+
+    private updatePlanetUnits() {
+        this.planetService.getPlanetUnits(this.user.activePlanet, PlanetService.FLEET_TYPE).subscribe({
+            next: (data: UnitInstance[]) => this.fleetInstances = data
+        })
+        this.planetService.getPlanetUnits(this.user.activePlanet, PlanetService.DEFENSE_TYPE).subscribe({
+            next: (data: UnitInstance[]) => this.defenseInstances = data
         })
     }
 

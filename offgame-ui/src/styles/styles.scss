@@ -262,13 +262,7 @@ body form table th table input {
 
 .planet_item, .moon_item {
     border: 4px solid transparent;
-    border-image: url(/img/planet/border.png) 4 stretch;
-}
-
-.ps {
-    overflow: hidden !important;
-    overflow-anchor: none;
-    touch-action: auto;
+    border-image: url(/img/celestial/border.png) 4 stretch;
 }
 
 .planet_item:hover, .moon_item:hover {
@@ -281,8 +275,14 @@ body form table th table input {
     z-index: -1
 }
 
+.ps {
+    overflow: hidden !important;
+    overflow-anchor: none;
+    touch-action: auto;
+}
+
 .current_item {
-    border-image: url(/img/planet/border_select.png) 4 stretch;
+    border-image: url(/img/celestial/border_select.png) 4 stretch;
 }
 
 .selected_item {
@@ -367,10 +367,6 @@ textarea {
     width: 99%
 }
 
-td.k input {
-    text-align: left
-}
-
 td.g {
     font-weight: 700;
     text-align: right;
@@ -392,9 +388,14 @@ td.j {
     color: #fff
 }
 
-td.k, td.k input {
+td.k, td.k {
     text-align: center;
     color: #fff
+}
+
+td.k input {
+    text-align: center;
+    color: #a4f4a4;
 }
 
 td.l {
@@ -609,4 +610,28 @@ h2 {
     vertical-align: top;
     border: 1px solid rgb(34, 34, 34);
     margin-right: 0.5em;
+}
+
+div.do_order {
+    margin-bottom: 16px;
+}
+
+div.do_order input {
+    width: 48px
+}
+
+input[type=text]:hover {
+    cursor: text;
+}
+
+.pl_block {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #304572;
+    border: 1px #3c6486 solid;
+    border-radius: 4px;
+}
+
+.w_76 {
+    width: 76px;
 }

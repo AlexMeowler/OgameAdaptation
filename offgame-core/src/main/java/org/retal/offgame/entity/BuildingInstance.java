@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.retal.offgame.entity.buildings.Building;
+import org.retal.offgame.entity.orders.BuildingOrder;
 
 import java.util.Set;
 

@@ -78,7 +78,7 @@ export class ResearchComponent implements OnDestroy {
             next: (data: TechnologyInstance[]) => {
                 this.technologyInstances = data;
                 this.technologyInstances.forEach(ti => {
-                    ti.requirements = ti.requirements.filter(req => req.requiredLevel >= req.currentLevel)
+                    ti.requirements = ti.requirements.filter(req => req.requiredLevel > req.currentLevel)
                 })
             }
         })
@@ -111,6 +111,7 @@ export class ResearchComponent implements OnDestroy {
             if (order.timeLeft <= 0) {
                 clearInterval(this.currentResearchTimer);
                 this.getOrder();
+                this.updatePlanetTechnologies();
             }
 
             order.timeLeft--;

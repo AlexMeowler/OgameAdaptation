@@ -2,7 +2,7 @@ package org.retal.offgame.service;
 
 import org.retal.offgame.dto.TechnologyOrderDTO;
 import org.retal.offgame.dto.TechnologyOrderInfo;
-import org.retal.offgame.entity.TechnologyOrder;
+import org.retal.offgame.entity.orders.TechnologyOrder;
 
 import java.util.Collection;
 

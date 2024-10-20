@@ -3,6 +3,7 @@ package org.retal.offgame.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.retal.offgame.entity.orders.TechnologyOrder;
 import org.retal.offgame.entity.technologies.Technology;
 
 @Entity

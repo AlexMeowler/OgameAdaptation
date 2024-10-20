@@ -1,12 +1,10 @@
 package org.retal.offgame.configuration;
 
 import lombok.RequiredArgsConstructor;
-import org.retal.offgame.entity.BuildingInstance;
-import org.retal.offgame.entity.Planet;
-import org.retal.offgame.entity.TechnologyInstance;
-import org.retal.offgame.entity.User;
+import org.retal.offgame.entity.*;
 import org.retal.offgame.entity.buildings.Building;
 import org.retal.offgame.entity.technologies.Technology;
+import org.retal.offgame.entity.units.Unit;
 import org.retal.offgame.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -27,9 +25,11 @@ import static java.util.stream.Collectors.toSet;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class InstancesFiller implements CommandLineRunner {
 
-    private final BuildingService buildingService;
     private final PlanetService planetService;
+    private final BuildingService buildingService;
     private final BuildingInstanceService buildingInstanceService;
+    private final UnitService unitService;
+    private final UnitInstanceService unitInstanceService;
     private final UserService userService;
     private final TechnologyService technologyService;
     private final TechnologyInstanceService technologyInstanceService;
@@ -38,6 +38,7 @@ public class InstancesFiller implements CommandLineRunner {
     @Transactional
     public void run(String... args) {
         createMissingBuildingInstances();
+        createMissingUnitInstances();
         createMissingTechnologyInstances();
     }
 
@@ -65,6 +66,33 @@ public class InstancesFiller implements CommandLineRunner {
                 .planet(planet)
                 .building(building)
                 .level(0L)
+                .build();
+    }
+
+    private void createMissingUnitInstances() {
+        Collection<Unit> units = unitService.findAll();
+        Set<UnitInstance> instancesToCreate = planetService.findAll().stream()
+                .flatMap(planet -> findMissingUnitInstances(planet, units))
+                .collect(toSet());
+
+        unitInstanceService.saveAll(instancesToCreate);
+    }
+
+    private Stream<UnitInstance> findMissingUnitInstances(Planet planet, Collection<Unit> unitList) {
+        Set<Unit> planetUnits = planet.getUnits().stream()
+                .map(UnitInstance::getUnit)
+                .collect(toSet());
+
+        return unitList.stream()
+                .filter(not(planetUnits::contains))
+                .map(unit -> toUnitInstance(planet, unit));
+    }
+
+    private UnitInstance toUnitInstance(Planet planet, Unit unit) {
+        return UnitInstance.builder()
+                .planet(planet)
+                .unit(unit)
+                .amount(0L)
                 .build();
     }
 

@@ -1,7 +1,9 @@
-package org.retal.offgame.entity;
+package org.retal.offgame.entity.orders;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.retal.offgame.entity.Planet;
+import org.retal.offgame.entity.TechnologyInstance;
 
 import java.time.Instant;
 

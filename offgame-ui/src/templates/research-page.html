@@ -10,13 +10,13 @@
              let-stock="planetStock">
     <span *ngIf="cost.amount > 0">{{ resName }}: <b style="color: color-mix(in xyz, gray 100%, {{  getColor(stock.amount - cost.amount >= 0) }} 20%)">{{ stock.amount - cost.amount | customNumber }}&nbsp;</b></span>
 </ng-template>
-<div style="text-align: center">
-    <table width="750">
+<div style="text-align: center; width: 750px">
+    <table>
         <tbody>
         <tr *ngFor="let obj of technologyInstances">
-            <td class="l">
+            <td class="l" style="vertical-align: middle">
                 <a routerLink="/research/{{ obj.technology.id }}">
-                    <img border="0" ngSrc="/img/technology/{{ obj.technology.imageName }}" align="top" width="120" height="120" alt="{{ obj.technology.name }}">
+                    <img style="border: 0" ngSrc="/img/technology/{{ obj.technology.imageName }}" width="120" height="120" alt="{{ obj.technology.name }}">
                 </a>
             </td>
             <td class="l">
@@ -68,11 +68,20 @@
                         }"/><br>
                 </div>
             </td>
-            <td class="k" width="76">
+            <td class="k w_76">
                 <ng-container *ngIf="obj.requirements.length === 0">
                     <ng-container *ngIf="!technologyOrder">
                         <span *ngIf="!canBuild(obj)" style="color: red">Недостаточно ресурсов!</span>
                         <a *ngIf="canBuild(obj)" style="color: lime" href="javascript:void(0);" (click)="createOrder(obj.technology.id)">{{ 'Исследовать' + (obj.level !== 0 ? ' уровень ' + (obj.level + 1) : '') }}</a>
+                    </ng-container>
+                    <ng-container *ngIf="technologyOrder">
+                        <span *ngIf="technologyOrder.technologyId !== obj.technology.id">-</span>
+                        <ng-container *ngIf="technologyOrder.technologyId === obj.technology.id">
+                            <span *ngIf="planetNames.has(technologyOrder.planetId) && user.activePlanet !== technologyOrder.planetId" style="font-weight: bold">Исследуется на планете {{ planetNames.get(technologyOrder.planetId) }}<br><br></span>
+                            <span style="font-weight: bold">{{ technologyOrder.timeLeft | duration:':' }}</span>
+                            <br>
+                            <a href="javascript:void(0);" (click)="deleteOrder(technologyOrder.id)">Отменить</a>
+                        </ng-container>
                     </ng-container>
                 </ng-container>
                 <ng-container *ngIf="obj.requirements.length !== 0">
@@ -80,7 +89,7 @@
                         <ng-container *ngFor="let req of obj.requirements">
                             <div class="el-require" routerLink="/{{ req.detailsPath }}" text-tooltip tooltipText="Требуется: {{ req.name }} {{ req.requiredLevel }} уровня (у Вас {{ req.currentLevel }})">
                                 <a>
-                                    <img border="0" ngSrc="/img/{{ req.imagePath }}" align="top" width="32" height="32" alt="{{ req.name }}"/>
+                                    <img border="0" ngSrc="/img/{{ req.imagePath }}" width="32" height="32" alt="{{ req.name }}"/>
                                 </a>
                                 <div class="el-require-block">
                                     <div class="el-require-skos"></div>
@@ -89,16 +98,6 @@
                             </div>
                         </ng-container>
                     </div>
-                </ng-container>
-
-                <ng-container *ngIf="technologyOrder">
-                    <span *ngIf="technologyOrder.technologyId !== obj.technology.id">-</span>
-                    <ng-container *ngIf="technologyOrder.technologyId === obj.technology.id">
-                        <span *ngIf="planetNames.has(technologyOrder.planetId) && user.activePlanet !== technologyOrder.planetId" style="font-weight: bold">Исследуется на планете {{ planetNames.get(technologyOrder.planetId) }}<br><br></span>
-                        <span style="font-weight: bold">{{ technologyOrder.timeLeft | duration:':' }}</span>
-                        <br>
-                        <a href="javascript:void(0);" (click)="deleteOrder(technologyOrder.id)">Отменить</a>
-                    </ng-container>
                 </ng-container>
             </td>
         </tr>

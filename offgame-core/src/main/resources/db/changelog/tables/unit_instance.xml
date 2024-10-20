@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <property name="tableName" value="unit_instance" global="false"/>
+
+    <changeSet id="1" author="alexMeowler">
+        <createTable tableName="${tableName}">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="planet_id" type="BIGINT">
+                <constraints nullable="false" references="planet(id)" foreignKeyName="fk_unit_instance_planet"/>
+            </column>
+            <column name="unit_id" type="BIGINT">
+                <constraints nullable="false" references="unit(id)" foreignKeyName="fk_unit_instance_unit"/>
+            </column>
+            <column name="amount" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint tableName="${tableName}" columnNames="planet_id, unit_id"/>
+    </changeSet>
+
+</databaseChangeLog>

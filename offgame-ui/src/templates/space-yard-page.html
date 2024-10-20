@@ -1,0 +1,123 @@
+<ng-template #resourceCost
+             let-cost="resource"
+             let-resName="name"
+             let-stock="planetStock">
+    <span *ngIf="cost.amount > 0">{{ resName }}: <b style="color: {{  getColor(hasResource(cost, stock)) }}">{{ cost.amount | customNumber }}&nbsp;</b></span>
+</ng-template>
+<ng-template #resourceRemaining
+             let-cost="resource"
+             let-resName="name"
+             let-stock="planetStock">
+    <span *ngIf="cost.amount > 0">{{ resName }}: <b style="color: color-mix(in xyz, gray 100%, {{  getColor(stock.amount - cost.amount >= 0) }} 20%)">{{ stock.amount - cost.amount | customNumber }}&nbsp;</b></span>
+</ng-template>
+<div style="text-align: center; width: 750px">
+    <table>
+        <tbody>
+        <tr *ngFor="let obj of unitInstances; let i = index">
+            <td class="l" style="vertical-align: middle">
+                <a routerLink="/buildings/{{ obj.unit.id }}">
+                    <img style="border: 0;" ngSrc="/img/unit/{{ obj.unit.imageName }}" width="120" height="120" alt="{{ obj.unit.name }}">
+                </a>
+            </td>
+            <td class="l">
+                <span><a routerLink="/buildings/{{ obj.unit.id }}">{{ obj.unit.name }}</a>&nbsp;</span>
+                <span *ngIf="obj.amount > 0">(Количество: {{ obj.amount }}) </span><br>
+                <span [innerHTML]="obj.unit.shortDescriptionHtml"></span><br>
+                Необходимые ресурсы:
+                <ng-container *ngTemplateOutlet="resourceCost;context:{
+                        resource:obj.buildingCost.metal,
+                        planetStock:resources.metal,
+                        name:'Металл'
+                    }"/>
+                <ng-container *ngTemplateOutlet="resourceCost;context:{
+                        resource:obj.buildingCost.crystal,
+                        planetStock:resources.crystal,
+                        name:'Кристалл',
+                    }"/>
+                <ng-container *ngTemplateOutlet="resourceCost;context:{
+                        resource:obj.buildingCost.deuterium,
+                        planetStock:resources.deuterium,
+                        name:'Дейтерий'
+                    }"/>
+                <ng-container *ngTemplateOutlet="resourceCost;context:{
+                        resource:obj.buildingCost.energy,
+                        planetStock:resources.energy,
+                        name:'Энергия'
+                    }"/>
+                <br>Время строительства: {{ obj.buildingTime | duration }}
+                <div style="color: gray">Останется ресурсов:
+                    <ng-container *ngTemplateOutlet="resourceRemaining;context:{
+                            resource:obj.buildingCost.metal,
+                            planetStock:resources.metal,
+                            name:'Металл'
+                        }"/>
+                    <ng-container *ngTemplateOutlet="resourceRemaining;context:{
+                            resource:obj.buildingCost.crystal,
+                            planetStock:resources.crystal,
+                            name:'Кристалл',
+                        }"/>
+                    <ng-container *ngTemplateOutlet="resourceRemaining;context:{
+                            resource:obj.buildingCost.deuterium,
+                            planetStock:resources.deuterium,
+                            name:'Дейтерий'
+                        }"/>
+                    <ng-container *ngTemplateOutlet="resourceRemaining;context:{
+                            resource:obj.buildingCost.energy,
+                            planetStock:resources.energy,
+                            name:'Энергия'
+                        }"/><br>
+                </div>
+            </td>
+            <td class="k w_76">
+                <ng-container *ngIf="obj.requirements.length === 0">
+                    <span *ngIf="!canBuild(obj)" style="color: red">Недостаточно ресурсов!</span>
+                    <ng-container *ngIf="canBuild(obj)">
+                        <div class="do_order"><input type="submit" value="Заказ" (click)="createOrder(obj.unit.id, i)"></div>
+                        <input [(ngModel)]="amountInputs[i]" type="text" alt="Солнечный спутник" size="5" maxlength="5" value="0" tabindex="1" onfocus="if(this.value === '0') this.value='';" onblur="if(this.value === '') this.value='0';">
+                    </ng-container>
+                </ng-container>
+                <ng-container *ngIf="obj.requirements.length !== 0">
+                    <div>
+                        <ng-container *ngFor="let req of obj.requirements">
+                            <div class="el-require" routerLink="/{{ req.detailsPath }}" text-tooltip tooltipText="Требуется: {{ req.name }} {{ req.requiredLevel }} уровня (у Вас {{ req.currentLevel }})">
+                                <a>
+                                    <img border="0" ngSrc="/img/{{ req.imagePath }}" width="32" height="32" alt="{{ req.name }}"/>
+                                </a>
+                                <div class="el-require-block">
+                                    <div class="el-require-skos"></div>
+                                    <div class="el-require-bg"><span style="color:red">{{ req.currentLevel }}/{{ req.requiredLevel }}</span></div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </ng-container>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <ng-container *ngIf="unitOrders.length > 0">
+        <div class="pl_block">Сейчас производится: <div class="x">{{unitOrders[0].name}} {{unitOrders[0].timeLeft | duration:':' }}</div></div>
+        <table style="width: 750px">
+            <tbody>
+            <tr>
+                <td class="c">Занято</td>
+            </tr>
+            <tr>
+                <th><select size="10">
+                    <option *ngFor="let order of unitOrders; let i = index" value="{{ i }}">
+                        {{ order.amountLeft }}  "{{ order.name }}" {{ i === 0 ? '(Производится)' : ''}}
+                    </option>
+                </select>
+                </th>
+            </tr>
+            <tr>
+                <td class="c"></td>
+            </tr>
+            </tbody>
+        </table>
+        <div><input type="submit" value="Отменить последнее" (click)="deleteLatestOrder()"></div>
+        <div class="pl_block">
+            Оставшееся время {{ totalTimeLeft | duration }}
+        </div>
+    </ng-container>
+</div>

@@ -5,6 +5,7 @@ import org.retal.offgame.dto.ResourcesDTO;
 import org.retal.offgame.dto.TechnologyOrderDTO;
 import org.retal.offgame.dto.TechnologyOrderInfo;
 import org.retal.offgame.entity.*;
+import org.retal.offgame.entity.orders.TechnologyOrder;
 import org.retal.offgame.repository.TechnologyInstanceRepository;
 import org.retal.offgame.repository.TechnologyOrderRepository;
 import org.retal.offgame.service.*;

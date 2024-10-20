@@ -1,3 +1,33 @@
+<ng-template #unitTable
+             let-instances="instances">
+    <tr *ngFor="let obj of instances">
+        <th class="l" width="40%">
+            <table width="100%">
+                <tbody>
+                <tr>
+                    <td style="background-color: transparent; text-align: left; font-weight: bold; font-size: larger">
+                        <img height="30" width="30" class="requirement-img" ngSrc="/img/unit/{{ obj.unit.imageName }}" alt="{{ obj.unit.name }}"/>
+                        <a routerLink="/research/{{ obj.unit.id }}" >{{ obj.unit.name }}</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </th>
+        <th class="l" width="60%">
+            <table width="100%">
+                <tbody>
+                <tr>
+                    <td style="background-color: transparent; text-align: left">
+                        <ng-container *ngFor="let req of obj.requirements">
+                            <div style="color: {{ req.currentLevel >= req.requiredLevel ? 'lime' : 'red' }}">{{ req.name }} (уровень {{ req.requiredLevel }}) Ваш уровень: {{ req.currentLevel }}</div>
+                        </ng-container>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </th>
+    </tr>
+</ng-template>
 <div style="text-align: center">
     <br>
     <table width="750">
@@ -24,7 +54,9 @@
                     <tbody>
                     <tr>
                         <td style="background-color: transparent; text-align: left">
-
+                            <ng-container *ngFor="let req of obj.requirements">
+                                <div style="color: {{ req.currentLevel >= req.requiredLevel ? 'lime' : 'red' }}">{{ req.name }} (уровень {{ req.requiredLevel }}) Ваш уровень: {{ req.currentLevel }}</div>
+                            </ng-container>
                         </td>
                     </tr>
                     </tbody>
@@ -48,7 +80,7 @@
                     <tr>
                         <td style="background-color: transparent; text-align: left; font-weight: bold; font-size: larger">
                             <img height="30" width="30" class="requirement-img" ngSrc="/img/technology/{{ obj.technology.imageName }}" alt="{{ obj.technology.name }}"/>
-                            <a href="infos.php?gid=1" >{{ obj.technology.name }}</a>
+                            <a routerLink="/research/{{ obj.technology.id }}" >{{ obj.technology.name }}</a>
                         </td>
                     </tr>
                     </tbody>
@@ -69,16 +101,21 @@
             </th>
         </tr>
 
-
         <tr>
             <td class="c">Флот</td>
             <td class="c">Требуется</td>
         </tr>
+        <ng-container *ngTemplateOutlet="unitTable;context:{
+                        instances:fleetInstances
+                    }"/>
 
         <tr>
             <td class="c">Оборона</td>
             <td class="c">Требуется</td>
         </tr>
+        <ng-container *ngTemplateOutlet="unitTable;context:{
+                        instances:defenseInstances
+                    }"/>
 
         </tbody>
     </table>

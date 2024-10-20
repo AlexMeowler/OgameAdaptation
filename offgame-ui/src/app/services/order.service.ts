@@ -4,6 +4,7 @@ import {apiUrl} from "../app.config";
 import {map, Observable} from "rxjs";
 import {BuildingOrder} from "../model/BuildingOrder";
 import {TechnologyOrder} from "../model/TechnologyOrder";
+import {UnitOrder} from "../model/UnitOrder";
 
 @Injectable({
     providedIn: 'root'
@@ -44,5 +45,23 @@ export class OrderService {
 
     deleteTechnologyOrder(orderId: number) {
         return this.http.delete(`${apiUrl}/order/research/${orderId}`)
+    }
+
+    getActiveUnitOrders(planetId: number): Observable<UnitOrder[]> {
+        return this.http.get(`${apiUrl}/order/construct/${planetId}/list`).pipe(map((data: any) => {
+            return data.map((object: any) => new UnitOrder(object))
+        }))
+    }
+
+    createUnitOrder(unitId: number, planetId: number, amount:number) {
+        return this.http.post(`${apiUrl}/order/construct`, {
+            unitId: unitId,
+            planetId: planetId,
+            amount: amount
+        })
+    }
+
+    deleteUnitOrder(orderId: number) {
+        return this.http.delete(`${apiUrl}/order/construct/${orderId}`)
     }
 }

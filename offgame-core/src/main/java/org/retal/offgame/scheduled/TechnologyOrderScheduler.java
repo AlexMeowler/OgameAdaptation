@@ -2,7 +2,7 @@ package org.retal.offgame.scheduled;
 
 import lombok.RequiredArgsConstructor;
 import org.retal.offgame.entity.TechnologyInstance;
-import org.retal.offgame.entity.TechnologyOrder;
+import org.retal.offgame.entity.orders.TechnologyOrder;
 import org.retal.offgame.service.TechnologyInstanceService;
 import org.retal.offgame.service.TechnologyOrderService;
 import org.springframework.beans.factory.annotation.Autowired;

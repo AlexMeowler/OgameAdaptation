@@ -178,14 +178,12 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <div><a href="buildings.php?loc=fleet" accesskey="f" target="Hauptframe"
-                                    style="color:#eedc82;">Верфь</a></div>
+                            <div><a routerLink="/ship-yard" style="color:#eedc82;">Верфь</a></div>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <div><a href="buildings.php?loc=defense" accesskey="d" target="Hauptframe"
-                                    style="color:#eedc82;">Оборона</a></div>
+                            <div><a routerLink="/defense-yard" style="color:#eedc82;">Оборона</a></div>
                         </td>
                     </tr>
                     <tr>
@@ -232,8 +230,11 @@
             <ng-container *ngFor="let planet of planetList">
                 <div class="planet_container">
                     <a class="planet_item {{ user.activePlanet === planet.id ? 'current_item' : '' }}" href="javascript:void(0);" (click)="selectPlanet(planet.id)" text-tooltip tooltipText="{{ planet.name }}">
-                        <img ngSrc="/img/planet/{{ planet.imageName }}" width="52" height="52">
+                        <img ngSrc="/img/celestial/planet/{{ planet.imageName }}" width="52" height="52">
                     </a>
+                    <!--<a class="moon_item" href="?cp=39445" js-title="Луна [2:119:3]">
+                        <img src="/skins/epsilon/planeten/64x64/moon01.jpg" width="24" height="24">
+                    </a>-->
                 </div>
             </ng-container>
         </div>

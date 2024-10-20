@@ -5,9 +5,9 @@ import org.retal.offgame.dto.BuildingOrderDTO;
 import org.retal.offgame.dto.BuildingOrderInfo;
 import org.retal.offgame.dto.ResourcesDTO;
 import org.retal.offgame.entity.BuildingInstance;
-import org.retal.offgame.entity.BuildingOrder;
 import org.retal.offgame.entity.Resources;
 import org.retal.offgame.entity.Upgradeable;
+import org.retal.offgame.entity.orders.BuildingOrder;
 import org.retal.offgame.repository.BuildingOrderRepository;
 import org.retal.offgame.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +26,8 @@ import java.util.function.Function;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
-import static org.retal.offgame.entity.BuildingOrder.Status.created;
-import static org.retal.offgame.entity.BuildingOrder.Status.started;
+import static org.retal.offgame.entity.orders.OrderStatus.created;
+import static org.retal.offgame.entity.orders.OrderStatus.started;
 
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})

@@ -1,7 +1,8 @@
-package org.retal.offgame.entity;
+package org.retal.offgame.entity.orders;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.retal.offgame.entity.BuildingInstance;
 
 import java.time.Instant;
 
@@ -23,7 +24,7 @@ public class BuildingOrder {
     private BuildingInstance buildingInstance;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private OrderStatus status;
 
     @Column
     private Long orderValue;
@@ -36,9 +37,4 @@ public class BuildingOrder {
 
     @Column
     private Instant finishedAt;
-
-    public enum Status {
-        created,
-        started
-    }
 }

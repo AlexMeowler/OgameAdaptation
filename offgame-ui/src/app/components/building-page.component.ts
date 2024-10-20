@@ -69,7 +69,7 @@ export class BuildComponent implements OnDestroy {
             next: (data: BuildingInstance[]) => {
                 this.buildingInstances = data;
                 this.buildingInstances.forEach(bi => {
-                    bi.requirements = bi.requirements.filter(req => req.requiredLevel >= req.currentLevel)
+                    bi.requirements = bi.requirements.filter(req => req.requiredLevel > req.currentLevel)
                 })
             }
         })
@@ -138,6 +138,7 @@ export class BuildComponent implements OnDestroy {
             if (order.timeLeft <= 0) {
                 clearInterval(this.currentBuildTimer)
                 this.refreshOrders()
+                this.updatePlanetBuildings();
             }
 
             order.timeLeft--
