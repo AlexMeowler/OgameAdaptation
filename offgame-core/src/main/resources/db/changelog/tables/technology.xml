@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <property name="tableName" value="technology" global="false"/>
+
+    <changeSet id="1" author="alexMeowler">
+        <createTable tableName="${tableName}">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(64)"/>
+            <column name="description_short" type="VARCHAR(2000)"/>
+            <column name="description_full" type="VARCHAR(2000)"/>
+            <column name="cost_metal" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cost_crystal" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cost_deuterium" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cost_energy" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="image_name" type="VARCHAR(34)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="alexMeowler">
+        <insert tableName="${tableName}">
+            <column name="id" value="1"/>
+            <column name="name" value="Шпионаж"/>
+            <column name="description_short" value="С помощью этой технологии добываются данные о чужих планетах. Влияет на информацию о нападающих вражеских флотах, на шанс обнаружения шпионских зондов."/>
+            <column name="description_full" value="Шпионаж предназначен для исследования новых и более эффективных сенсоров. Чем выше развита эта технология, тем больше информации имеет игрок о событиях в своём окружении. Разница в уровнях шпионажа с противником играет решающую роль - чем больше исследована собственная шпионская технология, тем больше информации содержится в разведданных и тем меньше шанс быть обнаруженным. Чем больше послано зондов, тем больше собирается подробностей о противнике, но при этом растёт опасность быть обнаруженным. Также шпионаж совершенствует определение местонахождения чужих флотов. При этом также важен уровень развития собственного шпионажа. Начиная со 2 уровня его развития при атаке на Вас кроме сообщения о нападении показывается также и общая численность нападающих кораблей. С 4 уровня распознаётся вид нападающих кораблей, равно как и их общая численность, а с 8 - точная численность каждого типа кораблей. Для налётчиков эта технология очень важна, так как она предоставляет информацию о том, выставила ли жертва флот и/или защиту или нет, поэтому следует исследовать её как можно раньше. Лучше всего - сразу же после исследования малых транспортов."/>
+            <column name="cost_metal" value="200"/>
+            <column name="cost_crystal" value="1000"/>
+            <column name="cost_deuterium" value="200"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="espionage.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="2"/>
+            <column name="name" value="Энергетическая технология"/>
+            <column name="description_short" value="Обладание различными видами энергии необходимо для многих новых технологий. Также каждый уровень увеличивает выработку энергии на Термоядерных электростанциях."/>
+            <column name="description_full" value="Энергетическая технология занимается дальнейшим развитием систем передачи и хранения энергии, которые необходимы для многих новых технологий."/>
+            <column name="cost_metal" value="0"/>
+            <column name="cost_crystal" value="800"/>
+            <column name="cost_deuterium" value="400"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="energy_technology.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="3"/>
+            <column name="name" value="Реактивный двигатель"/>
+            <column name="description_short" value="Дальнейшее развитие этих двигателей делает некоторые корабли быстрее, однако каждый уровень повышает скорость лишь на 10% (относительно базовой скорости кораблей)."/>
+            <column name="description_full" value="В основе реактивного двигателя лежит закон сохранения импульса. Материя, разогретая до высоких температур, выбрасывается в направлении, противоположном движению и даёт ускорение кораблю. Эффективность этих двигателей достаточно мала, но они достаточно надёжны, дёшевы в производстве и обслуживании. Кроме того они занимают гораздо меньше места на корабле по сравнению с остальными двигателями, поэтому их всё ещё достаточно часто можно встретить на маленьких кораблях. Так как реактивные двигатели являются основой любого полёта в космос, следует исследовать их как можно раньше. Развитие этой технологии делает корабли оснащённые этим типом двигателей с каждым уровнем на 10% быстрее."/>
+            <column name="cost_metal" value="400"/>
+            <column name="cost_crystal" value="0"/>
+            <column name="cost_deuterium" value="600"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="reactive_engine.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="4"/>
+            <column name="name" value="Импульсный двигатель"/>
+            <column name="description_short" value="Импульсный двигатель основывается на принципе отдачи. Дальнейшее развитие этих двигателей делает некоторые корабли быстрее, повышает скорость на 20% (относительно базовой скорости кораблей). Увеличивает дальность межпланетных ракет."/>
+            <column name="description_full" value="Импульсный двигатель основывается на принципе отдачи, при котором возникает масса лучей, по большей части в виде побочного продукта ядерного синтеза, использованного для получения энергии. Также можно впрыснуть дополнительную массу. Дальнейшее развитие этих двигателей делает следующие корабли с каждым уровнем на 20% быстрее: бомбардировщики, крейсеры, тяжёлые истребители и колонизаторы. Каждый уровень развития увеличивает радиус действия межпланетных ракет."/>
+            <column name="cost_metal" value="2000"/>
+            <column name="cost_crystal" value="4000"/>
+            <column name="cost_deuterium" value="600"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="impulse_engine.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="5"/>
+            <column name="name" value="Компьютерная технология"/>
+            <column name="description_short" value="С увеличением мощности компьютеров можно командовать всё большим количеством флотов. Каждый уровень компьютерной технологии увеличивает максимальное количество флотов на один."/>
+            <column name="description_full" value="Компьютерная технология предназначена для расширения имеющихся в наличии компьютерных мощностей. В результате на планете развиваются более продуктивные и эффективные компьютерные системы, возрастает вычислительная мощность и скорость протекания вычислительных процессов. С повышением мощности компьютеров можно одновременно командовать всё бoльшим количеством флотов. Каждый уровень развития компьютерной технологии даёт возможность командовать +1 флотом. Чем больше рассылается флотов, тем больше можно совершать налётов и тем самым захватывать больше сырья. Естественно, что эта технология полезна и торговцам, так как она позволяет им одновременно рассылать больше торговых флотов. По этой причине следует постоянно развивать компьютерную технологию."/>
+            <column name="cost_metal" value="0"/>
+            <column name="cost_crystal" value="400"/>
+            <column name="cost_deuterium" value="600"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="computer_technology.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="6"/>
+            <column name="name" value="Оружейная технология"/>
+            <column name="description_short" value="Оружейная технология делает системы вооружения эффективней. Каждый уровень увеличивает мощность орудий флота и обороны на 10%."/>
+            <column name="description_full" value="Оружейная технология занимается прежде всего дальнейшим развитием имеющихся в наличии систем вооружения. При этом особое значение придаётся тому, чтобы снабжать имеющиеся в наличии системы большей энергией и более точно эту энергию направлять. Благодаря этому системы вооружения становятся эффективней, а оружие вызывает больше разрушений. Каждый уровень оружейной технологии увеличивает мощность вооружения войсковых частей на 10%. Оружейная технология важна для конкурентоспособного содержания частей. Поэтому следовало бы её постоянно развивать в течение всей игры."/>
+            <column name="cost_metal" value="800"/>
+            <column name="cost_crystal" value="200"/>
+            <column name="cost_deuterium" value="0"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="weapon_technology.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="7"/>
+            <column name="name" value="Щитовая технология"/>
+            <column name="description_short" value="Занимается изучением более новых возможностей большего энергоснабжения щитов, что делает их эффективней и устойчивей. Благодаря этому, с каждым уровнем эффективность щитов кораблей и обороны повышается на 10%."/>
+            <column name="description_full" value="Эта технология занимается изучением более новых возможностей большего энергоснабжения щитов, что делает их эффективней и устойчивей. Благодаря этому с каждым изученным уровнем эффективность щитов повышается на 10%."/>
+            <column name="cost_metal" value="200"/>
+            <column name="cost_crystal" value="600"/>
+            <column name="cost_deuterium" value="0"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="shield_technology.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="8"/>
+            <column name="name" value="Металлургия"/>
+            <column name="description_short" value="Специальные сплавы улучшают броню космических кораблей и оборонительных сооружений, повышая их живучесть. Каждый уровень усиливает структуру кораблей и обороны на 10%."/>
+            <column name="description_full" value="Специальные сплавы улучшают броню космических кораблей и оборонительных сооружений, повышая их живучесть. Как только найден очень стойкий сплав, специальные лучи изменяют молекулярную структуру космического корабля, и доводит её до состояния изученного сплава. Так, устойчивость брони может увеличиваться с каждым уровнем на 10%."/>
+            <column name="cost_metal" value="1000"/>
+            <column name="cost_crystal" value="0"/>
+            <column name="cost_deuterium" value="0"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="metallurgy.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="9"/>
+            <column name="name" value="Колонизационная технология"/>
+            <column name="description_short" value="Эта технология позволит вам расширить вашу империю до 20 колоний. Каждый уровень позволяет контролировать ещё одну колонию."/>
+            <column name="description_full" value="Властитель, имеющий много колоний во вселеной, имеет больше преимущества перед другими."/>
+            <column name="cost_metal" value="1000"/>
+            <column name="cost_crystal" value="4000"/>
+            <column name="cost_deuterium" value="1000"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="colonization_technology.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="10"/>
+            <column name="name" value="Экспедиционная технология"/>
+            <column name="description_short" value="Позволяет посылать экспедиции в неизведанные дали. Каждый уровень позволяет контролировать большее количество одновременных экспедиций."/>
+            <column name="description_full" value="	Экспедиционная технология охватывает различные технологии сканирования и даёт возможность оснащать корабли различных классов исследовательским модулем. Он содержит базу данных, маленькую передвижную лабораторию, а также различные биоклетки и сосуды для проб. Для безопасности корабля при исследовании опасных объектов исследовательский модуль оснащён автономным энергообеспечением и генератором энергетического поля, который в экстремальных ситуациях может окружать исследовательский модуль мощным энергетическим полем."/>
+            <column name="cost_metal" value="4000"/>
+            <column name="cost_crystal" value="8000"/>
+            <column name="cost_deuterium" value="4000"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="expedition_technology.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="11"/>
+            <column name="name" value="Гиперпространственная технология"/>
+            <column name="description_short" value="Путём сплетения 4-го и 5-го измерения стало возможным исследовать новый более экономный и эффективный двигатель."/>
+            <column name="description_full" value="Путём сплетения 4-го и 5-го измерения стало возможным исследовать новый более экономный и эффективный двигатель."/>
+            <column name="cost_metal" value="0"/>
+            <column name="cost_crystal" value="4000"/>
+            <column name="cost_deuterium" value="2000"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="hyperspace_technology.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="12"/>
+            <column name="name" value="Гиперпространственный двигатель"/>
+            <column name="description_short" value="Благодаря пространственно-временному изгибу в непосредственном окружении корабля пространство сжимается, чем быстрее преодолеваются далёкие расстояния. Чем выше развит гиперпростраственный привод, тем выше сжатие пространства, благодаря чему с каждым уровнем скорость кораблей повышается на 30% (относительно базовой скорости кораблей)."/>
+            <column name="description_full" value="Благодаря пространственно-временному изгибу в непосредственном окружении корабля пространство сжимается, чем быстрее преодолеваются далёкие расстояния. Чем выше развит гиперпространственный привод, тем выше сжатие пространства, благодаря чему с каждым уровнем скорость кораблей повышается на 30%."/>
+            <column name="cost_metal" value="10000"/>
+            <column name="cost_crystal" value="20000"/>
+            <column name="cost_deuterium" value="6000"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="hyperspace_engine.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="13"/>
+            <column name="name" value="Лазерная технология"/>
+            <column name="description_short" value="Благодаря фокусированию света возникает луч, который при попадании на объект наносит ему повреждения."/>
+            <column name="description_full" value="Лазеры (усиление света при помощи индуцированного выброса излучения) производят насыщенный энергетический луч когерентного света. Эти приборы находят применение во всевозможных областях, от оптических компьютеров до тяжёлых лазеров, которые свободно режут броню космических кораблей. Лазерная технология является важным элементом для исследования дальнейших оружейных технологий."/>
+            <column name="cost_metal" value="200"/>
+            <column name="cost_crystal" value="100"/>
+            <column name="cost_deuterium" value="0"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="laser_technology.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="14"/>
+            <column name="name" value="Ионная технология"/>
+            <column name="description_short" value="Поистине смертоносный наводимый луч из ускоренных ионов. При попадании на какой-либо объект они наносят огромный ущерб."/>
+            <column name="description_full" value="Поистине смертоносный наводимый луч из ускоренных ионов. При попадании на какой-либо объект они наносят огромный ущерб. В некоторых конструкциях применяется для усиления свойств энергощитов."/>
+            <column name="cost_metal" value="1000"/>
+            <column name="cost_crystal" value="300"/>
+            <column name="cost_deuterium" value="100"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="ion_technology.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="15"/>
+            <column name="name" value="Плазменная технология"/>
+            <column name="description_short" value="Дальнейшее развитие ионной технологии, которая ускоряет не ионы, а высокоэнергетическую плазму. Она оказывает опустошительное действие при попадании на какой-либо объект."/>
+            <column name="description_full" value="Дальнейшее развитие ионной технологии, которая ускоряет не ионы, а высокоэнергетическую плазму. Она оказывает опустошительное действие при попадании на какой-либо объект."/>
+            <column name="cost_metal" value="2000"/>
+            <column name="cost_crystal" value="4000"/>
+            <column name="cost_deuterium" value="1000"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="shield_technology.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="16"/>
+            <column name="name" value="Межгалактическая исследовательская сеть"/>
+            <column name="description_short" value="Эта сеть делает возможным общение учёных, работающих в исследовательских лабораториях разных планет. Каждый новый уровень позволяет присоединить к сети дополнительную лабораторию, что позволяет ускорить исследования."/>
+            <column name="description_full" value="Эта технология занимается изучением более новых возможностей большего энергоснабжения щитов, что делает их эффективней и устойчивей. Благодаря этому с каждым изученным уровнем эффективность щитов повышается на 10%."/>
+            <column name="cost_metal" value="240000"/>
+            <column name="cost_crystal" value="400000"/>
+            <column name="cost_deuterium" value="160000"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="intergalactic_research_network.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="17"/>
+            <column name="name" value="Гравитационная технология"/>
+            <column name="description_short" value="Гравитон - это частица, которая не обладает ни массой ни зарядом и определяет силу притяжения. Путём запуска концентрированного заряда гравитонов можно создавать искусственное гравитационное поле, которое, подобно чёрной дыре, втягивает в себя массу, благодаря чему можно уничтожать корабли или даже луны. Позволяет получить доступ к постройке самых совершенных корaблей и обороны."/>
+            <column name="description_full" value="Гравитон - это частица, которая не обладает ни массой ни зарядом и определяет силу притяжения. Путём запуска концентрированного заряда гравитонов можно создавать искусственное гравитационное поле, которое, подобно чёрной дыре, втягивает в себя массу, благодаря чему можно уничтожать корабли или даже луны. Позволяет получить доступ к постройке самых совершенных корaблей и обороны."/>
+            <column name="cost_metal" value="0"/>
+            <column name="cost_crystal" value="0"/>
+            <column name="cost_deuterium" value="0"/>
+            <column name="cost_energy" value="300000"/>
+            <column name="image_name" value="gravity_technology.gif"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

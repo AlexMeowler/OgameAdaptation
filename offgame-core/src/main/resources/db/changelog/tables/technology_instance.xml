@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <property name="tableName" value="technology_instance" global="false"/>
+
+    <changeSet id="1" author="alexMeowler">
+        <createTable tableName="${tableName}">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" references="users(id)" foreignKeyName="fk_techinst_user"/>
+            </column>
+            <column name="technology_id" type="BIGINT">
+                <constraints nullable="false" references="technology(id)" foreignKeyName="fk_techinst_technology"/>
+            </column>
+            <column name="level" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint tableName="${tableName}" columnNames="user_id, technology_id"/>
+    </changeSet>
+
+</databaseChangeLog>

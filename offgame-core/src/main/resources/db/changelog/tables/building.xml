@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <property name="tableName" value="building" global="false"/>
+
+    <changeSet id="1" author="alexMeowler">
+        <createTable tableName="${tableName}">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(64)"/>
+            <column name="description_short" type="VARCHAR(2000)"/>
+            <column name="description_full" type="VARCHAR(2000)"/>
+            <column name="cost_metal" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cost_crystal" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cost_deuterium" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cost_energy" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="image_name" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="alexMeowler">
+        <insert tableName="${tableName}">
+            <column name="id" value="1"/>
+            <column name="name" value="Солнечная электростанция"/>
+            <column name="description_short" value="Производит энергию из солнечных лучей. Энергия требуется для работы всех строений, производящих ресурсы."/>
+            <column name="description_full" value="Для обеспечения энергией рудников и синтезаторов необходимы огромные солнечные электростанции. Чем больше построено станций, тем больше поверхности покрыто кварцевыми пластинами, которые перерабатывают световую энергию в электрическую. На наземные пластины свет попадает через огромные зеркала расположенные в космосе и потому выработка энергии не зависит от времени суток. Солнечные электростанции представляют собой основу энергообеспечения планеты."/>
+            <column name="cost_metal" value="75"/>
+            <column name="cost_crystal" value="30"/>
+            <column name="cost_deuterium" value="0"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="solar_station.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="2"/>
+            <column name="name" value="Рудник по добыче металла"/>
+            <column name="description_short" value="Основной поставщик сырья для строительства несущих структур построек и кораблей."/>
+            <column name="description_full" value="Основной поставщик сырья для строительства несущих структур построек и кораблей. Металл - самое дешёвое сырьё, но его требуется больше чем остальных видов ресурсов. Для производства металла требуется меньше всего энергии. Чем рудники больше, тем они глубже. На большинстве планет металл находится на больших глубинах, при помощи этих более глубоких рудников можно добывать больше металлов, производство растёт. В то же время более крупные рудники требуют больше энергии."/>
+            <column name="cost_metal" value="60"/>
+            <column name="cost_crystal" value="15"/>
+            <column name="cost_deuterium" value="0"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="mines_metal.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="3"/>
+            <column name="name" value="Рудник по добыче кристалла"/>
+            <column name="description_short" value="Основной поставщик сырья для электронных строительных элементов и сплавов."/>
+            <column name="description_full" value="Основной поставщик сырья для электронных строительных элементов и сплавов. Для добычи кристалла требуется примерно вдвое больше энергии, чем для добычи металла, поэтому он, соответственно, ценится больше. Кристалл требуется для всех кораблей и зданий. К сожалению, большинство необходимых для строительства кораблей кристаллов очень редки и, как и большинство металлов, залегают на больших глубинах. Поэтому при усовершенствовании рудника также повышается производство, так как осваиваются более крупные и &quot;чистые&quot; залежи кристаллов."/>
+            <column name="cost_metal" value="48"/>
+            <column name="cost_crystal" value="24"/>
+            <column name="cost_deuterium" value="0"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="mines_crystal.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="4"/>
+            <column name="name" value="Синтезатор дейтерия"/>
+            <column name="description_short" value="Извлекает из воды на планете незначительную долю дейтерия."/>
+            <column name="description_full" value="Дейтерий - это тяжёлый водород. Из-за этого, как и на рудниках, более крупные запасы находятся на дне моря. Усовершенствование синтезатора также способствует освоению этих глубинных залежей дейтерия. Дейтерий необходим в качестве топлива для кораблей, почти для всех исследований, просмотра галактик, а также для использования сенсорной фаланги."/>
+            <column name="cost_metal" value="225"/>
+            <column name="cost_crystal" value="75"/>
+            <column name="cost_deuterium" value="0"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="mines_deuterium.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="5"/>
+            <column name="name" value="Фабрика роботов"/>
+            <column name="description_short" value="Предоставляет простую рабочую силу, которую можно применять при строительстве планетарной инфраструктуры. Каждый уровень развития фабрики повышает скорость строительства зданий."/>
+            <column name="description_full" value="Предоставляет простую рабочую силу, которую можно применять при строительстве планетарной инфраструктуры. Каждый уровень развития фабрики повышает скорость строительства зданий."/>
+            <column name="cost_metal" value="400"/>
+            <column name="cost_crystal" value="120"/>
+            <column name="cost_deuterium" value="200"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="robot_factory.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="6"/>
+            <column name="name" value="Верфь"/>
+            <column name="description_short" value="В строительной верфи производятся все виды кораблей и оборонительных сооружений. Увеличение уровня повышает скорость постройки кораблей и обороны."/>
+            <column name="description_full" value="В строительной верфи производятся все виды кораблей и оборонительных сооружений. Чем она больше, тем быстрее можно строить более сложные и более крупные корабли и оборонительные сооружения. Посредством строительства фабрики нанитов производятся миниатюрные роботы, которые помогают работникам работать быстрее."/>
+            <column name="cost_metal" value="400"/>
+            <column name="cost_crystal" value="200"/>
+            <column name="cost_deuterium" value="100"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="space_yard.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="7"/>
+            <column name="name" value="Исследовательская лаборатория"/>
+            <column name="description_short" value="Необходима для исследования новых технологий. Увеличение уровня повышает скорость исследований."/>
+            <column name="description_full" value="Для исследования новых технологий необходима работа исследовательской станции. Уровень развития исследовательской станции является решающим фактором того, как быстро могут быть освоены новые технологии. Чем выше уровень развития исследовательской лаборатории, тем больше может быть исследовано новых технологий. Для того, чтобы как можно быстрее завершить исследовательские работы на одной планете, на неё посылаются все имеющиеся в наличии учёные и, таким образом, покидают свои планеты. Как только технология исследована, учёные возвращаются на свои родные планеты и переносят с собой знания о ней. Так новые технологии можно применять и на других планетах."/>
+            <column name="cost_metal" value="200"/>
+            <column name="cost_crystal" value="400"/>
+            <column name="cost_deuterium" value="200"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="research_laboratory.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="8"/>
+            <column name="name" value="Хранилище металла"/>
+            <column name="description_short" value="Хранилище для необработанных руд металлов до их дальнейшей переработки."/>
+            <column name="description_full" value="Огромное хранилище для добытых руд. Чем оно больше, тем больше металла можно в нём хранить. Если оно заполнено, то добыча металла прекращается."/>
+            <column name="cost_metal" value="2000"/>
+            <column name="cost_crystal" value="0"/>
+            <column name="cost_deuterium" value="0"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="metal_storage.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="9"/>
+            <column name="name" value="Хранилище кристалла"/>
+            <column name="description_short" value="Хранилище для необработанного кристалла до его дальнейшей переработки."/>
+            <column name="description_full" value="В этом огромном хранилище складируется ещё не обработанный кристалл. Чем хранилище больше, тем больше кристалла там можно хранить. Если оно заполнено, то добыча сего ресурса прекращается."/>
+            <column name="cost_metal" value="2000"/>
+            <column name="cost_crystal" value="1000"/>
+            <column name="cost_deuterium" value="0"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="crystal_storage.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="10"/>
+            <column name="name" value="Емкость для дейтерия"/>
+            <column name="description_short" value="Огромные ёмкости для сберегания добытого дейтерия."/>
+            <column name="description_full" value="Огромные ёмкости для хранения добытого дейтерия. Они обычно находятся вблизи космических портов. Чем они больше, тем больше дейтерия в них может сберегаться. Если они заполнены, то добыча дейтерия прекращается."/>
+            <column name="cost_metal" value="2000"/>
+            <column name="cost_crystal" value="2000"/>
+            <column name="cost_deuterium" value="0"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="deuterium_storage.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="11"/>
+            <column name="name" value="Термоядерная электростанция"/>
+            <column name="description_short" value="Добывает энергию из процесса образования атома гелия двумя атомами тяжёлого водорода. Потребляет дейтерий."/>
+            <column name="description_full" value="На термоядерных электростанциях при помощи холодного термоядерного синтеза под огромным давлением и при большой температуре 2 атома тяжёлого водорода (дейтерия) объединяются в один атом гелия. При этом, при образовании ядра гелия, вырабатывается энергия в 41,32*10^-13 джоулей в виде излучения (т.о. при сгорании 1г дейтерия вырабатывается 172 МВт энергии). Чем больше термоядерный реактор, тем сложнее процессы синтезирования, реактор производит больше энергии."/>
+            <column name="cost_metal" value="900"/>
+            <column name="cost_crystal" value="360"/>
+            <column name="cost_deuterium" value="180"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="fusion_plant.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="12"/>
+            <column name="name" value="Фабрика нанитов"/>
+            <column name="description_short" value="Фабрика нанитов производит специальных эволюционированных роботов - нанитов. Наниты - это роботы, которые путём объединения в состоянии выполнять экстраординарные задания. Каждый уровень в 2 раза ускоряет постройку зданий, кораблей и обороны."/>
+            <column name="description_full" value="Фабрика нанитов представляет собой венец робототехники. Наниты - это роботы размером в нанометр, которые путём объединения в сеть в состоянии выполнять экстраординарные задания. Сразу же после исследования они увеличивают производительность почти во всех областях. С каждым уровнем фабрика нанитов сокращает время строительства зданий, кораблей и оборонительных сооружений вдвое."/>
+            <column name="cost_metal" value="1000000"/>
+            <column name="cost_crystal" value="500000"/>
+            <column name="cost_deuterium" value="100000"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="nanite_factory.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="13"/>
+            <column name="name" value="Терраформер"/>
+            <column name="description_short" value="Терраформер может преобразовывать огромные территории делая их пригодными для застройки. Увеличивает количество полей на планете."/>
+            <column name="description_full" value="По мере застройки планет всё более важным становился вопрос об ограниченности пригодных для использования площадей. Такие традиционные методы, как строительство ввысь и вглубь, оказались недостаточными. Маленькая группа физиков и нанотехников нашла решение - терраформер. Затрачивая огромное количество энергии терраформер может преобразовывать огромные территории и даже целые континенты, делая их пригодными для застройки. В этом строении беспрерывно производятся специальные наниты, отвечающие за постоянное качество почвы."/>
+            <column name="cost_metal" value="0"/>
+            <column name="cost_crystal" value="50000"/>
+            <column name="cost_deuterium" value="100000"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="terraformer.gif"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="14"/>
+            <column name="name" value="Ракетная шахта"/>
+            <column name="description_short" value="Служит для хранения ракет. Увеличение уровня позволяет хранить больше ракет."/>
+            <column name="description_full" value="Ракетные шахты служат для хранения ракет. С каждым уровнем можно хранить на пять межпланетных или десять ракет-перехватчиков больше. Одна межпланетная ракета требует места в два раза больше, чем ракета-перехватчик. Возможно любое комбинирование различных типов ракет."/>
+            <column name="cost_metal" value="20000"/>
+            <column name="cost_crystal" value="20000"/>
+            <column name="cost_deuterium" value="1000"/>
+            <column name="cost_energy" value="0"/>
+            <column name="image_name" value="rocket_shaft.gif"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

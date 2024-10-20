@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <property name="tableName" value="unit_order" global="false"/>
+
+    <changeSet id="1" author="alexMeowler">
+        <createTable tableName="${tableName}">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="unit_instance_id" type="BIGINT">
+                <constraints nullable="false" references="unit_instance(id)" foreignKeyName="fk_unit_order_unit_instance"/>
+            </column>
+            <column name="amount_left" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="single_unit_duration" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="unit_finished_at" type="TIMESTAMP"/>
+            <column name="status" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <sql>ALTER TABLE unit_order ADD CONSTRAINT uo_test_status CHECK (status in ('created', 'started'))</sql>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <property name="tableName" value="unit" global="false"/>
+
+    <changeSet id="1" author="alexMeowler">
+        <createTable tableName="${tableName}">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(64)"/>
+            <column name="description_short" type="VARCHAR(2000)"/>
+            <column name="description_full" type="VARCHAR(2000)"/>
+            <column name="image_name" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cost_metal" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cost_crystal" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cost_deuterium" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cost_energy" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="unit_type" type="VARCHAR(8)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hull" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="shields" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="attack" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="capacity" type="BIGINT" defaultValue="0"/>
+            <column name="engine_type" type="VARCHAR(10)"/>
+            <column name="speed" type="BIGINT" defaultValue="0"/>
+            <column name="fuel_consumption" type="BIGINT" defaultValue="0"/>
+        </createTable>
+
+        <sql>ALTER TABLE unit ADD CONSTRAINT test_unit_type CHECK (unit_type in ('fleet', 'defense'))</sql>
+        <sql>ALTER TABLE unit ADD CONSTRAINT test_engine_type CHECK (engine_type in ('reactive', 'impulse', 'hyperspace'))</sql>
+    </changeSet>
+
+    <changeSet id="2" author="alexMeowler">
+
+        <insert tableName="${tableName}">
+            <column name="id" value="1"/>
+            <column name="name" value="Солнечный спутник"/>
+            <column name="description_short" value="Платформы из солнечных батарей, которые находятся на высокой орбите. Они аккумулируют солнечную энергию. Чем жарче планета тем эффективнее работают солнечные спутники. На текущей планете один спутник генерирует ≈&lt;span style=&quot;color: lime&quot;&gt;%d&lt;/span&gt; энергии."/>
+            <column name="description_full" value="Солнечные спутники запускаются на орбиту планеты. Они фокусируют солнечную энергию и передают её на наземную станцию. Эффективность солнечных спутников зависит от мощи солнечного излучения. В принципе, добыча энергии на орбитах, более приближённых к солнцу, выше, чем на планетах, удалённых от солнца. Из-за своего соотношения цены и качества солнечные спутники решают энергетические проблемы многих миров. Но внимание: солнечные спутники могут быть уничтожены в бою."/>
+            <column name="image_name" value="solar_satellite.gif"/>
+            <column name="cost_metal" value="0"/>
+            <column name="cost_crystal" value="2000"/>
+            <column name="cost_deuterium" value="500"/>
+            <column name="cost_energy" value="0"/>
+            <column name="unit_type" value="fleet"/>
+            <column name="hull" value="200"/>
+            <column name="shields" value="10"/>
+            <column name="attack" value="0"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="2"/>
+            <column name="name" value="Шпионский зонд"/>
+            <column name="description_short" value="Шпионские зонды - это маленькие манёвренные корабли, которые доставляют с больших расстояний данные о флотах и планетах."/>
+            <column name="description_full" value="Шпионские зонды - это маленькие манёвренные корабли, которые доставляют с больших расстояний данные о флотах и планетах. Их высокомощный двигатель позволяет им преодолевать большие расстояния за несколько секунд. Однажды попав на орбиту какой-нибудь планеты, они пребывают там некоторое время для сборки данных. В это время враг может их относительно легко обнаружить и атаковать. Для экономии места не было установлено ни брони, ни щитов, ни орудий, что делает зонды в случае обнаружения лёгкими целями."/>
+            <column name="image_name" value="spy_probe.gif"/>
+            <column name="cost_metal" value="0"/>
+            <column name="cost_crystal" value="1000"/>
+            <column name="cost_deuterium" value="0"/>
+            <column name="cost_energy" value="0"/>
+            <column name="unit_type" value="fleet"/>
+            <column name="hull" value="100"/>
+            <column name="shields" value="0"/>
+            <column name="attack" value="0"/>
+            <column name="capacity" value="5"/>
+            <column name="engine_type" value="reactive"/>
+            <column name="speed" value="100000000"/>
+            <column name="fuel_consumption" value="1"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="3"/>
+            <column name="name" value="Лёгкий истребитель"/>
+            <column name="description_short" value="Лёгкий истребитель - это манёвренный корабль, который можно найти почти на каждой планете. Затраты на него не особо велики, однако щитовая мощность и вместимость очень малы."/>
+            <column name="description_full" value="Лёгкий истребитель - это манёвренный корабль, который можно найти почти на каждой планете. Затраты на него не особо велики, однако щитовая мощность и вместимость очень малы."/>
+            <column name="image_name" value="light_fighter.gif"/>
+            <column name="cost_metal" value="3000"/>
+            <column name="cost_crystal" value="1000"/>
+            <column name="cost_deuterium" value="0"/>
+            <column name="cost_energy" value="0"/>
+            <column name="unit_type" value="fleet"/>
+            <column name="hull" value="400"/>
+            <column name="shields" value="10"/>
+            <column name="attack" value="50"/>
+            <column name="capacity" value="50"/>
+            <column name="engine_type" value="reactive"/>
+            <column name="speed" value="12500"/>
+            <column name="fuel_consumption" value="20"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="4"/>
+            <column name="name" value="Малый транспорт"/>
+            <column name="description_short" value="Малый транспорт - это манёвренный корабль, который может быстро транспортировать сырьё на другие планеты."/>
+            <column name="description_full" value="Транспорты имеют примерно такой же размер, что и истребители, но они не обладают мощными двигателями и бортовым вооружением ради экономии места. Малый транспорт вмещает 5000 единиц сырья. По причине малой огневой мощи малые транспорты часто сопровождаются другими кораблями. Когда импульсный двигатель исследован до 5-й ступени, у малого транспорта повышается базовая скорость и он оснащается этим типом двигателя."/>
+            <column name="image_name" value="small_transport.gif"/>
+            <column name="cost_metal" value="2000"/>
+            <column name="cost_crystal" value="2000"/>
+            <column name="cost_deuterium" value="0"/>
+            <column name="cost_energy" value="0"/>
+            <column name="unit_type" value="fleet"/>
+            <column name="hull" value="400"/>
+            <column name="shields" value="10"/>
+            <column name="attack" value="5"/>
+            <column name="capacity" value="5000"/>
+            <column name="engine_type" value="reactive"/>
+            <column name="speed" value="5000"/>
+            <column name="fuel_consumption" value="20"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="5"/>
+            <column name="name" value="Тяжёлый истребитель"/>
+            <column name="description_short" value="Дальнейшее развитие лёгкого истребителя, он лучше защищён и обладает большей силой атаки."/>
+            <column name="description_full" value="При дальнейшем развитии лёгкого истребителя учёные дошли до момента, когда стало ясно, что обыкновенный двигатель не обладает необходимой мощью. Для того, чтобы оптимально передвигать корабль был впервые использован импульсный двигатель. Хоть он и повысил стоимость, однако он также открыл новые возможности. Благодаря применению этого двигателя осталось больше энергии для вооружения и щитов, кроме того, для этого вида истребителей также использовались ценные материалы. Это привело к улучшенной структурной целостности и более сильной огневой мощи, благодаря чему в бою он представляет бoльшую угрозу, чем его предшественник. После этих изменений тяжёлый истребитель представляет собой новую эру технологии кораблестроения, основу технологии крейсеростроения."/>
+            <column name="image_name" value="heavy_fighter.gif"/>
+            <column name="cost_metal" value="6000"/>
+            <column name="cost_crystal" value="4000"/>
+            <column name="cost_deuterium" value="0"/>
+            <column name="cost_energy" value="0"/>
+            <column name="unit_type" value="fleet"/>
+            <column name="hull" value="1000"/>
+            <column name="shields" value="25"/>
+            <column name="attack" value="150"/>
+            <column name="capacity" value="100"/>
+            <column name="engine_type" value="impulse"/>
+            <column name="speed" value="10000"/>
+            <column name="fuel_consumption" value="75"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="6"/>
+            <column name="name" value="Колонизатор"/>
+            <column name="description_short" value="При помощи этого корабля можно осваивать незаселённые планеты."/>
+            <column name="description_full" value="Этот хорошо защищённый корабль служит покорению новых планет, что необходимо развивающейся империи. Он используется в новой колонии в качестве поставщика сырья - его разбирают и используют весь полезный материал для освоения нового света."/>
+            <column name="image_name" value="colonizer.gif"/>
+            <column name="cost_metal" value="10000"/>
+            <column name="cost_crystal" value="20000"/>
+            <column name="cost_deuterium" value="10000"/>
+            <column name="cost_energy" value="0"/>
+            <column name="unit_type" value="fleet"/>
+            <column name="hull" value="3000"/>
+            <column name="shields" value="100"/>
+            <column name="attack" value="50"/>
+            <column name="capacity" value="7500"/>
+            <column name="engine_type" value="impulse"/>
+            <column name="speed" value="2500"/>
+            <column name="fuel_consumption" value="1000"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="7"/>
+            <column name="name" value="Крейсер"/>
+            <column name="description_short" value="Крейсеры почти втрое сильней защищены, чем тяжёлые истребители, а по огневой мощи они превосходят тяжёлые истребители почти в два раза. К тому же они очень быстры."/>
+            <column name="description_full" value="С развитием тяжёлых лазеров и ионных пушек тяжёлые истребители всё больше вытеснялись. Несмотря на многочисленные усовершенствования огневая мощь и бронирование не могли быть настолько изменены, чтобы действенно противостоять этим оборонительным орудиям. Поэтому было решено построить новый класс кораблей, который объединял бы в себе больше бронирования и огневой мощи. Так появился крейсер. Крейсеры почти втрое сильней защищены, чем тяжёлые истребители и обладают более чем удвоенной огневой мощью. К тому же они очень быстры. Нет лучшего оружия против средней защиты. Почти столетие крейсеры неограниченно господствовали во вселенной. С появлением орудий Гаусса и плазменных орудий их господство закончилось. Однако и сегодня их охотно применяют против групп истребителей."/>
+            <column name="image_name" value="cruiser.gif"/>
+            <column name="cost_metal" value="20000"/>
+            <column name="cost_crystal" value="7000"/>
+            <column name="cost_deuterium" value="2000"/>
+            <column name="cost_energy" value="0"/>
+            <column name="unit_type" value="fleet"/>
+            <column name="hull" value="2700"/>
+            <column name="shields" value="50"/>
+            <column name="attack" value="400"/>
+            <column name="capacity" value="800"/>
+            <column name="engine_type" value="impulse"/>
+            <column name="speed" value="15500"/>
+            <column name="fuel_consumption" value="300"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="8"/>
+            <column name="name" value="Большой транспорт"/>
+            <column name="description_short" value="Дальнейшее развитие малых транспортов позволило создать корабли, обладающие большей вместительностью и, благодаря более развитому двигателю, способными передвигаться быстрее, чем малый транспорт, до тех пор, пока на малых транспортах не устанавливаются импульсные двигатели 5-го уровня."/>
+            <column name="description_full" value="У этого корабля нет ни вооружения, ни каких-либо других технологий на борту. По этой причине никогда не следует запускать их без спровождения. Благодаря своему высокоразвитому двигателю внутреннего сгорания большой транспорт служит в качестве быстрого межпланетного доставщика ресурсов, также он сопровождает флоты при нападениях на вражеские планеты, чтобы захватить как можно больше ресурсов."/>
+            <column name="image_name" value="large_transport.gif"/>
+            <column name="cost_metal" value="6000"/>
+            <column name="cost_crystal" value="6000"/>
+            <column name="cost_deuterium" value="0"/>
+            <column name="cost_energy" value="0"/>
+            <column name="unit_type" value="fleet"/>
+            <column name="hull" value="1200"/>
+            <column name="shields" value="25"/>
+            <column name="attack" value="5"/>
+            <column name="capacity" value="25000"/>
+            <column name="engine_type" value="reactive"/>
+            <column name="speed" value="7500"/>
+            <column name="fuel_consumption" value="50"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="9"/>
+            <column name="name" value="Переработчик"/>
+            <column name="description_short" value="С помощью переработчика добывается сырьё из обломков."/>
+            <column name="description_full" value="Космические бои принимали всё бoльшие масштабы. Уничтожались тысячи кораблей и возникавшие при этом обломки казались навсегда потерянными. Нормальные транспорты не могли близко к ним приблизиться, не будучи сильно повреждёнными маленькими обломками. С новым открытием в области щитовой технологии стало возможно эффективно устранять эту проблему, возник новый класс корабля, подобный большому транспорту - переработчик. С его помощью можно было заново использовать казавшиеся потерянными ресурсы. Из-за новых щитов маленькие обломки больше не представляли собой опасности. К сожалению, эти устройства требуют пространства, поэтому его грузовой тоннаж ограничен до 20 000."/>
+            <column name="image_name" value="recycler.gif"/>
+            <column name="cost_metal" value="10000"/>
+            <column name="cost_crystal" value="6000"/>
+            <column name="cost_deuterium" value="2000"/>
+            <column name="cost_energy" value="0"/>
+            <column name="unit_type" value="fleet"/>
+            <column name="hull" value="1600"/>
+            <column name="shields" value="10"/>
+            <column name="attack" value="1"/>
+            <column name="capacity" value="20000"/>
+            <column name="engine_type" value="reactive"/>
+            <column name="speed" value="2000"/>
+            <column name="fuel_consumption" value="300"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="10"/>
+            <column name="name" value="Линкор"/>
+            <column name="description_short" value="Линкоры как правило составляют основу флота. Их тяжёлые орудия, высокая скорость и большой грузовой тоннаж делают их серьёзными противниками."/>
+            <column name="description_full" value="Линкоры как правило составляют основу флота. Их тяжёлые орудия, высокая скорость и большой грузовой тоннаж делают их серьёзными противниками."/>
+            <column name="image_name" value="battleship.gif"/>
+            <column name="cost_metal" value="45000"/>
+            <column name="cost_crystal" value="15000"/>
+            <column name="cost_deuterium" value="0"/>
+            <column name="cost_energy" value="0"/>
+            <column name="unit_type" value="fleet"/>
+            <column name="hull" value="6000"/>
+            <column name="shields" value="200"/>
+            <column name="attack" value="1000"/>
+            <column name="capacity" value="1500"/>
+            <column name="engine_type" value="hyperspace"/>
+            <column name="speed" value="10000"/>
+            <column name="fuel_consumption" value="500"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="11"/>
+            <column name="name" value="Линейный крейсер"/>
+            <column name="description_short" value="Линейный крейсер специализируется на перехвате вражеских флотов."/>
+            <column name="description_full" value="Этот высокотехнологичный корабль несёт смерть атакующим флотам. Его усовершенствованные лазерные орудия удерживают тяжёлые корабли противника на расстоянии и могут уничтожать несколько единиц одним залпом. За счёт его малых размеров и невероятно мощного вооружения, грузоподъёмность линейного крейсера очень мала, но за счёт гиперпространственного двигателя также мало потребление топлива."/>
+            <column name="image_name" value="battlecruiser.gif"/>
+            <column name="cost_metal" value="30000"/>
+            <column name="cost_crystal" value="40000"/>
+            <column name="cost_deuterium" value="15000"/>
+            <column name="cost_energy" value="0"/>
+            <column name="unit_type" value="fleet"/>
+            <column name="hull" value="7000"/>
+            <column name="shields" value="400"/>
+            <column name="attack" value="700"/>
+            <column name="capacity" value="750"/>
+            <column name="engine_type" value="hyperspace"/>
+            <column name="speed" value="10000"/>
+            <column name="fuel_consumption" value="250"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="12"/>
+            <column name="name" value="Бомбардировщик"/>
+            <column name="description_short" value="Бомбардировщик был разработан специально для того, чтобы уничтожать планетарную защиту."/>
+            <column name="description_full" value="Бомбардировщик был разработан специально для того, чтобы уничтожать планетарную защиту. С помощью лазерного прицела он точно сбрасывает плазменные бомбы на поверхность планеты и таким образом наносит огромные повреждения оборонительным сооружениям. Когда гиперпространственный двигатель исследован до 8-й ступени, у бомбардировщика повышается базовая скорость и он оснащается этим типом двигателя."/>
+            <column name="image_name" value="bomber.gif"/>
+            <column name="cost_metal" value="50000"/>
+            <column name="cost_crystal" value="25000"/>
+            <column name="cost_deuterium" value="15000"/>
+            <column name="cost_energy" value="0"/>
+            <column name="unit_type" value="fleet"/>
+            <column name="hull" value="7500"/>
+            <column name="shields" value="500"/>
+            <column name="attack" value="1000"/>
+            <column name="capacity" value="500"/>
+            <column name="engine_type" value="impulse"/>
+            <column name="speed" value="4000"/>
+            <column name="fuel_consumption" value="1000"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="13"/>
+            <column name="name" value="Эсминец"/>
+            <column name="description_short" value="Эсминец - гроза Звёзд смерти."/>
+            <column name="description_full" value="Эсминец был создан только с одной целью, выслеживать и уничтожать Звёзды. Этот боевой корабль создан на базе Линейного крейсера - лазерное оружее заменено на плазменые миномёты, благодаря чему огневая мощь усилилась многократно, однако данный тип вооружения не может вести прицельную стрельбу по мелким целям. Из-за размеров боевых установок не удалось разместить достаточное количество генераторов щитов и размеры грузового отсека весьма скромны. Чтобы сохранить манёвренные и скоростные характеристики базового корабля пришлось так же увеличивать количество гиперпространственных двигательных установок что привело к увеличению потребления топлива."/>
+            <column name="image_name" value="destroyer.gif"/>
+            <column name="cost_metal" value="45000"/>
+            <column name="cost_crystal" value="30000"/>
+            <column name="cost_deuterium" value="15000"/>
+            <column name="cost_energy" value="0"/>
+            <column name="unit_type" value="fleet"/>
+            <column name="hull" value="7500"/>
+            <column name="shields" value="100"/>
+            <column name="attack" value="800"/>
+            <column name="capacity" value="600"/>
+            <column name="engine_type" value="hyperspace"/>
+            <column name="speed" value="10000"/>
+            <column name="fuel_consumption" value="500"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="14"/>
+            <column name="name" value="Дредноут"/>
+            <column name="description_short" value="Дредноут - король среди военных кораблей."/>
+            <column name="description_full" value="Дредноут - король среди военных кораблей. Его мультифланговые ионные, плазменные и гауссовые орудийные башни могут поражать с точностью до 99% даже скоростные манёвренные истребители, благодаря своим усовершенствованным пеленгационным сенсорам. Так как дредноуты очень велики, их манёвренность сильно ограничена, и в бою они подобны скорее боевой станции, чем боевому кораблю. Потребление дейтерия у них так же высоко, как и их боевая мощь."/>
+            <column name="image_name" value="dreadnought.gif"/>
+            <column name="cost_metal" value="60000"/>
+            <column name="cost_crystal" value="50000"/>
+            <column name="cost_deuterium" value="15000"/>
+            <column name="cost_energy" value="0"/>
+            <column name="unit_type" value="fleet"/>
+            <column name="hull" value="11000"/>
+            <column name="shields" value="500"/>
+            <column name="attack" value="2000"/>
+            <column name="capacity" value="2000"/>
+            <column name="engine_type" value="hyperspace"/>
+            <column name="speed" value="5000"/>
+            <column name="fuel_consumption" value="1000"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="15"/>
+            <column name="name" value="Звезда смерти"/>
+            <column name="description_short" value="Звезда смерти оснащена гигантской гравитонной пушкой, которая может уничтожать корабли и даже луны."/>
+            <column name="description_full" value="Звезда смерти оснащена гравитонной пушкой, которая может уничтожать такие корабли, как уничтожитель, и даже луны. Так как для этого требуется большое количество энергии, она состоит почти лишь из генераторов. Только огромные звёздные империи могут вообще предоставить ресурсы и работников, чтобы построить этот размером с луну корабль."/>
+            <column name="image_name" value="death_star.gif"/>
+            <column name="cost_metal" value="5000000"/>
+            <column name="cost_crystal" value="4000000"/>
+            <column name="cost_deuterium" value="1000000"/>
+            <column name="cost_energy" value="0"/>
+            <column name="unit_type" value="fleet"/>
+            <column name="hull" value="900000"/>
+            <column name="shields" value="50000"/>
+            <column name="attack" value="200000"/>
+            <column name="capacity" value="1000000"/>
+            <column name="engine_type" value="hyperspace"/>
+            <column name="speed" value="100"/>
+            <column name="fuel_consumption" value="1"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="16"/>
+            <column name="name" value="Сверхновая звезда"/>
+            <column name="description_short" value="Самый совершенный военный корабль."/>
+            <column name="description_full" value="Самый совершенный военный корабль."/>
+            <column name="image_name" value="supernova.gif"/>
+            <column name="cost_metal" value="4900000"/>
+            <column name="cost_crystal" value="4900000"/>
+            <column name="cost_deuterium" value="2400000"/>
+            <column name="cost_energy" value="0"/>
+            <column name="unit_type" value="fleet"/>
+            <column name="hull" value="980000"/>
+            <column name="shields" value="70000"/>
+            <column name="attack" value="600000"/>
+            <column name="capacity" value="2000000"/>
+            <column name="engine_type" value="hyperspace"/>
+            <column name="speed" value="250"/>
+            <column name="fuel_consumption" value="550"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="3" author="alexMeowler">
+        <insert tableName="${tableName}">
+            <column name="id" value="100"/>
+            <column name="name" value="Ракетная установка"/>
+            <column name="description_short" value="Ракетная установка - простое и дешёвое средство обороны."/>
+            <column name="description_full" value="Ракетная установка - простое и дешёвое средство обороны. Так как это развитие обычных баллистических орудий, то ему не требуется дальнейшей модернизации. Малые затраты на его производство оправдывают его применение против более маленьких флотов, но со временем он теряет значение. Позднее его используют лишь для отвода вражеских выстрелов. Оборонительные сооружения деактивируются сами по себе, как только они сильно повреждаются. Возможность восстановления оборонительных сооружений после боя составляет до 70%."/>
+            <column name="image_name" value="rocket_launcher.gif"/>
+            <column name="cost_metal" value="2000"/>
+            <column name="cost_crystal" value="0"/>
+            <column name="cost_deuterium" value="0"/>
+            <column name="cost_energy" value="0"/>
+            <column name="unit_type" value="defense"/>
+            <column name="hull" value="200"/>
+            <column name="shields" value="20"/>
+            <column name="attack" value="80"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="101"/>
+            <column name="name" value="Лёгкий лазер"/>
+            <column name="description_short" value="При помощи концентрированного обстрела цели фотонами можно достичь значительно бoльших разрушений, чем при применении обычного баллистического вооружения."/>
+            <column name="description_full" value="Для компенсации чрезмерных успехов в области технологии космических кораблей учёные должны были создать оборонительное сооружение, справляющееся с более крупными и лучше вооружёнными флотами. Это привело к появлению лёгкого лазера. При помощи концентрированного обстрела цели фотонами можно достичь значительно бoльших разрушений, чем при применении обычного баллистического вооружения. Для противостояния более сильной огневой мощи новых типов кораблей он также оснащён усовершенствованными щитами. Однако, чтобы стоимость производства оставалась низкой, структура дальше не усиливалась. Лёгкий лазер обладает наилучшим соотношением цены и качества, поэтому он также интересен и для более развитых цивилизаций. Оборонительные сооружения деактивируются сами по себе, как только они сильно повреждаются. Возможность восстановления оборонительных сооружений после боя составляет до 70%."/>
+            <column name="image_name" value="light_laser.gif"/>
+            <column name="cost_metal" value="1500"/>
+            <column name="cost_crystal" value="500"/>
+            <column name="cost_deuterium" value="0"/>
+            <column name="cost_energy" value="0"/>
+            <column name="unit_type" value="defense"/>
+            <column name="hull" value="200"/>
+            <column name="shields" value="25"/>
+            <column name="attack" value="100"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="102"/>
+            <column name="name" value="Тяжёлый лазер"/>
+            <column name="description_short" value="Тяжёлый лазер представляет собой дальнейшее развитие лёгкого лазера."/>
+            <column name="description_full" value="Тяжёлый лазер представляет собой дальнейшее развитие лёгкого лазера. Структура была усилена и усовершенствована новыми материалами. Оболочку смогли сделать значительно более стойкой. Одновременно была улучшена и энергетическая система и целевой компьютер, так что тяжёлый лазер может концентрировать значительно больше энергии на цели. Оборонительные сооружения деактивируются сами по себе, как только они сильно повреждаются. Возможность восстановления оборонительных сооружений после боя составляет до 70%."/>
+            <column name="image_name" value="heavy_laser.gif"/>
+            <column name="cost_metal" value="6000"/>
+            <column name="cost_crystal" value="2000"/>
+            <column name="cost_deuterium" value="0"/>
+            <column name="cost_energy" value="0"/>
+            <column name="unit_type" value="defense"/>
+            <column name="hull" value="800"/>
+            <column name="shields" value="100"/>
+            <column name="attack" value="250"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="103"/>
+            <column name="name" value="Пушка Гаусса"/>
+            <column name="description_short" value="Пушка Гаусса ускоряет многотонные заряды с гигантскими затратами энергии."/>
+            <column name="description_full" value="Долгое время артиллерийские орудия считались устаревшими по сравнению с современной ядерной и энергетической техникой, развитием гиперпространственного привода и постоянно улучшающимися бронировками, пока именно энергетическая техника, которая их когда-то оттесняла, не помогла им занять их исконное место. Вообще-то принцип ускорителя частиц был известен на Земле уже с 20-го и 21-го столетий. Пушка Гаусса - это ничто иное, как значительно бoльшая версия этой конструкции. Многотонные заряды магнетически ускоряются при огромных затратах энергии и имеют такую выходную скорость, что частички грязи в воздухе вокруг заряда сгорают, а отдача сотрясает землю. Даже современные бронировки и щиты могут с трудом противостоять этой пробивной силе, и нередко случается так, что цель просто простреливается насквозь. Оборонительные сооружения деактивируются сами по себе, как только они сильно повреждаются. Возможность восстановления оборонительных сооружений после боя составляет до 70%."/>
+            <column name="image_name" value="gauss_cannon.gif"/>
+            <column name="cost_metal" value="20000"/>
+            <column name="cost_crystal" value="15000"/>
+            <column name="cost_deuterium" value="2000"/>
+            <column name="cost_energy" value="0"/>
+            <column name="unit_type" value="defense"/>
+            <column name="hull" value="3500"/>
+            <column name="shields" value="200"/>
+            <column name="attack" value="1100"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="104"/>
+            <column name="name" value="Ионное орудие"/>
+            <column name="description_short" value="Ионное орудие направляет на цель волну ионов, которая дестабилизирует щиты и повреждает электронику."/>
+            <column name="description_full" value="Используемая в этом оборонительном сооружении технология позволяет иметь ему коллосальные энергощиты, которые сопоставимы с мощностью щитов на очень тяжёлых Уничтожителях и Бомбардировщиках. Щиты поглащают значительную часть урона и в каждом новом раунде боя полностью восстанавливаются, позволяя существенно снизить общие боевые потери. Оборонительные сооружения деактивируются сами по себе, как только они сильно повреждаются. Возможность восстановления оборонительных сооружений после боя составляет до 70%."/>
+            <column name="image_name" value="ion_cannon.gif"/>
+            <column name="cost_metal" value="2000"/>
+            <column name="cost_crystal" value="6000"/>
+            <column name="cost_deuterium" value="0"/>
+            <column name="cost_energy" value="0"/>
+            <column name="unit_type" value="defense"/>
+            <column name="hull" value="800"/>
+            <column name="shields" value="500"/>
+            <column name="attack" value="150"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="105"/>
+            <column name="name" value="Плазменное орудие"/>
+            <column name="description_short" value="&lt;span style='color: red; font-weight: bold'&gt;ДОБАВИТЬ КОРОТКОЕ ОПИСАНИЕ!!!&lt;/span&gt;"/>
+            <column name="description_full" value="Лазерная технология была доведена до совершенства, ионная техника достигла конечной стадии и считалось, что практически невозможно, даже с качественной точки зрения орудийной системы, достичь ещё больше эффективности. Но всё должно было измениться, когда появилась идея объединить обе системы. Из термоядерной технологии известно, что лазеры нагревают частицы (обычно дейтерия) до крайне высоких температур, исчисляемых в миллионах градусов. Ионная техника обогащает их электрическим зарядом, стабилизационными полями и ускорителями. Как только заряд достаточно нагрет, ионизирован и находится под давлением, то его выпускают посредством ускорителей во вселенские дали в направлении цели. Светящийся голубоватым цветом плазменный шар выглядит внушительно, только спрашивается, долго ли им будет наслаждаться команда корабля-цели, если через несколько секунд броня разорвётся на куски, а электроника сгорит... Плазменное орудие считается вообще самым страшным оружием, и у этой техники есть своя цена. Оборонительные сооружения деактивируются сами по себе, как только они сильно повреждаются. Возможность восстановления оборонительных сооружений после боя составляет до 70%."/>
+            <column name="image_name" value="plasma_cannon.gif"/>
+            <column name="cost_metal" value="50000"/>
+            <column name="cost_crystal" value="50000"/>
+            <column name="cost_deuterium" value="30000"/>
+            <column name="cost_energy" value="0"/>
+            <column name="unit_type" value="defense"/>
+            <column name="hull" value="10000"/>
+            <column name="shields" value="300"/>
+            <column name="attack" value="3000"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="106"/>
+            <column name="name" value="Малый щитовой купол"/>
+            <column name="description_short" value="Защищает планету от разграблений и поглощает урон от атак попавших в купол."/>
+            <column name="description_full" value="	Задолго до того, как щитовые генераторы были достаточно малы, чтобы найти применение на кораблях, уже существовали огромные генераторы на поверхности планет. Они обволакивали целую планету силовым полем, которое могло поглощать удары атаки. Малые атакующие флоты постоянно разбиваются об эти щитовые купола. Благодаря растущему технологическому развитию эти щиты можно ещё усилить. Позже можно строить более сильный большой щитовой купол. На каждой планете можно построить только один малый щитовой купол."/>
+            <column name="image_name" value="small_shield.gif"/>
+            <column name="cost_metal" value="10000"/>
+            <column name="cost_crystal" value="10000"/>
+            <column name="cost_deuterium" value="0"/>
+            <column name="cost_energy" value="0"/>
+            <column name="unit_type" value="defense"/>
+            <column name="hull" value="2000"/>
+            <column name="shields" value="2000"/>
+            <column name="attack" value="1"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="107"/>
+            <column name="name" value="Большой щитовой купол"/>
+            <column name="description_short" value="Дальнейшее развитие малого щитового купола. Он может сдерживать ещё более сильные атаки на планету, поглощая значительно большее количество энергии."/>
+            <column name="description_full" value="Дальнейшее развитие малого щитового купола. Он может сдерживать ещё более сильные атаки на планету, поглощая значительно большее количество энергии."/>
+            <column name="image_name" value="large_shield.gif"/>
+            <column name="cost_metal" value="50000"/>
+            <column name="cost_crystal" value="50000"/>
+            <column name="cost_deuterium" value="0"/>
+            <column name="cost_energy" value="0"/>
+            <column name="unit_type" value="defense"/>
+            <column name="hull" value="10000"/>
+            <column name="shields" value="10000"/>
+            <column name="attack" value="1"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="108"/>
+            <column name="name" value="Планетарная защита"/>
+            <column name="description_short" value="Совершенная защита, пробить которую будет трудно даже самым опасным кораблям галактики."/>
+            <column name="description_full" value="Совершенная защита, пробить которую будет трудно даже самым опасным кораблям галактики."/>
+            <column name="image_name" value="planetary_defense.gif"/>
+            <column name="cost_metal" value="10000000"/>
+            <column name="cost_crystal" value="5000000"/>
+            <column name="cost_deuterium" value="2500000"/>
+            <column name="cost_energy" value="0"/>
+            <column name="unit_type" value="defense"/>
+            <column name="hull" value="1500000"/>
+            <column name="shields" value="100000"/>
+            <column name="attack" value="100000"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="109"/>
+            <column name="name" value="Ракета-перехватчик"/>
+            <column name="description_short" value="Ракеты-перехватчики уничтожают атакующие межпланетные ракеты."/>
+            <column name="description_full" value="Ракеты-перехватчики уничтожают атакующие межпланетные ракеты. Одна ракета-перехватчик уничтожает одну межпланетную ракету."/>
+            <column name="image_name" value="interceptor_rocket.gif"/>
+            <column name="cost_metal" value="8000"/>
+            <column name="cost_crystal" value="2000"/>
+            <column name="cost_deuterium" value="0"/>
+            <column name="cost_energy" value="0"/>
+            <column name="unit_type" value="defense"/>
+            <column name="hull" value="800"/>
+            <column name="shields" value="0"/>
+            <column name="attack" value="15000"/>
+        </insert>
+        <insert tableName="${tableName}">
+            <column name="id" value="110"/>
+            <column name="name" value="Межпланетная ракета"/>
+            <column name="description_short" value="Межпланетные ракеты уничтожают вражескую оборону."/>
+            <column name="description_full" value="Межпланетные ракеты уничтожают защиту противника. Уничтоженные межпланетными ракетами оборонительные сооружения больше не восстанавливаются, ведь от них после аннигиляционных взрывов не остаётся даже обломков."/>
+            <column name="image_name" value="interplanet_rocket.gif"/>
+            <column name="cost_metal" value="12500"/>
+            <column name="cost_crystal" value="2500"/>
+            <column name="cost_deuterium" value="10000"/>
+            <column name="cost_energy" value="0"/>
+            <column name="unit_type" value="defense"/>
+            <column name="hull" value="1500"/>
+            <column name="shields" value="0"/>
+            <column name="attack" value="12000"/>
+            <column name="capacity" value="150"/>
+            <column name="engine_type" value="impulse"/>
+            <column name="speed" value="500000"/>
+            <column name="fuel_consumption" value="100"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
