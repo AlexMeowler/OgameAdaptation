@@ -45,10 +45,10 @@ public class Planet {
     private Long baseFields;
 
     @Column(insertable = false, updatable = false)
-    private Integer minTemperature;
+    private Long minTemperature;
 
     @Column(insertable = false, updatable = false)
-    private Integer maxTemperature;
+    private Long maxTemperature;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "planet")
     @JsonIgnore
@@ -72,10 +72,6 @@ public class Planet {
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "researchingPlanet")
     @JsonIgnore
     private TechnologyOrder technologyOrder;
-
-    public Integer averageTemperature() {
-        return (getMinTemperature() + getMaxTemperature()) / 2;
-    }
 
     public Long getTotalFields(Map<Class<? extends Upgradeable>, Long> specialEntityLevels) {
         return getBaseFields() + specialEntityLevels.get(Terraformer.class) * 5;

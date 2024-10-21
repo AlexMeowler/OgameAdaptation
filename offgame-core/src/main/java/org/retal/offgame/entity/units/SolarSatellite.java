@@ -10,7 +10,7 @@ import org.retal.offgame.dto.ResourcesDTO;
 public class SolarSatellite extends Unit {
 
     @Override
-    public ResourcesDTO getProduction(int temperature) {
+    public ResourcesDTO getProduction(long temperature) {
         double production = Math.min(1.0 * temperature / 4 + 20, 50);
         return ResourcesDTO.builder()
                 .energy(new ResourceDTO(production, 0.0, production))

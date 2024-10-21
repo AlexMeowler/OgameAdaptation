@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -78,11 +77,13 @@ public class PlanetServiceImpl extends AbstractCrudService<Planet, Long> impleme
                 .imageName(planet.getImageName())
                 .totalFields(planet.getTotalFields(specialEntityLevels))
                 .usedFields(planet.getUsedFields(specialEntityLevels))
+                .minTemperature(planet.getMinTemperature())
+                .maxTemperature(planet.getMaxTemperature())
                 .build();
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public ResourcesDTO getResourcesInfo(Long planetId) {
         return planetRepository.findById(planetId)
                 .map(this::updateResources)
@@ -90,9 +91,10 @@ public class PlanetServiceImpl extends AbstractCrudService<Planet, Long> impleme
     }
 
     private ResourcesDTO updateResources(Planet planet) {
-        Integer temperature = planet.averageTemperature();
+        Map<Class<? extends Upgradeable>, Long> specialBuildingLevels = getSpecialEntityLevels(planet.getId());
+        Long temperature = planet.getMaxTemperature();
         ResourcesDTO totalProductionPerHourWithLimit = planet.getBuildings().stream()
-                .map(instance -> instance.getBuilding().getResourceInfo(instance.getLevel(), temperature))
+                .map(instance -> instance.getBuilding().getResourceInfo(instance.getLevel(), temperature, specialBuildingLevels))
                 .reduce(ResourcesDTO.defaultDTO(), ResourcesDTO::merge);
         totalProductionPerHourWithLimit.setGlobalEffectiveness();
 

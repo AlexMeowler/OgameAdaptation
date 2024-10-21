@@ -4,6 +4,9 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import org.retal.offgame.dto.ResourceDTO;
 import org.retal.offgame.dto.ResourcesDTO;
+import org.retal.offgame.entity.Upgradeable;
+
+import java.util.Map;
 
 import static java.lang.Math.pow;
 
@@ -12,7 +15,7 @@ import static java.lang.Math.pow;
 public class SolarPowerPlant extends Building {
 
     @Override
-    public ResourcesDTO getProductionPerHour(long level, int temperature) {
+    public ResourcesDTO getProductionPerHour(long level, long temperature, Map<Class<? extends Upgradeable>, Long> specialBuildingLevels) {
         double production = 20 * level * pow(1.1, level);
         return ResourcesDTO.builder()
                 .energy(new ResourceDTO(production, 0.0, production))

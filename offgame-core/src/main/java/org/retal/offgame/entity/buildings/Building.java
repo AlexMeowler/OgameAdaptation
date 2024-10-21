@@ -85,7 +85,7 @@ public class Building extends Upgradeable {
         return 3600.0 * (metal + crystal) / 2500 * pow(0.5, 1);
     }
 
-    protected ResourcesDTO getProductionPerHour(long level, int temperature) {
+    protected ResourcesDTO getProductionPerHour(long level, long temperature, Map<Class<? extends Upgradeable>, Long> specialBuildingLevels) {
         return ResourcesDTO.empty();
     }
 
@@ -93,8 +93,8 @@ public class Building extends Upgradeable {
         return ResourcesDTO.empty();
     }
 
-    public ResourcesDTO getResourceInfo(long level, int temperature) {
-        return getProductionPerHour(level, temperature).merge(getMaxAmount(level));
+    public ResourcesDTO getResourceInfo(long level, long temperature, Map<Class<? extends Upgradeable>, Long> specialBuildingLevels) {
+        return getProductionPerHour(level, temperature, specialBuildingLevels).merge(getMaxAmount(level));
     }
 
     //todo building activation filter with function implementation (if building should be active or not)

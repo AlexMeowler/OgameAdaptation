@@ -14,4 +14,6 @@ public class PlanetItem {
     private String imageName;
     private Long usedFields;
     private Long totalFields;
+    private Long minTemperature;
+    private Long maxTemperature;
 }

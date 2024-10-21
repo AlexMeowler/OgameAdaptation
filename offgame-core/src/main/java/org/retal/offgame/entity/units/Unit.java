@@ -117,7 +117,7 @@ public class Unit {
         return 3600.0 * (metal + crystal) / 2500 * pow(0.5, 1);
     }
 
-    public ResourcesDTO getProduction(int temperature) {
+    public ResourcesDTO getProduction(long temperature) {
         return ResourcesDTO.empty();
     }
 }

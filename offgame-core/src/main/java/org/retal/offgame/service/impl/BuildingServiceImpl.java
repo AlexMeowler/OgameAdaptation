@@ -54,10 +54,10 @@ public class BuildingServiceImpl extends AbstractCrudService<Building, Long> imp
 
     private BuildingDTO toDTO(BuildingInstance buildingInstance, Map<Class<? extends Upgradeable>, Long> specialEntityLevels) {
         Long level = buildingInstance.getLevel();
-        int temperature = buildingInstance.getPlanet().averageTemperature();
+        long temperature = buildingInstance.getPlanet().getMaxTemperature();
         Building building = buildingInstance.getBuilding();
-        Double energyDiff = building.getResourceInfo(level + 1, temperature)
-                .merge(building.getResourceInfo(level, temperature).negate())
+        Double energyDiff = building.getResourceInfo(level + 1, temperature, specialEntityLevels)
+                .merge(building.getResourceInfo(level, temperature, specialEntityLevels).negate())
                 .getEnergy().amount();
 
         return BuildingDTO.builder()
@@ -81,14 +81,14 @@ public class BuildingServiceImpl extends AbstractCrudService<Building, Long> imp
 
     private BuildingDetails toDetails(BuildingInstance buildingInstance, Map<Class<? extends Upgradeable>, Long> specialEntityLevels) {
         Long level = buildingInstance.getLevel();
-        int temperature = buildingInstance.getPlanet().averageTemperature();
+        long temperature = buildingInstance.getPlanet().getMaxTemperature();
         long a = Math.max(1, level - 2);
         long b = level + 10;
         Building building = buildingInstance.getBuilding();
 
         Map<Long, ResourcesDTO> productionByLevel = LongStream.range(a, b + 1)
                 .boxed()
-                .map(i -> Pair.of(i, building.getResourceInfo(i, temperature)))
+                .map(i -> Pair.of(i, building.getResourceInfo(i, temperature, specialEntityLevels)))
                 .filter(pair -> !pair.getSecond().isEmpty())
                 .collect(toMap(
                         Pair::getFirst,

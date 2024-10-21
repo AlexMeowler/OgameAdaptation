@@ -29,8 +29,8 @@
             <th>Занятость полей</th>
             <th> <span style="color: lime">{{ planet.usedFields }}</span>/<span style="color: red">{{ planet.totalFields }}</span> Осталось {{ planet.leftFields }} свободных полей
             </th>
-            <th js-title="Температура">
-                <div class="planet_temp">-9 — 3 °C</div>
+            <th text-tooltip tooltipText="Температура">
+                <div class="planet_temp">{{ planet.minTemperature }} — {{ planet.maxTemperature }} °C</div>
             </th>
         </tr>
         <tr *ngFor="let obj of buildingInstances">

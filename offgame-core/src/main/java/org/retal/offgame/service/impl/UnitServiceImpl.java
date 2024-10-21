@@ -50,7 +50,7 @@ public class UnitServiceImpl extends AbstractCrudService<Unit, Long> implements 
     }
 
     private UnitDTO toDTO(UnitInstance unitInstance, Map<Class<? extends Upgradeable>, Long> specialEntityLevels) {
-        int temperature = unitInstance.getPlanet().getMaxTemperature();
+        long temperature = unitInstance.getPlanet().getMaxTemperature();
         Unit unit = unitInstance.getUnit();
         parseDescription(unit, Map.of(PRODUCTION, unit.getProduction(temperature)));
         //TODO dynamic engine type (small transport, bomber)
