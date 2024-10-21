@@ -88,6 +88,10 @@
                             name:'Энергия'
                         }"/><br>
                 </div>
+                <ng-container *ngIf="obj.nextLevelStorageSize">
+                    <br>
+                    <span style="font-weight: bold">Вместимость хранилища следующего уровня:</span>&nbsp;<span style="color: lime">{{ obj.nextLevelStorageSize | customNumber }}</span>
+                </ng-container>
             </td>
             <td class="k w_76">
                 <ng-container *ngIf="obj.requirements.length === 0">

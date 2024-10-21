@@ -9,7 +9,6 @@ import java.util.function.Function;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-import static org.retal.offgame.dto.ResourceDTO.withMaxAmount;
 import static org.retal.offgame.dto.ResourceDTO.withProduction;
 
 @Getter
@@ -60,19 +59,13 @@ public class ResourcesDTO {
     }
 
     public static ResourcesDTO defaultDTO() {
-        ResourcesDTO defaultProduction = builder()
+
+        return builder()
                 .metal(withProduction(1200.0))
                 .crystal(withProduction(600.0))
                 .deuterium(withProduction(300.0))
                 .energy(ResourceDTO.empty())
                 .build();
-        ResourcesDTO defaultMaxAmount = builder()
-                .metal(withMaxAmount(10000.0)) //todo use static method for lvl 0 when add storages?
-                .crystal(withMaxAmount(10000.0))
-                .deuterium(withMaxAmount(10000.0))
-                .build();
-
-        return defaultProduction.merge(defaultMaxAmount);
     }
 
     public ResourcesDTO merge(ResourcesDTO change) {

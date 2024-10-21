@@ -16,5 +16,6 @@ public class BuildingDTO {
     private ResourcesDTO buildingCost;
     private Double buildingTime;
     private Double energyDiff;
+    private Double nextLevelStorageSize;
     private List<RequirementDTO> requirements;
 }

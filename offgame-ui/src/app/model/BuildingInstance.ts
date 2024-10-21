@@ -9,6 +9,7 @@ export class BuildingInstance {
     energyDiff!: number
     buildingTime!: number
     buildingCost!: Resources
+    nextLevelStorageSize?:number
     requirements: Requirement[]
 
     constructor(data: any) {

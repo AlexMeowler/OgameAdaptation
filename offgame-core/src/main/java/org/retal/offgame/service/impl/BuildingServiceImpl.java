@@ -8,6 +8,7 @@ import org.retal.offgame.entity.BuildingInstance;
 import org.retal.offgame.entity.Planet;
 import org.retal.offgame.entity.Upgradeable;
 import org.retal.offgame.entity.buildings.Building;
+import org.retal.offgame.entity.buildings.Storage;
 import org.retal.offgame.repository.BuildingRepository;
 import org.retal.offgame.service.AbstractCrudService;
 import org.retal.offgame.service.BuildingInstanceService;
@@ -56,9 +57,12 @@ public class BuildingServiceImpl extends AbstractCrudService<Building, Long> imp
         Long level = buildingInstance.getLevel();
         long temperature = buildingInstance.getPlanet().getMaxTemperature();
         Building building = buildingInstance.getBuilding();
-        Double energyDiff = building.getResourceInfo(level + 1, temperature, specialEntityLevels)
+        ResourcesDTO nextLevelInfo = building.getResourceInfo(level + 1, temperature, specialEntityLevels);
+        Double energyDiff = nextLevelInfo.copy()
                 .merge(building.getResourceInfo(level, temperature, specialEntityLevels).negate())
                 .getEnergy().amount();
+        Double nextLevelStorageSize = building instanceof Storage
+                ? ((Storage) building).extractResourceInfo().apply(nextLevelInfo).maxAmount() : null;
 
         return BuildingDTO.builder()
                 .building(building)
@@ -66,6 +70,7 @@ public class BuildingServiceImpl extends AbstractCrudService<Building, Long> imp
                 .buildingCost(building.calculateBuildingCost(level + 1))
                 .buildingTime(building.calculateBuildingTime(level + 1, specialEntityLevels))
                 .energyDiff(energyDiff)
+                .nextLevelStorageSize(nextLevelStorageSize)
                 .requirements(RequirementUtils.getRequirements(building.getRequirements(), specialEntityLevels))
                 .build();
     }
