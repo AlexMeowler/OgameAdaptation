@@ -3,7 +3,6 @@ package org.retal.offgame.controller;
 import lombok.RequiredArgsConstructor;
 import org.retal.offgame.dto.PlanetItem;
 import org.retal.offgame.dto.ResourcesDTO;
-import org.retal.offgame.entity.Planet;
 import org.retal.offgame.service.PlanetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,8 +25,8 @@ public class PlanetController {
     }
 
     @GetMapping("/{id}")
-    public Planet getPlanetInfo(@PathVariable Long id) {
-        return planetService.getPlanetInfo(id);
+    public PlanetItem getPlanetInfo(@PathVariable Long id) {
+        return planetService.getPlanetItemInfo(id);
     }
 
     @GetMapping("/{id}/resources")

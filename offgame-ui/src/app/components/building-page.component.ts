@@ -15,6 +15,7 @@ import {Subscription} from "rxjs";
 import {RouterLink} from "@angular/router";
 import {User} from "../model/User";
 import {UserService} from "../services/user.service";
+import {PlanetItem} from "../model/PlanetItem";
 
 @Component({
     selector: 'build-page',
@@ -46,6 +47,8 @@ export class BuildComponent implements OnDestroy {
     userSubscription: Subscription
     user!: User
 
+    planet!: PlanetItem
+
     constructor(private planetService: PlanetService,
                 private resourceService: ResourceService,
                 private userService: UserService,
@@ -58,7 +61,8 @@ export class BuildComponent implements OnDestroy {
                     this.updatePlanetBuildings();
                     this.resourceService.updateResources(this.user.activePlanet);
                     this.resourcesSubscription = this.initResourceSubscription();
-                    this.refreshOrders()
+                    this.refreshPlanet();
+                    this.refreshOrders();
                 }
             }
         })
@@ -83,6 +87,14 @@ export class BuildComponent implements OnDestroy {
         })
     }
 
+    private refreshPlanet() {
+        this.planetService.getPlanetInfo(this.user.activePlanet).subscribe({
+            next: (data: PlanetItem) => {
+                this.planet = data
+            }
+        })
+    }
+
     ngOnDestroy(): void {
         this.resourcesSubscription.unsubscribe();
         this.userSubscription.unsubscribe();
@@ -103,13 +115,18 @@ export class BuildComponent implements OnDestroy {
         })
     }
 
-    canBuild(buildingInstance: BuildingInstance): boolean {
+    canBuild(buildingInstance: BuildingInstance): number {
         let cost = buildingInstance.buildingCost
-        let resources = this.resources;
-        return this.hasResource(cost.metal, resources.metal)
+        let resources = this.resources
+        let haveFields = this.planet.leftFields - this.buildingOrders.length > 0
+        let haveResources = this.hasResource(cost.metal, resources.metal)
             && this.hasResource(cost.crystal, resources.crystal)
             && this.hasResource(cost.deuterium, resources.deuterium)
             && this.hasResource(cost.energy, resources.energy)
+
+        return haveFields
+            ? haveResources ? 0 : 1
+            : 2
     }
 
     hasResource(cost: Resource, resource: Resource): boolean {
@@ -138,7 +155,8 @@ export class BuildComponent implements OnDestroy {
             if (order.timeLeft <= 0) {
                 clearInterval(this.currentBuildTimer)
                 this.refreshOrders()
-                this.updatePlanetBuildings();
+                this.refreshPlanet()
+                this.updatePlanetBuildings()
             }
 
             order.timeLeft--

@@ -10,6 +10,8 @@ import java.util.Map;
 
 public interface PlanetService extends CrudService<Planet, Long> {
 
+    PlanetItem getPlanetItemInfo(Long planetId);
+
     Planet getPlanetInfo(Long planetId);
 
     List<PlanetItem> getPlanetItemList();

@@ -16,9 +16,11 @@ import org.retal.offgame.service.PlanetService;
 import org.retal.offgame.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -42,9 +44,17 @@ public class PlanetServiceImpl extends AbstractCrudService<Planet, Long> impleme
     private final UserService userService;
 
     @Override
+    @Transactional
+    public PlanetItem getPlanetItemInfo(Long planetId) {
+        return planetRepository.findById(planetId)
+                .map(this::toPlanetItem)
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
+    }
+
+    @Override
     public Planet getPlanetInfo(Long planetId) {
         return planetRepository.findById(planetId)
-                .orElse(null);
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -60,10 +70,14 @@ public class PlanetServiceImpl extends AbstractCrudService<Planet, Long> impleme
     }
 
     private PlanetItem toPlanetItem(Planet planet) {
+        Map<Class<? extends Upgradeable>, Long> specialEntityLevels = getSpecialEntityLevels(planet.getId());
+
         return PlanetItem.builder()
                 .id(planet.getId())
                 .name(planet.getName())
                 .imageName(planet.getImageName())
+                .totalFields(planet.getTotalFields(specialEntityLevels))
+                .usedFields(planet.getUsedFields(specialEntityLevels))
                 .build();
     }
 
@@ -95,6 +109,7 @@ public class PlanetServiceImpl extends AbstractCrudService<Planet, Long> impleme
     @Transactional
     public Map<Class<? extends Upgradeable>, Long> getSpecialEntityLevels(Long planetId) {
         Planet planet = getPlanetInfo(planetId);
+
         Stream<AbstractMap.SimpleEntry<Class<? extends Upgradeable>, Long>> buildings = planet.getBuildings().stream()
                 .filter(buildingInstance -> buildingInstance.getBuilding().getClass() != Building.class)
                 .map(buildingInstance -> new AbstractMap.SimpleEntry<>(buildingInstance.getBuilding().getClass(), buildingInstance.getLevel()));

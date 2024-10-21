@@ -5,6 +5,7 @@ import org.retal.offgame.dto.BuildingOrderDTO;
 import org.retal.offgame.dto.BuildingOrderInfo;
 import org.retal.offgame.dto.ResourcesDTO;
 import org.retal.offgame.entity.BuildingInstance;
+import org.retal.offgame.entity.Planet;
 import org.retal.offgame.entity.Resources;
 import org.retal.offgame.entity.Upgradeable;
 import org.retal.offgame.entity.orders.BuildingOrder;
@@ -18,10 +19,7 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 
 import static java.util.stream.Collectors.toList;
@@ -46,14 +44,37 @@ public class BuildingOrderServiceImpl extends AbstractCrudService<BuildingOrder,
     @Override
     public void initCreatedOrders() {
         //todo validation when trying to subtract
-        Map<BuildingOrder, Resources> ordersToInit = getBuildingOrdersToInit().stream()
-                .filter(order -> canStartOrder(order.getBuildingInstance()))
+        Collection<BuildingOrder> orderCandidates = getBuildingOrdersToInit();
+        Map<Long, Map<Class<? extends Upgradeable>, Long>> specialEntityLevelsByPlanet = orderCandidates.stream()
+                .map(BuildingOrder::getBuildingInstance)
+                .map(BuildingInstance::getPlanet)
+                .map(Planet::getId)
+                .distinct()
+                .collect(toMap(
+                        Function.identity(),
+                        planetService::getSpecialEntityLevels
+                ));
+
+        List<BuildingOrder> undoableOrders = new ArrayList<>();
+
+        Map<BuildingOrder, Resources> ordersToInit = orderCandidates.stream()
+                .map(order -> {
+                    Long planetId = order.getBuildingInstance().getPlanet().getId();
+                    if (canStartOrder(order.getBuildingInstance(), specialEntityLevelsByPlanet.get(planetId))) {
+                        return order;
+                    }
+
+                    undoableOrders.add(order);
+                    return null;
+                })
+                .filter(Objects::nonNull)
                 .map(this::processOrder)
                 .collect(toMap(
                         Function.identity(),
                         this::subtractResources
                 ));
 
+        deleteAll(undoableOrders);
         saveAll(ordersToInit.keySet());
         resourcesService.saveAll(ordersToInit.values());
     }
@@ -87,19 +108,23 @@ public class BuildingOrderServiceImpl extends AbstractCrudService<BuildingOrder,
         Map<Class<? extends Upgradeable>, Long> specialEntityLevels = planetService.getSpecialEntityLevels(planetId);
 
         return buildingInstanceService.findByPlanetIdAndBuildingId(planetId, dto.getBuildingId())
-                .filter(this::canStartOrder)
+                .filter(buildingInstance -> canStartOrder(buildingInstance, specialEntityLevels))
                 .map(buildingInstance -> toBuildingOrder(buildingInstance, specialEntityLevels))
                 .map(this::createOrder)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
     }
 
-    private boolean canStartOrder(BuildingInstance buildingInstance) {
+    private boolean canStartOrder(BuildingInstance buildingInstance, Map<Class<? extends Upgradeable>, Long> specialEntityLevels) {
+
         Long level = buildingInstance.getLevel() + 1;
-
         ResourcesDTO cost = buildingInstance.getBuilding().calculateBuildingCost(level);
-        ResourcesDTO currentResources = buildingInstance.getPlanet().getResources().toDTO();
 
-        return currentResources.isMoreOrEqualThan(cost);
+        Planet planet = buildingInstance.getPlanet();
+        ResourcesDTO currentResources = planet.getResources().toDTO();
+        long totalFields = planet.getTotalFields(specialEntityLevels);
+        long usedFields = planet.getUsedFields(specialEntityLevels);
+
+        return currentResources.isMoreOrEqualThan(cost) && (usedFields < totalFields);
     }
 
     private BuildingOrder toBuildingOrder(BuildingInstance buildingInstance, Map<Class<? extends Upgradeable>, Long> specialBuildingLevels) {

@@ -23,7 +23,7 @@ public interface BuildingOrderRepository extends JpaRepository<BuildingOrder, Lo
 
     @Query("select bo from BuildingOrder bo " +
             "join bo.buildingInstance bi " +
-            "where bi = :buildingInstance and bo.status = org.retal.offgame.entity.orders.OrderStatus.created " +
+            "where bi = :buildingInstance " +
             "order by bo.createdAt desc " +
             "limit 1")
     Optional<BuildingOrder> findLatestActiveOrderForBuildingInstance(@Param("buildingInstance") BuildingInstance buildingInstance);

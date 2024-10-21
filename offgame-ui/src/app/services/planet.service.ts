@@ -5,6 +5,7 @@ import {map, Observable} from "rxjs";
 import {BuildingInstance} from "../model/BuildingInstance";
 import {TechnologyInstance} from "../model/TechnologyInstance";
 import {UnitInstance} from "../model/UnitInstance";
+import {PlanetItem} from "../model/PlanetItem";
 
 @Injectable({
     providedIn: 'root'
@@ -16,6 +17,12 @@ export class PlanetService {
     static readonly DEFENSE_TYPE = "defense";
 
     constructor(private http: HttpClient) {
+    }
+
+    getPlanetInfo(planetId:number) {
+        return this.http.get(`${apiUrl}/planet/${planetId}`).pipe(map((data: any) => {
+            return new PlanetItem(data)
+        }))
     }
 
     getPlanetBuildings(planetId: number): Observable<BuildingInstance[]> {

@@ -17,11 +17,21 @@
             <td class="l" colspan="2">{{ i + 1 }}.: {{order.name}} {{order.value}}</td>
             <td class="k">
                 <div class="x">
-                    {{order.timeLeft | duration:':'}}<br>
+                    <ng-container *ngIf="i === 0">
+                        {{order.timeLeft | duration:':'}}<br>
+                    </ng-container>
                     <a href="javascript:void(0);" (click)="deleteOrder(order.id)">Отменить</a>
                 </div>
-                <strong style="color: lime"><br>{{ order.endTimeDate | date:'dd/MM HH:mm:ss' }}</strong>
+                <strong *ngIf="i === 0" style="color: lime"><br>{{ order.endTimeDate | date:'dd/MM HH:mm:ss' }}</strong>
             </td>
+        </tr>
+        <tr>
+            <th>Занятость полей</th>
+            <th> <span style="color: lime">{{ planet.usedFields }}</span>/<span style="color: red">{{ planet.totalFields }}</span> Осталось {{ planet.leftFields }} свободных полей
+            </th>
+            <th js-title="Температура">
+                <div class="planet_temp">-9 — 3 °C</div>
+            </th>
         </tr>
         <tr *ngFor="let obj of buildingInstances">
             <td class="l" style="vertical-align: middle">
@@ -81,10 +91,11 @@
             </td>
             <td class="k w_76">
                 <ng-container *ngIf="obj.requirements.length === 0">
-                    <span *ngIf="!canBuild(obj)" style="color: red">Недостаточно ресурсов!</span>
-                    <a *ngIf="canBuild(obj)" style="color: lime" href="javascript:void(0);" (click)="createOrder(obj.building.id)">
+                    <a *ngIf="canBuild(obj) === 0" style="color: lime" href="javascript:void(0);" (click)="createOrder(obj.building.id)">
                         {{ buildingOrders.length === 0 ? 'Построить' + (obj.level !== 0 ? ' следующий уровень ' + (obj.level + 1) : '') : 'В очередь построек' }}
                     </a>
+                    <span *ngIf="canBuild(obj) === 1" style="color: red">Недостаточно ресурсов!</span>
+                    <span *ngIf="canBuild(obj) === 2" style="color: red">Недостаточно места!</span>
                 </ng-container>
                 <ng-container *ngIf="obj.requirements.length !== 0">
                     <div>

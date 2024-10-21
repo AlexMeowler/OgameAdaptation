@@ -6,11 +6,14 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.retal.offgame.entity.buildings.Building;
+import org.retal.offgame.entity.buildings.Terraformer;
 import org.retal.offgame.entity.orders.TechnologyOrder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -34,6 +37,12 @@ public class Planet {
     @Column
     @NotBlank
     private String name;
+
+    @Column
+    private Long diameter;
+
+    @Column
+    private Long baseFields;
 
     @Column(insertable = false, updatable = false)
     private Integer minTemperature;
@@ -66,5 +75,16 @@ public class Planet {
 
     public Integer averageTemperature() {
         return (getMinTemperature() + getMaxTemperature()) / 2;
+    }
+
+    public Long getTotalFields(Map<Class<? extends Upgradeable>, Long> specialEntityLevels) {
+        return getBaseFields() + specialEntityLevels.get(Terraformer.class) * 5;
+    }
+
+    public Long getUsedFields(Map<Class<? extends Upgradeable>, Long> specialEntityLevels) {
+        return specialEntityLevels.entrySet().stream()
+                .filter(entry -> Building.class.isAssignableFrom(entry.getKey()))
+                .map(Map.Entry::getValue)
+                .reduce(0L, Long::sum);
     }
 }

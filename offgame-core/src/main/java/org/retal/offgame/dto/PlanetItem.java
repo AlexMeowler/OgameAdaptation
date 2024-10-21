@@ -12,4 +12,6 @@ public class PlanetItem {
     private Long id;
     private String name;
     private String imageName;
+    private Long usedFields;
+    private Long totalFields;
 }
