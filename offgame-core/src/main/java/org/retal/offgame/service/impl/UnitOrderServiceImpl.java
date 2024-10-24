@@ -1,6 +1,7 @@
 package org.retal.offgame.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.retal.offgame.dto.ResourceDTO;
 import org.retal.offgame.dto.ResourcesDTO;
 import org.retal.offgame.dto.UnitOrderDTO;
 import org.retal.offgame.dto.UnitOrderInfo;
@@ -12,16 +13,16 @@ import org.retal.offgame.repository.UnitOrderRepository;
 import org.retal.offgame.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 import static org.retal.offgame.entity.orders.OrderStatus.created;
@@ -69,7 +70,7 @@ public class UnitOrderServiceImpl extends AbstractCrudService<UnitOrder, Long> i
 
         return unitInstanceService.findByPlanetIdAndUnitId(planetId, dto.getUnitId())
                 .map(unitInstance -> toUnitOrder(unitInstance, amount, specialEntityLevels))
-                //todo validation when trying to subtract
+                .filter(unitOrder -> unitOrder.getAmountLeft() > 0)
                 .map(this::createOrder)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
     }
@@ -79,13 +80,27 @@ public class UnitOrderServiceImpl extends AbstractCrudService<UnitOrder, Long> i
         long buildingTime = unitInstance.getUnit().calculateBuildingTime(specialBuildingLevels).longValue();
         Instant createdAt = Instant.now();
 
+        ResourcesDTO cost = unitInstance.getUnit().getBuildingCost();
+        ResourcesDTO currentResources = unitInstance.getPlanet().getResources().toDTO();
+
+        long realAmount = Math.min(amount, calculateMaxPossibleAmount(cost, currentResources));
+
         return UnitOrder.builder()
                 .unitInstance(unitInstance)
-                .amountLeft(amount)
+                .amountLeft(realAmount)
                 .createdAt(createdAt)
                 .singleUnitDuration(buildingTime)
                 .status(created)
                 .build();
+    }
+
+    private long calculateMaxPossibleAmount(ResourcesDTO cost, ResourcesDTO currentResources) {
+        return Stream.<Function<ResourcesDTO, ResourceDTO>>of(ResourcesDTO::getMetal, ResourcesDTO::getCrystal, ResourcesDTO::getDeuterium, ResourcesDTO::getEnergy)
+                .map(func -> Pair.of(func.apply(currentResources).amount(), func.apply(cost).amount()))
+                .filter(pair -> pair.getSecond() != 0)
+                .map(pair -> (long) (pair.getFirst() / pair.getSecond()))
+                .min(Comparator.comparingLong(a -> a))
+                .orElse(0L);
     }
 
     private UnitOrderInfo createOrder(UnitOrder unitOrder) {
