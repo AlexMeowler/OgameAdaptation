@@ -13,4 +13,6 @@ public interface TechnologyOrderService extends CrudService<TechnologyOrder, Lon
     TechnologyOrderInfo createTechnologyOrder(TechnologyOrderDTO technologyOrderDTO);
 
     TechnologyOrderInfo getTechnologyOrder(Long planetId);
+
+    void cancelTechnologyOrder(Long orderId);
 }

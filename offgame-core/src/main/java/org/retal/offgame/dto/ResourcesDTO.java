@@ -88,6 +88,16 @@ public class ResourcesDTO {
         return getter.apply(this).negate();
     }
 
+    public ResourcesDTO multiplyBy(double multiplier) {
+        ACCESSOR_MAP.forEach((getter, setter) -> setter.accept(multiplyBy(getter, multiplier)));
+
+        return this;
+    }
+
+    private ResourceDTO multiplyBy(Function<ResourcesDTO, ResourceDTO> getter, double multiplier) {
+        return getter.apply(this).multiplyBy(multiplier);
+    }
+
     public boolean isLessOrEqualThan(ResourcesDTO target) {
         return compareTo(target, -1) == -1;
     }

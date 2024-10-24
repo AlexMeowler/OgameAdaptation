@@ -247,4 +247,4 @@
     </div>
 </div>
 
-<div class="center"><router-outlet/></div>
+<div class="center"><router-outlet (activate)="subscribeToEmitter($event)" (deactivate)="unsubscribeFromEmitter()"/></div>

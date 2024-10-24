@@ -16,6 +16,7 @@ import {Subscription} from "rxjs";
 import {UserService} from "../services/user.service";
 import {PlanetItem} from "../model/PlanetItem";
 import {User} from "../model/User";
+import {Emittable} from "./emittable";
 
 @Component({
     selector: 'offgame-app',
@@ -44,13 +45,13 @@ export class PageWithResourcesComponent implements OnInit, OnDestroy {
     contextDeuterium!: ResourceContext
     contextEnergy!: ResourceContext
 
-
     planetListSubscription: Subscription
     planetList: PlanetItem[] = []
 
-
     userSubscription: Subscription
     user!: User
+
+    emitterSubscription?: Subscription
 
     constructor(private resourceService: ResourceService, private userService: UserService) {
         registerLocaleData(localeDe, "de-DE", localeDeExtra);
@@ -85,6 +86,21 @@ export class PageWithResourcesComponent implements OnInit, OnDestroy {
 
     selectPlanet(planetId: number) {
         this.userService.setActivePlanet(planetId);
+    }
+
+    subscribeToEmitter(componentRef:any) {
+        if (componentRef instanceof Emittable) {
+            let emittable: Emittable = componentRef;
+            this.emitterSubscription = emittable.needResourceUpdate.subscribe(() => this.updateResources())
+        }
+    }
+
+    unsubscribeFromEmitter() {
+        this.emitterSubscription?.unsubscribe()
+    }
+
+    updateResources() {
+        this.resourceService.updateResources(this.user.activePlanet);
     }
 
     ngOnInit() {

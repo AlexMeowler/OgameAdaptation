@@ -16,4 +16,6 @@ public interface UnitOrderService extends CrudService<UnitOrder, Long> {
     UnitOrderInfo createUnitOrder(UnitOrderDTO UnitOrderDTO);
 
     List<UnitOrderInfo> getPlanetUnitOrders(Long planetId);
+
+    void cancelUnitOrder(Long orderId);
 }

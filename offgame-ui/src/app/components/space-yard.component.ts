@@ -1,6 +1,6 @@
 import {Component, OnDestroy} from '@angular/core';
 import {PlanetService} from "../services/planet.service";
-import {DatePipe, DecimalPipe, NgForOf, NgIf, NgOptimizedImage, NgTemplateOutlet} from "@angular/common";
+import {DecimalPipe, NgForOf, NgIf, NgOptimizedImage, NgTemplateOutlet} from "@angular/common";
 import {TooltipDirective} from "./tooltip/tooltip.directive";
 import {CustomNumberPipe} from "../pipes/CustomNumberPipe";
 import {DurationPipe} from "../pipes/DurationPipe";
@@ -16,27 +16,27 @@ import {UnitInstance} from "../model/UnitInstance";
 import {DomSanitizer} from "@angular/platform-browser";
 import {UnitOrder} from "../model/UnitOrder";
 import {FormsModule} from "@angular/forms";
+import {Emittable} from "./emittable";
 
 @Component({
     selector: 'space-yard-page',
     standalone: true,
     imports: [
-        NgForOf,
         NgIf,
-        TooltipDirective,
-        NgOptimizedImage,
         CustomNumberPipe,
-        NgTemplateOutlet,
-        DurationPipe,
-        DatePipe,
         RouterLink,
-        FormsModule
+        NgOptimizedImage,
+        DurationPipe,
+        FormsModule,
+        TooltipDirective,
+        NgForOf,
+        NgTemplateOutlet
     ],
     templateUrl: '../../templates/space-yard-page.html',
     styleUrl: '../../styles/styles.scss',
     providers: [DecimalPipe]
 })
-export class SpaceYardComponent implements OnDestroy {
+export class SpaceYardComponent extends Emittable implements OnDestroy {
 
     typeSubscription: Subscription
     type!: string;
@@ -60,6 +60,7 @@ export class SpaceYardComponent implements OnDestroy {
                 private resourceService: ResourceService,
                 private userService: UserService,
                 private orderService: OrderService) {
+        super();
 
         this.typeSubscription = this.route.data.subscribe({
             next: (data: any) => {
@@ -123,7 +124,10 @@ export class SpaceYardComponent implements OnDestroy {
 
     deleteLatestOrder() {
         this.orderService.deleteUnitOrder(this.unitOrders[this.unitOrders.length - 1].id).subscribe({
-            next: ignore => this.refreshOrders()
+            next: ignore => {
+                this.refreshOrders()
+                this.needResourceUpdate.emit()
+            }
         })
     }
 

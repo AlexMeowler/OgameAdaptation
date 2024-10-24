@@ -80,7 +80,7 @@
                             <span *ngIf="planetNames.has(technologyOrder.planetId) && user.activePlanet !== technologyOrder.planetId" style="font-weight: bold">Исследуется на планете {{ planetNames.get(technologyOrder.planetId) }}<br><br></span>
                             <span style="font-weight: bold">{{ technologyOrder.timeLeft | duration:':' }}</span>
                             <br>
-                            <a href="javascript:void(0);" (click)="deleteOrder(technologyOrder.id)">Отменить</a>
+                            <a href="javascript:void(0);" (click)="deleteOrder(technologyOrder.id)" text-tooltip tooltipText="Будет удержано 10% стоимости">Отменить</a>
                         </ng-container>
                     </ng-container>
                 </ng-container>

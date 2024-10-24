@@ -36,6 +36,8 @@ public class UnitOrderServiceImpl extends AbstractCrudService<UnitOrder, Long> i
     private final ResourcesService resourcesService;
     private final PlanetService planetService;
 
+    private final static double REFUND_MULTIPLIER = 0.5;
+
     @Override
     public Collection<UnitOrder> getUnprocessedOrders() {
         return unitOrderRepository.findUnprocessedFinishedOrders();
@@ -61,13 +63,13 @@ public class UnitOrderServiceImpl extends AbstractCrudService<UnitOrder, Long> i
 
     @Override
     public UnitOrderInfo createUnitOrder(UnitOrderDTO dto) {
-        //todo validation when trying to subtract
         Long planetId = dto.getPlanetId();
         Long amount = dto.getAmount();
         Map<Class<? extends Upgradeable>, Long> specialEntityLevels = planetService.getSpecialEntityLevels(planetId);
 
         return unitInstanceService.findByPlanetIdAndUnitId(planetId, dto.getUnitId())
                 .map(unitInstance -> toUnitOrder(unitInstance, amount, specialEntityLevels))
+                //todo validation when trying to subtract
                 .map(this::createOrder)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
     }
@@ -95,12 +97,17 @@ public class UnitOrderServiceImpl extends AbstractCrudService<UnitOrder, Long> i
 
     private void subtractResources(UnitOrder unitOrder) {
         UnitInstance unitInstance = unitOrder.getUnitInstance();
-        ResourcesDTO cost = unitInstance.getUnit().getBuildingCost();
 
+        ResourcesDTO cost = getOrderCost(unitOrder);
         Resources resources = unitInstance.getPlanet().getResources();
         resources.updateResources(cost.negate());
 
         resourcesService.saveOrUpdate(resources);
+    }
+
+    private ResourcesDTO getOrderCost(UnitOrder unitOrder) {
+        Long amount = unitOrder.getAmountLeft();
+        return unitOrder.getUnitInstance().getUnit().getBuildingCost().multiplyBy(amount);
     }
 
     @Override
@@ -119,6 +126,20 @@ public class UnitOrderServiceImpl extends AbstractCrudService<UnitOrder, Long> i
                 .amountLeft(unitOrder.getAmountLeft())
                 .singleUnitDuration(unitOrder.getSingleUnitDuration())
                 .build();
+    }
+
+    @Override
+    public void cancelUnitOrder(Long orderId) {
+        UnitOrder unitOrder = unitOrderRepository.findById(orderId)
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
+
+        UnitInstance unitInstance = unitOrder.getUnitInstance();
+        ResourcesDTO refund = getOrderCost(unitOrder).multiplyBy(REFUND_MULTIPLIER);
+        Resources resources = unitInstance.getPlanet().getResources();
+        resources.updateResources(refund);
+        resourcesService.saveOrUpdate(resources);
+
+        deleteById(orderId);
     }
 
     @Override

@@ -20,7 +20,7 @@
                     <ng-container *ngIf="i === 0">
                         {{order.timeLeft | duration:':'}}<br>
                     </ng-container>
-                    <a href="javascript:void(0);" (click)="deleteOrder(order.id)">Отменить</a>
+                    <a href="javascript:void(0);" (click)="deleteOrder(order.id)" text-tooltip tooltipText="Будет удержано 10% стоимости">Отменить</a>
                 </div>
                 <strong *ngIf="i === 0" style="color: lime"><br>{{ order.endTimeDate | date:'dd/MM HH:mm:ss' }}</strong>
             </td>

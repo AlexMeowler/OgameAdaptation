@@ -16,4 +16,6 @@ public interface BuildingOrderService extends CrudService<BuildingOrder, Long> {
     BuildingOrderInfo createBuildingOrder(BuildingOrderDTO buildingOrderDTO);
 
     List<BuildingOrderInfo> getPlanetBuildingOrders(Long planetId);
+
+    void cancelBuildingOrder(Long orderId);
 }

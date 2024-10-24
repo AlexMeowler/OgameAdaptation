@@ -36,6 +36,8 @@ public class BuildingOrderServiceImpl extends AbstractCrudService<BuildingOrder,
     private final ResourcesService resourcesService;
     private final PlanetService planetService;
 
+    private final static double REFUND_MULTIPLIER = 0.9;
+
     @Override
     public Collection<BuildingOrder> getUnprocessedOrders() {
         return buildingOrderRepository.findUnprocessedFinishedOrders();
@@ -43,7 +45,6 @@ public class BuildingOrderServiceImpl extends AbstractCrudService<BuildingOrder,
 
     @Override
     public void initCreatedOrders() {
-        //todo validation when trying to subtract
         Collection<BuildingOrder> orderCandidates = getBuildingOrdersToInit();
         Map<Long, Map<Class<? extends Upgradeable>, Long>> specialEntityLevelsByPlanet = orderCandidates.stream()
                 .map(BuildingOrder::getBuildingInstance)
@@ -89,13 +90,17 @@ public class BuildingOrderServiceImpl extends AbstractCrudService<BuildingOrder,
 
     private Resources subtractResources(BuildingOrder buildingOrder) {
         BuildingInstance buildingInstance = buildingOrder.getBuildingInstance();
-        Long level = buildingInstance.getLevel() + 1;
-        ResourcesDTO cost = buildingInstance.getBuilding().calculateBuildingCost(level);
 
+        ResourcesDTO cost = getBuildingCost(buildingInstance);
         Resources resources = buildingInstance.getPlanet().getResources();
         resources.updateResources(cost.negate());
 
         return resources;
+    }
+
+    private ResourcesDTO getBuildingCost(BuildingInstance buildingInstance) {
+        Long level = buildingInstance.getLevel() + 1;
+        return buildingInstance.getBuilding().calculateBuildingCost(level);
     }
 
     private Collection<BuildingOrder> getBuildingOrdersToInit() {
@@ -116,9 +121,7 @@ public class BuildingOrderServiceImpl extends AbstractCrudService<BuildingOrder,
 
     private boolean canStartOrder(BuildingInstance buildingInstance, Map<Class<? extends Upgradeable>, Long> specialEntityLevels) {
 
-        Long level = buildingInstance.getLevel() + 1;
-        ResourcesDTO cost = buildingInstance.getBuilding().calculateBuildingCost(level);
-
+        ResourcesDTO cost = getBuildingCost(buildingInstance);
         Planet planet = buildingInstance.getPlanet();
         ResourcesDTO currentResources = planet.getResources().toDTO();
         long totalFields = planet.getTotalFields(specialEntityLevels);
@@ -166,6 +169,23 @@ public class BuildingOrderServiceImpl extends AbstractCrudService<BuildingOrder,
                 .name(buildingInstance.getBuilding().getName())
                 .value(buildingOrder.getOrderValue())
                 .build();
+    }
+
+    @Override
+    public void cancelBuildingOrder(Long orderId) {
+        //todo move notfoundexception supplier to constant for all?
+        BuildingOrder buildingOrder = buildingOrderRepository.findById(orderId)
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
+
+        if (buildingOrder.getStatus() == started) {
+            BuildingInstance buildingInstance = buildingOrder.getBuildingInstance();
+            ResourcesDTO refund = getBuildingCost(buildingInstance).multiplyBy(REFUND_MULTIPLIER);
+            Resources resources = buildingInstance.getPlanet().getResources();
+            resources.updateResources(refund);
+            resourcesService.saveOrUpdate(resources);
+        }
+
+        deleteById(orderId);
     }
 
     @Override

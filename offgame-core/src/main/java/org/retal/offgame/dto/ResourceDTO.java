@@ -46,6 +46,10 @@ public record ResourceDTO(Double amount, Double productionPerHour, Double maxAmo
         return new ResourceDTO(-amount(), -productionPerHour(), -maxAmount());
     }
 
+    public ResourceDTO multiplyBy(double multiplier) {
+        return new ResourceDTO(amount() * multiplier, productionPerHour() * multiplier, maxAmount() * multiplier);
+    }
+
     public int compareTo(Function<ResourceDTO, Double> getter, ResourceDTO target) {
         return getter.apply(this).compareTo(getter.apply(target));
     }

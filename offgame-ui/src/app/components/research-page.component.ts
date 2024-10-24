@@ -15,6 +15,7 @@ import {TechnologyInstance} from "../model/TechnologyInstance";
 import {TechnologyOrder} from "../model/TechnologyOrder";
 import {OrderService} from "../services/order.service";
 import {PlanetItem} from "../model/PlanetItem";
+import {Emittable} from "./emittable";
 
 @Component({
     selector: 'research-page',
@@ -34,7 +35,7 @@ import {PlanetItem} from "../model/PlanetItem";
     styleUrl: '../../styles/styles.scss',
     providers: [DecimalPipe]
 })
-export class ResearchComponent implements OnDestroy {
+export class ResearchComponent extends Emittable implements OnDestroy {
 
     technologyInstances: TechnologyInstance[] = []
     technologyOrder?: TechnologyOrder
@@ -53,6 +54,7 @@ export class ResearchComponent implements OnDestroy {
                 private resourceService: ResourceService,
                 private userService: UserService,
                 private orderService: OrderService) {
+        super();
 
         this.userSubscription = this.userService.getUserInfo().subscribe({
             next: (data?: User) => {
@@ -129,7 +131,10 @@ export class ResearchComponent implements OnDestroy {
 
     deleteOrder(orderId: number) {
         this.orderService.deleteTechnologyOrder(orderId).subscribe({
-            next: ignore => this.getOrder()
+            next: ignore => {
+                this.getOrder()
+                this.needResourceUpdate.emit()
+            }
         })
     }
 

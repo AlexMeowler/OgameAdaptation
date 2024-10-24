@@ -81,7 +81,7 @@
                         <ng-container *ngFor="let req of obj.requirements">
                             <div class="el-require" routerLink="/{{ req.detailsPath }}" text-tooltip tooltipText="Требуется: {{ req.name }} {{ req.requiredLevel }} уровня (у Вас {{ req.currentLevel }})">
                                 <a>
-                                    <img border="0" ngSrc="/img/{{ req.imagePath }}" width="32" height="32" alt="{{ req.name }}"/>
+                                    <img style="border: 0" ngSrc="/img/{{ req.imagePath }}" width="32" height="32" alt="{{ req.name }}"/>
                                 </a>
                                 <div class="el-require-block">
                                     <div class="el-require-skos"></div>
@@ -115,7 +115,7 @@
             </tr>
             </tbody>
         </table>
-        <div><input type="submit" value="Отменить последнее" (click)="deleteLatestOrder()"></div>
+        <div><input type="submit" value="Отменить последнее" (click)="deleteLatestOrder()" text-tooltip tooltipText="Будет удержано 50% стоимости"></div>
         <div class="pl_block">
             Оставшееся время {{ totalTimeLeft | duration }}
         </div>

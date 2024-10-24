@@ -1,4 +1,4 @@
-package org.retal.offgame.controller;
+package org.retal.offgame.controller.planet;
 
 import lombok.RequiredArgsConstructor;
 import org.retal.offgame.dto.BuildingDTO;

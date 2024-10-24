@@ -16,6 +16,7 @@ import {RouterLink} from "@angular/router";
 import {User} from "../model/User";
 import {UserService} from "../services/user.service";
 import {PlanetItem} from "../model/PlanetItem";
+import {Emittable} from "./emittable";
 
 @Component({
     selector: 'build-page',
@@ -35,7 +36,7 @@ import {PlanetItem} from "../model/PlanetItem";
     styleUrl: '../../styles/styles.scss',
     providers: [DecimalPipe]
 })
-export class BuildComponent implements OnDestroy {
+export class BuildComponent extends Emittable implements OnDestroy {
 
     buildingInstances: BuildingInstance[] = []
     buildingOrders: BuildingOrder[] = []
@@ -53,6 +54,7 @@ export class BuildComponent implements OnDestroy {
                 private resourceService: ResourceService,
                 private userService: UserService,
                 private orderService: OrderService) {
+        super();
 
         this.userSubscription = this.userService.getUserInfo().subscribe({
             next: (data?: User) => {
@@ -111,7 +113,10 @@ export class BuildComponent implements OnDestroy {
 
     deleteOrder(orderId: number) {
         this.orderService.deleteBuildOrder(orderId).subscribe({
-            next: ignore => this.refreshOrders()
+            next: ignore => {
+                this.refreshOrders()
+                this.needResourceUpdate.emit()
+            }
         })
     }
 

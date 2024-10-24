@@ -4,11 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.retal.offgame.dto.ResourcesDTO;
 import org.retal.offgame.dto.TechnologyOrderDTO;
 import org.retal.offgame.dto.TechnologyOrderInfo;
-import org.retal.offgame.entity.*;
+import org.retal.offgame.entity.Planet;
+import org.retal.offgame.entity.Resources;
+import org.retal.offgame.entity.TechnologyInstance;
+import org.retal.offgame.entity.Upgradeable;
 import org.retal.offgame.entity.orders.TechnologyOrder;
 import org.retal.offgame.repository.TechnologyInstanceRepository;
 import org.retal.offgame.repository.TechnologyOrderRepository;
-import org.retal.offgame.service.*;
+import org.retal.offgame.service.AbstractCrudService;
+import org.retal.offgame.service.PlanetService;
+import org.retal.offgame.service.ResourcesService;
+import org.retal.offgame.service.TechnologyOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpStatus;
@@ -30,20 +36,25 @@ public class TechnologyOrderServiceImpl extends AbstractCrudService<TechnologyOr
     private final ResourcesService resourcesService;
     private final PlanetService planetService;
 
+    private final static double REFUND_MULTIPLIER = 0.9;
+
     @Override
     public Collection<TechnologyOrder> getUnprocessedOrders() {
         return technologyOrderRepository.findUnprocessedFinishedOrders();
     }
 
     private Resources subtractResources(TechnologyOrder technologyOrder, Planet planet) {
-        TechnologyInstance technologyInstance = technologyOrder.getTechnologyInstance();
-        Long level = technologyInstance.getLevel() + 1;
-        ResourcesDTO cost = technologyInstance.getTechnology().calculateBuildingCost(level);
 
+        ResourcesDTO cost = getBuildingCost(technologyOrder.getTechnologyInstance());
         Resources resources = planet.getResources();
         resources.updateResources(cost.negate());
 
         return resources;
+    }
+
+    private ResourcesDTO getBuildingCost(TechnologyInstance technologyInstance) {
+        Long level = technologyInstance.getLevel() + 1;
+        return technologyInstance.getTechnology().calculateBuildingCost(level);
     }
 
     @Override
@@ -107,6 +118,21 @@ public class TechnologyOrderServiceImpl extends AbstractCrudService<TechnologyOr
                 .planetId(technologyOrder.getResearchingPlanet().getId())
                 .endTime(technologyOrder.getFinishedAt())
                 .build();
+    }
+
+    @Override
+    public void cancelTechnologyOrder(Long orderId) {
+        //todo move notfoundexception supplier to constant for all?
+        TechnologyOrder technologyOrder = technologyOrderRepository.findById(orderId)
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
+
+        TechnologyInstance technologyInstance = technologyOrder.getTechnologyInstance();
+        ResourcesDTO refund = getBuildingCost(technologyInstance).multiplyBy(REFUND_MULTIPLIER);
+        Resources resources = technologyOrder.getResearchingPlanet().getResources();
+        resources.updateResources(refund);
+        resourcesService.saveOrUpdate(resources);
+
+        deleteById(orderId);
     }
 
     @Override
