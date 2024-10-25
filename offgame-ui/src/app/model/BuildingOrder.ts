@@ -1,12 +1,13 @@
 export class BuildingOrder {
 
     id!:number
-    endTime?: string;
-    endTimeDate?: Date;
-    name!: string;
-    value!: number;
+    endTime?: string
+    endTimeDate?: Date
+    name!: string
+    value!: number
+    isUpgrade!: boolean
 
-    timeLeft: number = 0;
+    timeLeft: number = 0
 
     constructor(data: BuildingOrder) {
         Object.assign(this, data);

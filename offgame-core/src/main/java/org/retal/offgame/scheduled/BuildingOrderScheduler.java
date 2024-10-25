@@ -34,14 +34,14 @@ public class BuildingOrderScheduler {
                         BuildingOrder::getBuildingInstance
                 ));
 
+        processBuildingInstances(orderWithInstance);
         processBuildingOrders(orderWithInstance.keySet());
-        processBuildingInstances(orderWithInstance.values());
     }
 
-    private void processBuildingInstances(Collection<BuildingInstance> buildingInstances) {
-        buildingInstances.forEach(BuildingInstance::incrementLevel);
+    private void processBuildingInstances(Map<BuildingOrder, BuildingInstance> orderWithInstance) {
+        orderWithInstance.forEach((order, instance) -> instance.setLevel(order.getOrderValue()));
 
-        buildingInstanceService.saveAll(buildingInstances);
+        buildingInstanceService.saveAll(orderWithInstance.values());
     }
 
     private void processBuildingOrders(Collection<BuildingOrder> buildingOrders) {

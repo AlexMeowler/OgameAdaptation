@@ -7,6 +7,12 @@
         <th style="color: {{ diff != 0 ? getColor(diff > 0) : 'white' }}">{{ diff | customNumber }}</th>
     </ng-container>
 </ng-template>
+<ng-template #resourceCost
+             let-cost="resource"
+             let-resName="name"
+             let-stock="planetStock">
+    <span *ngIf="cost.amount > 0">{{ resName }}: <b style="color: {{  getColor(hasResource(cost, stock)) }}">{{ cost.amount | customNumber }}&nbsp;</b></span>
+</ng-template>
 <div>
     <table width="750">
         <tbody>
@@ -92,6 +98,42 @@
                     </tbody>
                 </table>
             </th>
+        </tr>
+        </tbody>
+    </table>
+
+    <table width="750" *ngIf="building.currentLevel > 0">
+        <tbody>
+        <tr>
+            <td class="c" align="center">
+                <a href="javascript:void(0);" (click)="createDemolishOrder(building.id)">Разрушить: {{ building.name }} Уровень {{ building.currentLevel }}</a>
+            </td>
+        </tr><tr>
+            <th>
+                Необходимые ресурсы:
+                <ng-container *ngTemplateOutlet="resourceCost;context:{
+                        resource:building.destructionCost.metal,
+                        planetStock:resources.metal,
+                        name:'Металл'
+                    }"/>
+                <ng-container *ngTemplateOutlet="resourceCost;context:{
+                        resource:building.destructionCost.crystal,
+                        planetStock:resources.crystal,
+                        name:'Кристалл',
+                    }"/>
+                <ng-container *ngTemplateOutlet="resourceCost;context:{
+                        resource:building.destructionCost.deuterium,
+                        planetStock:resources.deuterium,
+                        name:'Дейтерий'
+                    }"/>
+                <ng-container *ngTemplateOutlet="resourceCost;context:{
+                        resource:building.destructionCost.energy,
+                        planetStock:resources.energy,
+                        name:'Энергия'
+                    }"/>
+            </th>
+        </tr><tr>
+            <th><br>Время разрушения: {{ building.destructionTime | duration }} <br></th>
         </tr>
         </tbody>
     </table>

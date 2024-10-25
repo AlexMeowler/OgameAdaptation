@@ -8,6 +8,7 @@ import org.retal.offgame.entity.BuildingInstance;
 import org.retal.offgame.entity.Planet;
 import org.retal.offgame.entity.Resources;
 import org.retal.offgame.entity.Upgradeable;
+import org.retal.offgame.entity.buildings.Building;
 import org.retal.offgame.entity.orders.BuildingOrder;
 import org.retal.offgame.repository.BuildingOrderRepository;
 import org.retal.offgame.service.*;
@@ -60,8 +61,10 @@ public class BuildingOrderServiceImpl extends AbstractCrudService<BuildingOrder,
 
         Map<BuildingOrder, Resources> ordersToInit = orderCandidates.stream()
                 .map(order -> {
-                    Long planetId = order.getBuildingInstance().getPlanet().getId();
-                    if (canStartOrder(order.getBuildingInstance(), specialEntityLevelsByPlanet.get(planetId))) {
+                    BuildingInstance buildingInstance = order.getBuildingInstance();
+                    Long planetId = buildingInstance.getPlanet().getId();
+                    long levelDiff = Math.abs(order.getOrderValue() - buildingInstance.getLevel());
+                    if (canStartOrder(order, specialEntityLevelsByPlanet.get(planetId)) && levelDiff == 1) {
                         return order;
                     }
 
@@ -91,16 +94,20 @@ public class BuildingOrderServiceImpl extends AbstractCrudService<BuildingOrder,
     private Resources subtractResources(BuildingOrder buildingOrder) {
         BuildingInstance buildingInstance = buildingOrder.getBuildingInstance();
 
-        ResourcesDTO cost = getBuildingCost(buildingInstance);
+        ResourcesDTO cost = getCost(buildingOrder);
         Resources resources = buildingInstance.getPlanet().getResources();
         resources.updateResources(cost.negate());
 
         return resources;
     }
 
-    private ResourcesDTO getBuildingCost(BuildingInstance buildingInstance) {
-        Long level = buildingInstance.getLevel() + 1;
-        return buildingInstance.getBuilding().calculateBuildingCost(level);
+    private ResourcesDTO getCost(BuildingOrder buildingOrder) {
+        boolean isUpgrade = buildingOrder.isUpgrade();
+        BuildingInstance buildingInstance = buildingOrder.getBuildingInstance();
+        Building building = buildingInstance.getBuilding();
+        Function<Long, ResourcesDTO> resourceFunction = isUpgrade ? building::calculateBuildingCost : building::calculateDemolishCost;
+        Long level = isUpgrade ? buildingOrder.getOrderValue() : buildingInstance.getLevel();
+        return resourceFunction.apply(level);
     }
 
     private Collection<BuildingOrder> getBuildingOrdersToInit() {
@@ -110,31 +117,36 @@ public class BuildingOrderServiceImpl extends AbstractCrudService<BuildingOrder,
     @Override
     public BuildingOrderInfo createBuildingOrder(BuildingOrderDTO dto) {
         Long planetId = dto.getPlanetId();
+        boolean isUpgrade = dto.getIsUpgrade();
         Map<Class<? extends Upgradeable>, Long> specialEntityLevels = planetService.getSpecialEntityLevels(planetId);
 
         return buildingInstanceService.findByPlanetIdAndBuildingId(planetId, dto.getBuildingId())
-                .filter(buildingInstance -> canStartOrder(buildingInstance, specialEntityLevels))
-                .map(buildingInstance -> toBuildingOrder(buildingInstance, specialEntityLevels))
+                .map(buildingInstance -> toBuildingOrder(buildingInstance, isUpgrade, specialEntityLevels))
+                .filter(buildingOrder -> canStartOrder(buildingOrder, specialEntityLevels))
                 .map(this::createOrder)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
     }
 
-    private boolean canStartOrder(BuildingInstance buildingInstance, Map<Class<? extends Upgradeable>, Long> specialEntityLevels) {
+    private boolean canStartOrder(BuildingOrder buildingOrder, Map<Class<? extends Upgradeable>, Long> specialEntityLevels) {
 
-        ResourcesDTO cost = getBuildingCost(buildingInstance);
+        BuildingInstance buildingInstance = buildingOrder.getBuildingInstance();
+        ResourcesDTO cost = getCost(buildingOrder);
         Planet planet = buildingInstance.getPlanet();
         ResourcesDTO currentResources = planet.getResources().toDTO();
         long totalFields = planet.getTotalFields(specialEntityLevels);
         long usedFields = planet.getUsedFields(specialEntityLevels);
 
-        return currentResources.isMoreOrEqualThan(cost) && (usedFields < totalFields);
+        return currentResources.isMoreOrEqualThan(cost)
+                && (!buildingOrder.isUpgrade() || (usedFields < totalFields))
+                && buildingOrder.getOrderValue() >= 0;
     }
 
-    private BuildingOrder toBuildingOrder(BuildingInstance buildingInstance, Map<Class<? extends Upgradeable>, Long> specialBuildingLevels) {
+    private BuildingOrder toBuildingOrder(BuildingInstance buildingInstance, boolean isUpgrade, Map<Class<? extends Upgradeable>, Long> specialBuildingLevels) {
         Long level = buildingInstance.getLevel();
+        int diff = isUpgrade ? 1 : -1;
         Long lastOrderedLevel = buildingOrderRepository.findLatestActiveOrderForBuildingInstance(buildingInstance)
                 .map(BuildingOrder::getOrderValue)
-                .orElse(level) + 1;
+                .orElse(level) + diff;
 
         long buildingTime = buildingInstance.getBuilding().calculateBuildingTime(lastOrderedLevel, specialBuildingLevels).longValue();
         Instant createdAt = Instant.now();
@@ -168,6 +180,7 @@ public class BuildingOrderServiceImpl extends AbstractCrudService<BuildingOrder,
                 .endTime(buildingOrder.getFinishedAt())
                 .name(buildingInstance.getBuilding().getName())
                 .value(buildingOrder.getOrderValue())
+                .isUpgrade(buildingOrder.isUpgrade())
                 .build();
     }
 
@@ -179,7 +192,7 @@ public class BuildingOrderServiceImpl extends AbstractCrudService<BuildingOrder,
 
         if (buildingOrder.getStatus() == started) {
             BuildingInstance buildingInstance = buildingOrder.getBuildingInstance();
-            ResourcesDTO refund = getBuildingCost(buildingInstance).multiplyBy(REFUND_MULTIPLIER);
+            ResourcesDTO refund = getCost(buildingOrder).multiplyBy(REFUND_MULTIPLIER);
             Resources resources = buildingInstance.getPlanet().getResources();
             resources.updateResources(refund);
             resourcesService.saveOrUpdate(resources);

@@ -37,4 +37,8 @@ public class BuildingOrder {
 
     @Column
     private Instant finishedAt;
+
+    public boolean isUpgrade() {
+        return getOrderValue() > getBuildingInstance().getLevel();
+    }
 }

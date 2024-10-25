@@ -4,13 +4,16 @@ import {Requirement} from "./Requirement";
 
 export class BuildingDetails {
 
-    description!: string;
-    imageName!: string;
-    name!: string;
-    currentLevel!: number;
-    productionByLevel!:Map<number, Resources>;
-    differenceByLevel!:Map<number, Resources>;
-    requirements: Requirement[];
+    id!: number
+    description!: string
+    imageName!: string
+    name!: string
+    currentLevel!: number
+    destructionCost!: Resources
+    destructionTime!: number
+    productionByLevel:Map<number, Resources>
+    differenceByLevel:Map<number, Resources>
+    requirements: Requirement[]
 
     constructor(data: any) {
         Object.assign(this, data);

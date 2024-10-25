@@ -12,5 +12,6 @@ public class BuildingOrderDTO {
     private Long planetId;
     @NotNull
     private Long buildingId;
+    private Boolean isUpgrade = true;
 
 }

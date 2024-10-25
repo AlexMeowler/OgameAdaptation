@@ -15,4 +15,5 @@ public class BuildingOrderInfo {
     private Instant endTime;
     private String name;
     private Long value;
+    private Boolean isUpgrade;
 }

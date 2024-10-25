@@ -22,6 +22,10 @@ public abstract class Upgradeable {
                 .build();
     }
 
+    public ResourcesDTO calculateDemolishCost(Long level) {
+        return calculateBuildingCost(level).multiplyBy(0.5);
+    }
+
     public abstract Long getId();
 
     public abstract String getName();

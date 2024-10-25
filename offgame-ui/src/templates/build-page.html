@@ -14,12 +14,12 @@
     <table>
         <tbody>
         <tr *ngFor="let order of buildingOrders; let i = index">
-            <td class="l" colspan="2">{{ i + 1 }}.: {{order.name}} {{order.value}}</td>
+            <td class="l" colspan="2">{{ i + 1 }}.: {{order.name}} {{order.value}} {{ !order.isUpgrade ? '(Понижение уровня)' : '' }}</td>
             <td class="k">
                 <div class="x">
                     <ng-container *ngIf="i === 0">
                         {{order.timeLeft | duration:':'}}<br>
-                    </ng-container>
+                    </ng-container> <!--  -->
                     <a href="javascript:void(0);" (click)="deleteOrder(order.id)" text-tooltip tooltipText="Будет удержано 10% стоимости">Отменить</a>
                 </div>
                 <strong *ngIf="i === 0" style="color: lime"><br>{{ order.endTimeDate | date:'dd/MM HH:mm:ss' }}</strong>

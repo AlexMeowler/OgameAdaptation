@@ -19,10 +19,11 @@ export class OrderService {
         }))
     }
 
-    createBuildOrder(buildingId: number, planetId: number) {
+    createBuildOrder(buildingId: number, planetId: number, isUpgrade?: boolean) {
         return this.http.post(`${apiUrl}/order/build`, {
             buildingId: buildingId,
-            planetId: planetId
+            planetId: planetId,
+            isUpgrade: isUpgrade
         })
     }
 

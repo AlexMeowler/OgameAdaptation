@@ -108,10 +108,13 @@ public class BuildingServiceImpl extends AbstractCrudService<Building, Long> imp
                 ));
 
         return BuildingDetails.builder()
+                .id(building.getId())
                 .name(building.getName())
                 .description(building.getFullDescription())
                 .imageName(building.getImageName())
                 .currentLevel(level)
+                .destructionCost(building.calculateDemolishCost(level))
+                .destructionTime(building.calculateDemolitionTime(level, specialEntityLevels).longValue())
                 .productionByLevel(productionByLevel)
                 .differenceByLevel(differenceByLevel)
                 .requirements(RequirementUtils.getRequirements(building.getRequirements(), specialEntityLevels))
