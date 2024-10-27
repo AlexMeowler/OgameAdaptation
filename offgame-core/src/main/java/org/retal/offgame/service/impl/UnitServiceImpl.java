@@ -3,6 +3,7 @@ package org.retal.offgame.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.retal.offgame.dto.ResourcesDTO;
 import org.retal.offgame.dto.UnitDTO;
+import org.retal.offgame.dto.UnitDetails;
 import org.retal.offgame.entity.Planet;
 import org.retal.offgame.entity.UnitInstance;
 import org.retal.offgame.entity.Upgradeable;
@@ -12,12 +13,15 @@ import org.retal.offgame.entity.units.UnitType;
 import org.retal.offgame.repository.UnitRepository;
 import org.retal.offgame.service.AbstractCrudService;
 import org.retal.offgame.service.PlanetService;
+import org.retal.offgame.service.UnitInstanceService;
 import org.retal.offgame.service.UnitService;
 import org.retal.offgame.service.util.RequirementUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 import java.util.Map;
@@ -32,6 +36,7 @@ public class UnitServiceImpl extends AbstractCrudService<Unit, Long> implements 
 
     private final UnitRepository unitRepository;
     private final PlanetService planetService;
+    private final UnitInstanceService unitInstanceService;
 
     private static final String PRODUCTION = "production";
 
@@ -71,7 +76,34 @@ public class UnitServiceImpl extends AbstractCrudService<Unit, Long> implements 
         }
     }
 
+    @Override
+    @Transactional
+    public UnitDetails getUnitDetails(Long planetId, Long unitId) {
+        Map<Class<? extends Upgradeable>, Long> specialEntityLevels = planetService.getSpecialEntityLevels(planetId);
+        return unitInstanceService.findByPlanetIdAndUnitId(planetId, unitId)
+                .map(unitInstance -> toDetails(unitInstance, specialEntityLevels))
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
+    }
 
+    private UnitDetails toDetails(UnitInstance unitInstance, Map<Class<? extends Upgradeable>, Long> specialEntityLevels) {
+        Unit unit = unitInstance.getUnit();
+
+        return UnitDetails.builder()
+                .id(unit.getId())
+                .name(unit.getName())
+                .description(unit.getFullDescription())
+                .imageName(unit.getImageName())
+                .hull(unit.getHull())
+                .shields(unit.getShields())
+                .attack(unit.getAttack())
+                .capacity(unit.getCapacity())
+                .engineType(unit.getEngineType())
+                .unitType(unit.getUnitType())
+                .speed(unit.getSpeed())
+                .fuelConsumption(unit.getFuelConsumption())
+                .requirements(RequirementUtils.getRequirements(unit.getRequirements(), specialEntityLevels))
+                .build();
+    }
 
     @Override
     protected CrudRepository<Unit, Long> getRepository() {

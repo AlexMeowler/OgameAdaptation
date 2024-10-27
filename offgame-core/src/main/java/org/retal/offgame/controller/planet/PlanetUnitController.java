@@ -1,7 +1,8 @@
-package org.retal.offgame.controller;
+package org.retal.offgame.controller.planet;
 
 import lombok.RequiredArgsConstructor;
 import org.retal.offgame.dto.UnitDTO;
+import org.retal.offgame.dto.UnitDetails;
 import org.retal.offgame.entity.units.UnitType;
 import org.retal.offgame.service.UnitService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +20,10 @@ public class PlanetUnitController {
     @GetMapping("/{id}/units")
     public List<UnitDTO> getPlanetUnitsInfo(@PathVariable Long id, @RequestParam("type") UnitType unitType) {
         return unitService.getPlanetUnits(id, unitType);
+    }
+
+    @GetMapping("/{planetId}/units/{unitId}/details")
+    public UnitDetails getPlanetUnitDetails(@PathVariable Long planetId, @PathVariable Long unitId) {
+        return unitService.getUnitDetails(planetId, unitId);
     }
 }

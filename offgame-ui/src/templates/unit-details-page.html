@@ -1,0 +1,72 @@
+<table width="750">
+    <tbody>
+    <tr>
+        <td class="c" colspan="2"> {{ unit.name }} </td>
+    </tr>
+    <tr>
+        <th colspan="2">
+            <table>
+                <tbody>
+                <tr>
+                    <td style="vertical-align: top">
+                        <img ngSrc="/img/unit/{{ unit.imageName }}" align="top" border="0" height="120" width="120">
+                    </td>
+                    <td style="vertical-align: top">{{ unit.description }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </th>
+    </tr>
+    <tr>
+        <th colspan="2">
+            <table>
+                <tbody>
+                <tr>
+                    <th>Требования</th>
+                    <th style="text-align:left;">
+                        <ng-container *ngFor="let req of unit.requirements">
+                            <div style="color: {{ getColor(req.currentLevel >= req.requiredLevel) }}">{{ req.name }} (уровень {{ req.requiredLevel }}) Ваш уровень: {{ req.currentLevel }}</div>
+                        </ng-container>
+                    </th>
+                </tr>
+                </tbody>
+            </table>
+        </th>
+    </tr>
+    <tr>
+        <td class="c" colspan="2">
+            <span text-tooltip tooltipText="Указаны без учёта исследований и любых других модификаторов">Базовые характеристики</span>
+        </td>
+    </tr>
+    <tr>
+        <th>Структура</th>
+        <th>{{ unit.hull | customNumber }}</th>
+    </tr>
+    <tr>
+        <th>Энергощиты</th>
+        <th>{{ unit.shields | customNumber }}</th>
+    </tr>
+    <tr>
+        <th>Мощность атаки</th>
+        <th>{{ unit.attack | customNumber }}</th>
+    </tr>
+    <ng-container *ngIf="unit.unitType === 'fleet'">
+        <tr>
+            <th>Вместимость</th>
+            <th>{{ unit.capacity | customNumber }}</th>
+        </tr>
+        <tr>
+            <th>Двигатель</th>
+            <th>{{ unit.getEngineType() }}</th>
+        </tr>
+        <tr>
+            <th>Скорость</th>
+            <th>{{ unit.speed | customNumber }}</th>
+        </tr>
+        <tr>
+            <th>Потребление топлива (Дейтерия)</th>
+            <th>{{ unit.fuelConsumption | customNumber }}</th>
+        </tr>
+    </ng-container>
+    </tbody>
+</table>

@@ -127,6 +127,7 @@ public class BuildingOrderServiceImpl extends AbstractCrudService<BuildingOrder,
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
     }
 
+    //TODO check for requirements
     private boolean canStartOrder(BuildingOrder buildingOrder, Map<Class<? extends Upgradeable>, Long> specialEntityLevels) {
 
         BuildingInstance buildingInstance = buildingOrder.getBuildingInstance();

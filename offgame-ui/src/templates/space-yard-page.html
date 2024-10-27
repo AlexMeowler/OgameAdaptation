@@ -20,7 +20,7 @@
                 </a>
             </td>
             <td class="l">
-                <span><a routerLink="/buildings/{{ obj.unit.id }}">{{ obj.unit.name }}</a>&nbsp;</span>
+                <span><a routerLink="/units/{{ obj.unit.id }}">{{ obj.unit.name }}</a>&nbsp;</span>
                 <span *ngIf="obj.amount > 0">(Количество: {{ obj.amount }}) </span><br>
                 <span [innerHTML]="obj.unit.shortDescriptionHtml"></span><br>
                 Необходимые ресурсы:
