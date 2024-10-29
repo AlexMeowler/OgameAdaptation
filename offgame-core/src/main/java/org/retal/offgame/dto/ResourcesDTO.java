@@ -3,6 +3,7 @@ package org.retal.offgame.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -23,10 +24,12 @@ public class ResourcesDTO {
     private ResourceDTO deuterium;
     private ResourceDTO energy;
 
-    private Double globalEffectiveness;
+    private Double efficiency;
+    private Double globalEfficiency;
 
     @Getter(AccessLevel.NONE)
-    private final Map<Function<ResourcesDTO, ResourceDTO>, Consumer<ResourceDTO>> ACCESSOR_MAP = Map.of(
+    @JsonIgnore
+    public final Map<Function<ResourcesDTO, ResourceDTO>, Consumer<ResourceDTO>> ACCESSOR_MAP = Map.of(
             ResourcesDTO::getMetal, this::setMetal,
             ResourcesDTO::getCrystal, this::setCrystal,
             ResourcesDTO::getDeuterium, this::setDeuterium,
@@ -34,8 +37,8 @@ public class ResourcesDTO {
     );
 
 
-    public void setGlobalEffectiveness() {
-        setGlobalEffectiveness(calculateGlobalEffectiveness());
+    public void setGlobalEfficiency() {
+        setGlobalEfficiency(calculateGlobalEffectiveness());
     }
 
     private Double calculateGlobalEffectiveness() {
@@ -64,6 +67,7 @@ public class ResourcesDTO {
                 .metal(withProduction(1200.0))
                 .crystal(withProduction(600.0))
                 .deuterium(withProduction(300.0))
+                .efficiency(1.0)
                 .energy(ResourceDTO.empty())
                 .build();
     }
@@ -111,6 +115,15 @@ public class ResourcesDTO {
         return ACCESSOR_MAP.keySet().stream()
                 .map(getter -> getter.apply(this))
                 .map(ResourceDTO::isEmpty)
+                .reduce(true, Boolean::logicalAnd);
+    }
+
+    @JsonIgnore
+    public boolean isEmpty(Function<ResourceDTO, Double>... extractor) {
+        return ACCESSOR_MAP.keySet().stream()
+                .map(getter -> getter.apply(this))
+                .flatMap(resourceDTO -> Arrays.stream(extractor).map(function -> function.apply(resourceDTO)))
+                .map(x -> x == 0.0)
                 .reduce(true, Boolean::logicalAnd);
     }
 

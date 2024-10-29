@@ -15,7 +15,7 @@
                     </p>,,STICKY" -->
     <div class="tbb_content {{width}}" style="color:white;"
          text-tooltip tooltipText="{{ tooltipText }}<br>{{type === 'energy' ? 'Всего' : 'Вместимость' }}: {{ resource.maxAmount | customNumber }}<br><br><small>Клик на иконку для просмотра деталей</small>">
-        <span id="metal" class="tbb_element res-icon res_{{type}}" style="color:{{ resource.getColor() }};">{{ resource.amount | customNumber }}</span>
+        <span class="tbb_element res-icon res_{{type}}" style="color:{{ resource.getColor() }};">{{ resource.amount | customNumber }}</span>
     </div>
     <div class="top_bar_next"></div>
 </ng-template>
@@ -163,7 +163,7 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <div><a href="resources.php" style="color:#eedc82;">Ресурсы</a></div>
+                            <div><a routerLink="/resources" style="color:#eedc82;">Ресурсы</a></div>
                         </td>
                     </tr>
                     <tr>

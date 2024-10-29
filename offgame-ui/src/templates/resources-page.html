@@ -1,0 +1,127 @@
+<ng-template #resourceRow
+             let-resources="resources">
+    <th class="k">
+        <b style="color: {{ getColor(resources.metal.productionPerHour) }}">{{ resources.metal.productionPerHour | customNumber }}</b>
+    </th>
+    <th class="k">
+        <b style="color: {{ getColor(resources.crystal.productionPerHour) }}">{{ resources.crystal.productionPerHour | customNumber }}</b>
+    </th>
+    <th class="k">
+        <b style="color: {{ getColor(resources.deuterium.productionPerHour) }}">{{ resources.deuterium.productionPerHour | customNumber }}</b>
+    </th>
+    <th class="k">
+        <b style="color: {{ getColor(resources.energy.amount) }}">{{ resources.energy.amount | customNumber }}</b>
+    </th>
+
+</ng-template>
+<ng-template #resourceProjectionRow
+             let-production="production"
+             let-resourceName="name">
+    <tr>
+        <th>{{ resourceName }}</th>
+        <th style="color: {{ getColor(production) }}">{{ production * 24          | customNumber }}</th>
+        <th style="color: {{ getColor(production) }}">{{ production * 24 * 7      | customNumber }}</th>
+        <th style="color: {{ getColor(production) }}">{{ production * 24 * 30 | customNumber }}</th>
+    </tr>
+</ng-template>
+<ng-template #storageStatusRow
+             let-resource="resource"
+             let-resourceName="name">
+    <tr>
+        <th text-tooltip tooltipText="Осталось до заполнения хранилища">
+            <span style="color: {{ calcGradient(resource.percentFilled) }}">{{ resource.fillTimeLeft | duration:':' }}</span>
+        </th>
+        <th>{{ resourceName }}</th>
+        <th>{{ resource.percentFilled * 100 | customNumber }}%</th>
+        <th>
+            <div style="border: 1px solid rgb(153, 153, 255); width: 250px;">
+                <div style="background-color: {{ calcGradient(resource.percentFilled) }}; width: {{ resource.percentFilled * 100 | customNumber }}%">
+                    &nbsp;
+                </div>
+            </div>
+        </th>
+    </tr>
+</ng-template>
+<div style="text-align: center; width: 750px">
+    <table>
+        <tbody>
+        <tr>
+            <td class="c" colspan="5">Производство на планете {{ resourcesDetails.planetName }} (единиц в час)</td>
+        </tr>
+        <tr>
+            <th height="22"></th>
+            <th style="width: 60px">Металл</th>
+            <th style="width: 60px">Кристалл</th>
+            <th style="width: 60px">Дейтерий</th>
+            <th style="width: 60px">Энергия</th>
+        </tr>
+        <tr *ngFor="let row of resourcesDetails.resourceDetails; let i = index">
+            <th height="22">{{ row.name ? row.name + ' (уровень ' + row.level + ')' : DEFAULT_PRODUCTION }} </th>
+            <ng-container *ngTemplateOutlet="resourceRow;context:{resources:row.resources}"/>
+            <ng-container *ngIf="row.id != null">
+                <th>
+                    <select size="1" [ngModel]="efficiencyInputs.get(row.id)" (ngModelChange)="efficiencyInputs.set(row.id, $event)">
+                        <ng-container *ngFor="let opt of Array.from(Array(11).keys()).slice().reverse()">
+                            <option value="{{ opt / 10 }}"> {{ opt * 10 }}%</option>
+                        </ng-container>
+                    </select>
+                </th>
+            </ng-container>
+        </tr>
+        <tr>
+            <th height="22">Общая выработка <span style="color:lime">в час</span></th>
+            <ng-container *ngTemplateOutlet="resourceRow;context:{resources:resourcesDetails.totalResources}"/>
+            <td class="k">
+                <input name="action" value="Применить" type="submit" (click)="applyNewEfficiency()"/>
+            </td>
+        </tr>
+        <tr>
+            <th height="22">Вместимость</th>
+            <td class="k" style="color: lime">{{ resourcesDetails.totalResources.metal.maxAmount | customNumber }}</td>
+            <td class="k" style="color: lime">{{ resourcesDetails.totalResources.crystal.maxAmount | customNumber }}</td>
+            <td class="k" style="color: lime">{{ resourcesDetails.totalResources.deuterium.maxAmount | customNumber }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <table>
+        <tbody>
+        <tr>
+            <td class="c" colspan="5">Информация о производстве</td>
+        </tr>
+        <tr>
+            <th>&nbsp;</th>
+            <th>За сутки</th>
+            <th>За неделю</th>
+            <th>За месяц</th>
+        </tr>
+        <ng-container *ngTemplateOutlet="resourceProjectionRow;context:{name:'Металл',production:resourcesDetails.totalResources.metal.productionPerHour}"/>
+        <ng-container *ngTemplateOutlet="resourceProjectionRow;context:{name:'Кристалл',production:resourcesDetails.totalResources.crystal.productionPerHour}"/>
+        <ng-container *ngTemplateOutlet="resourceProjectionRow;context:{name:'Дейтерий',production:resourcesDetails.totalResources.deuterium.productionPerHour}"/>
+        </tbody>
+    </table>
+    <br>
+    <table>
+        <tbody>
+        <tr>
+            <td class="c" colspan="4">Статус хранилища</td>
+        </tr>
+        <ng-container *ngTemplateOutlet="storageStatusRow;context:{name:'Металл',resource:resourcesDetails.totalResources.metal}"/>
+        <ng-container *ngTemplateOutlet="storageStatusRow;context:{name:'Кристалл',resource:resourcesDetails.totalResources.crystal}"/>
+        <ng-container *ngTemplateOutlet="storageStatusRow;context:{name:'Дейтерий',resource:resourcesDetails.totalResources.deuterium}"/>
+        <tr>
+            <th colspan="2" text-tooltip tooltipText="Эффективность добычи падает при отрицательном балансе энергии">
+                Эффективность добычи ресурсов
+            </th>
+            <th>{{ resourcesDetails.totalResources.globalEfficiency * 100 | customNumber }}%</th>
+            <th>
+                <div style="border: 1px solid rgb(153, 153, 255); width: 250px;">
+                    <div style="background-color: {{ calcGradient(resourcesDetails.totalResources.globalEfficiency, true) }}; width: {{ resourcesDetails.totalResources.globalEfficiency * 100 | customNumber }}%">
+                        &nbsp;
+                    </div>
+                </div>
+            </th>
+        </tr>
+        </tbody>
+    </table>
+</div>

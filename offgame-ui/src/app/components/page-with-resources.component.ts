@@ -76,10 +76,10 @@ export class PageWithResourcesComponent implements OnInit, OnDestroy {
     private initResourceSubscription() {
         return this.resourceService.getPlanetResources(this.user.activePlanet).subscribe({
             next: (data: Resources) => {
-                this.contextMetal = new Metal(data, "w_80");
-                this.contextCrystal = new Crystal(data, "w_80");
-                this.contextDeuterium = new Deuterium(data, "w_80");
-                this.contextEnergy = new Energy(data, "w_60");
+                this.contextMetal = new Metal(data, "w_100");
+                this.contextCrystal = new Crystal(data, "w_100");
+                this.contextDeuterium = new Deuterium(data, "w_100");
+                this.contextEnergy = new Energy(data, "w_70");
             }
         })
     }

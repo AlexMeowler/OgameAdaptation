@@ -6,7 +6,7 @@ export class Metal extends ResourceContext {
 
     constructor(data: Resources, widthStyle: string) {
         super(data, TYPE_METAL, widthStyle);
-        this.resource = new Resource(data.metal, data.globalEffectiveness);
+        this.resource = new Resource(data.metal, data.globalEfficiency);
         this.tooltip = 'Металл';
     }
 }

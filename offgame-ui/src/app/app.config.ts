@@ -26,5 +26,7 @@ export const appConfig: ApplicationConfig = {
     ]
 };
 
-export const ENERGY_DIFF_POSITIVE_TOOLTIP = "Будет произведено энергии при постройке следующего уровеня";
-export const ENERGY_DIFF_NEGATIVE_TOOLTIP = "Используется энергии при постройке следующего уровеня";
+export const ENERGY_DIFF_POSITIVE_TOOLTIP = "Будет произведено энергии при постройке следующего уровня";
+export const ENERGY_DIFF_NEGATIVE_TOOLTIP = "Используется энергии при постройке следующего уровня";
+
+export const DEFAULT_PRODUCTION = "Естественное производство";

@@ -26,6 +26,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
@@ -57,9 +58,9 @@ public class BuildingServiceImpl extends AbstractCrudService<Building, Long> imp
         Long level = buildingInstance.getLevel();
         long temperature = buildingInstance.getPlanet().getMaxTemperature();
         Building building = buildingInstance.getBuilding();
-        ResourcesDTO nextLevelInfo = building.getResourceInfo(level + 1, temperature, specialEntityLevels);
+        ResourcesDTO nextLevelInfo = building.getResourceInfo(level + 1, buildingInstance.getEfficiency(), temperature, specialEntityLevels);
         Double energyDiff = nextLevelInfo.copy()
-                .merge(building.getResourceInfo(level, temperature, specialEntityLevels).negate())
+                .merge(building.getResourceInfo(level, buildingInstance.getEfficiency(), temperature, specialEntityLevels).negate())
                 .getEnergy().amount();
         Double nextLevelStorageSize = building instanceof Storage
                 ? ((Storage) building).extractResourceInfo().apply(nextLevelInfo).maxAmount() : null;
@@ -93,7 +94,7 @@ public class BuildingServiceImpl extends AbstractCrudService<Building, Long> imp
 
         Map<Long, ResourcesDTO> productionByLevel = LongStream.range(a, b + 1)
                 .boxed()
-                .map(i -> Pair.of(i, building.getResourceInfo(i, temperature, specialEntityLevels)))
+                .map(i -> Pair.of(i, building.getResourceInfo(i, 1.0, temperature, specialEntityLevels)))
                 .filter(pair -> !pair.getSecond().isEmpty())
                 .collect(toMap(
                         Pair::getFirst,
@@ -119,6 +120,19 @@ public class BuildingServiceImpl extends AbstractCrudService<Building, Long> imp
                 .differenceByLevel(differenceByLevel)
                 .requirements(RequirementUtils.getRequirements(building.getRequirements(), specialEntityLevels))
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public void updateBuildingsEfficiency(Long planetId, Map<Long, Double> efficiencyMap) {
+        Map<Long, BuildingInstance> buildingInstanceMap = planetService.getPlanetInfo(planetId).getBuildings().stream()
+                .collect(toMap(
+                        buildingInstance -> buildingInstance.getBuilding().getId(),
+                        Function.identity()
+                ));
+
+        buildingInstanceMap.forEach((id, instance) -> instance.setEfficiency(efficiencyMap.getOrDefault(id, 1.0)));
+        buildingInstanceService.saveAll(buildingInstanceMap.values());
     }
 
     @Override

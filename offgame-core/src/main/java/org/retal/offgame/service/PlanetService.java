@@ -2,6 +2,7 @@ package org.retal.offgame.service;
 
 import org.retal.offgame.dto.PlanetItem;
 import org.retal.offgame.dto.ResourcesDTO;
+import org.retal.offgame.dto.ResourcesDetails;
 import org.retal.offgame.entity.Planet;
 import org.retal.offgame.entity.Upgradeable;
 
@@ -17,6 +18,8 @@ public interface PlanetService extends CrudService<Planet, Long> {
     List<PlanetItem> getPlanetItemList();
 
     ResourcesDTO getResourcesInfo(Long planetId);
+
+    ResourcesDetails getResourcesDetails(Long planetId);
 
     Map<Class<? extends Upgradeable>, Long> getSpecialEntityLevels(Long planetId);
 }

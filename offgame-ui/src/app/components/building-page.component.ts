@@ -5,7 +5,6 @@ import {TooltipDirective} from "./tooltip/tooltip.directive";
 import {BuildingInstance} from "../model/BuildingInstance";
 import {CustomNumberPipe} from "../pipes/CustomNumberPipe";
 import {DurationPipe} from "../pipes/DurationPipe";
-import {ENERGY_DIFF_NEGATIVE_TOOLTIP, ENERGY_DIFF_POSITIVE_TOOLTIP} from "../app.config";
 import {BuildingOrder} from "../model/BuildingOrder";
 import {Resources} from "../model/resource/Resources";
 import {Resource} from "../model/resource/Resource";
@@ -17,6 +16,7 @@ import {User} from "../model/User";
 import {UserService} from "../services/user.service";
 import {PlanetItem} from "../model/PlanetItem";
 import {Emittable} from "./emittable";
+import {ENERGY_DIFF_NEGATIVE_TOOLTIP, ENERGY_DIFF_POSITIVE_TOOLTIP} from "../app.config";
 
 @Component({
     selector: 'build-page',

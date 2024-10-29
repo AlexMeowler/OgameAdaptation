@@ -1,12 +1,8 @@
 package org.retal.offgame.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.retal.offgame.dto.PlanetItem;
-import org.retal.offgame.dto.ResourcesDTO;
-import org.retal.offgame.entity.Planet;
-import org.retal.offgame.entity.Resources;
-import org.retal.offgame.entity.Upgradeable;
-import org.retal.offgame.entity.User;
+import org.retal.offgame.dto.*;
+import org.retal.offgame.entity.*;
 import org.retal.offgame.entity.buildings.Building;
 import org.retal.offgame.entity.technologies.Technology;
 import org.retal.offgame.repository.PlanetRepository;
@@ -23,9 +19,7 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.AbstractMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -87,16 +81,20 @@ public class PlanetServiceImpl extends AbstractCrudService<Planet, Long> impleme
     public ResourcesDTO getResourcesInfo(Long planetId) {
         return planetRepository.findById(planetId)
                 .map(this::updateResources)
-                .get();
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND));
     }
 
     private ResourcesDTO updateResources(Planet planet) {
         Map<Class<? extends Upgradeable>, Long> specialBuildingLevels = getSpecialEntityLevels(planet.getId());
         Long temperature = planet.getMaxTemperature();
         ResourcesDTO totalProductionPerHourWithLimit = planet.getBuildings().stream()
-                .map(instance -> instance.getBuilding().getResourceInfo(instance.getLevel(), temperature, specialBuildingLevels))
-                .reduce(ResourcesDTO.defaultDTO(), ResourcesDTO::merge);
-        totalProductionPerHourWithLimit.setGlobalEffectiveness();
+                .map(instance -> instance.getBuilding().getResourceInfo(instance.getLevel(), instance.getEfficiency(), temperature, specialBuildingLevels))
+                .reduce(ResourcesDTO.empty(), ResourcesDTO::merge);
+        totalProductionPerHourWithLimit.setGlobalEfficiency();
+
+        double globalEfficiency = totalProductionPerHourWithLimit.getGlobalEfficiency();
+        adjustProductionPerHour(totalProductionPerHourWithLimit, globalEfficiency);
+        totalProductionPerHourWithLimit = totalProductionPerHourWithLimit.merge(ResourcesDTO.defaultDTO());
 
         Resources resources = planet.getResources();
         Duration duration = Duration.between(resources.getUpdatedAt(), Instant.now());
@@ -105,6 +103,51 @@ public class PlanetServiceImpl extends AbstractCrudService<Planet, Long> impleme
         resourcesRepository.save(resources);
 
         return totalProductionPerHourWithLimit.merge(resources.toDTO());
+    }
+
+    private void adjustProductionPerHour(ResourcesDTO resources, double globalEfficiency) {
+        resources.ACCESSOR_MAP.keySet().stream()
+                .map(getter -> getter.apply(resources))
+                .forEach(resourceDTO -> {
+                    if (resourceDTO.getProductionPerHour() > 0) {
+                        resourceDTO.setProductionPerHour(resourceDTO.getProductionPerHour() * globalEfficiency);
+                    }
+                });
+    }
+
+    @Override
+    @Transactional
+    public ResourcesDetails getResourcesDetails(Long planetId) {
+        Planet planet = getPlanetInfo(planetId);
+        ResourcesDTO totalResources = getResourcesInfo(planetId);
+        return ResourcesDetails.builder()
+                .planetName(planet.getName())
+                .resourceDetails(getResourceDetails(planet, totalResources.getGlobalEfficiency()))
+                .totalResources(totalResources)
+                .build();
+    }
+
+    private List<ResourceDetail> getResourceDetails(Planet planet, Double globalEfficiency) {
+        List<ResourceDetail> resourceDetails = new ArrayList<>();
+        resourceDetails.add(ResourceDetail.builder().resources(ResourcesDTO.defaultDTO()).build());
+
+        Map<Class<? extends Upgradeable>, Long> specialBuildingLevels = getSpecialEntityLevels(planet.getId());
+        Long temperature = planet.getMaxTemperature();
+        //TODO calc units
+        planet.getBuildings().stream()
+                .filter(instance -> instance.getLevel() > 0)
+                .filter(instance -> !instance.getBuilding().getResourceInfo(instance.getLevel(), 1.0, temperature, specialBuildingLevels).isEmpty(ResourceDTO::getProductionPerHour, ResourceDTO::getAmount))
+                .sorted(Comparator.comparingLong(BuildingInstance::getBuildingId))
+                .map(instance -> ResourceDetail.builder()
+                        .id(instance.getBuilding().getId())
+                        .name(instance.getBuilding().getName())
+                        .level(instance.getLevel())
+                        .resources(instance.getBuilding().getResourceInfo(instance.getLevel(), instance.getEfficiency(), temperature, specialBuildingLevels))
+                        .build())
+                .peek(detail -> adjustProductionPerHour(detail.getResources(), globalEfficiency))
+                .forEach(resourceDetails::add);
+
+        return resourceDetails;
     }
 
     @Override

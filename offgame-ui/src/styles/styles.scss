@@ -28,6 +28,10 @@ table table {
     border: 0
 }
 
+table {
+    width: 100%;
+}
+
 table table td {
     font-size: 10px;
     font-family: Tahoma, sans-serif
@@ -170,11 +174,15 @@ body form table th table input {
 }
 
 .top_bar_center .w_80 {
-    width: 79px
+    width: 80px
 }
 
 .top_bar_center .w_90 {
     width: 90px
+}
+
+.top_bar_center .w_100 {
+    width: 100px
 }
 
 .top_bar_center .tbb_content .tbb_element {

@@ -58,10 +58,9 @@ public class Resources {
 
     public void updateResources(ResourcesDTO total, Duration duration) {
         double hours = 1.0 * duration.getSeconds() / 3600;
-        Double productionEffectiveness = total.getGlobalEffectiveness();
-        setMetal(calcResource(getMetal(), total.getMetal(), hours, productionEffectiveness));
-        setCrystal(calcResource(getCrystal(), total.getCrystal(), hours, productionEffectiveness));
-        setDeuterium(calcResource(getDeuterium(), total.getDeuterium(), hours, productionEffectiveness));
+        setMetal(calcResource(getMetal(), total.getMetal(), hours));
+        setCrystal(calcResource(getCrystal(), total.getCrystal(), hours));
+        setDeuterium(calcResource(getDeuterium(), total.getDeuterium(), hours));
     }
 
     public void updateResources(ResourcesDTO diff) {
@@ -70,8 +69,11 @@ public class Resources {
         setDeuterium(getDeuterium() + diff.getDeuterium().amount());
     }
 
-    private double calcResource(Double current, ResourceDTO resourceDTO, double hours, double effectiveness) {
-        double newValue = current + resourceDTO.productionPerHour() * hours * effectiveness;
-        return max(current, min(resourceDTO.maxAmount(), newValue));
+    private double calcResource(Double current, ResourceDTO resourceDTO, double hours) {
+        double production = resourceDTO.getProductionPerHour();
+        double newValue = current + production * hours;
+        return production > 0
+                ? max(current, min(resourceDTO.maxAmount(), newValue))
+                : max(0, newValue);
     }
 }

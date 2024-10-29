@@ -58,6 +58,11 @@
             <column name="building_id" value="9"/>
             <column name="level" value="1"/>
         </insert>
+        <insert tableName="building_instance">
+            <column name="planet_id" value="1"/>
+            <column name="building_id" value="11"/>
+            <column name="level" value="5"/>
+        </insert>
 
         <insert tableName="planet">
             <column name="owner_id" value="${ADMIN_ID}"/>

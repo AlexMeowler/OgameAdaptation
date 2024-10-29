@@ -6,7 +6,7 @@ export class Deuterium extends ResourceContext {
 
     constructor(data: Resources, widthStyle: string) {
         super(data, TYPE_DEUTERIUM, widthStyle);
-        this.resource = new Resource(data.deuterium, data.globalEffectiveness);
+        this.resource = new Resource(data.deuterium, data.globalEfficiency);
         this.tooltip = 'Дейтерий';
     }
 }

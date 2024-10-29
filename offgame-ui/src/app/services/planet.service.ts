@@ -46,4 +46,12 @@ export class PlanetService {
             return data.map((object: any) => new TechnologyInstance(object))
         }))
     }
+
+    changeEfficiency(planetId:number, efficiencyInputs: Map<number, string>) {
+        let params: Record<number, string> = {}
+        efficiencyInputs.forEach((val: string, key: number) => {
+            params[key] = val;
+        });
+        return this.http.post(`${apiUrl}/planet/${planetId}/resources/efficiency`, params)
+    }
 }

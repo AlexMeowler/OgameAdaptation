@@ -6,7 +6,7 @@ export class Energy extends ResourceContext {
 
     constructor(data: Resources, widthStyle: string) {
         super(data, TYPE_ENERGY, widthStyle);
-        this.resource = new Resource(data.energy, data.globalEffectiveness, this.getColor);
+        this.resource = new Resource(data.energy, data.globalEfficiency, this.getColor);
         this.tooltip = 'Энергия';
     }
 

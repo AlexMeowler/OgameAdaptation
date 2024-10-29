@@ -12,7 +12,7 @@ import java.util.Set;
 @Table(name = "building_instance")
 @Getter
 @Setter
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class BuildingInstance {
@@ -37,12 +37,14 @@ public class BuildingInstance {
     @Column
     private Long level;
 
+    @Column
+    private Double efficiency = 1.0;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "buildingInstance")
     @JsonIgnore
     private Set<BuildingOrder> orders;
 
-    public BuildingInstance incrementLevel() {
-        setLevel(getLevel() + 1);
-        return this;
+    public static BuildingInstanceBuilder builder() {
+        return new BuildingInstance().toBuilder();
     }
 }

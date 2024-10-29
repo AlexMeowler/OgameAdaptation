@@ -13,8 +13,8 @@
              let-stock="planetStock">
     <span *ngIf="cost.amount > 0">{{ resName }}: <b style="color: {{  getColor(hasResource(cost, stock)) }}">{{ cost.amount | customNumber }}&nbsp;</b></span>
 </ng-template>
-<div>
-    <table width="750">
+<div style="text-align: center; width: 750px">
+    <table>
         <tbody>
         <tr>
             <td class="c"> {{ building.name }}</td>

@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {apiUrl} from "../app.config";
 import {map, Observable, Subject} from "rxjs";
 import {Resources} from "../model/resource/Resources";
+import {ResourcesDetails} from "../model/resource/ResourcesDetails";
 
 @Injectable({
     providedIn: 'root'
@@ -34,5 +35,11 @@ export class ResourceService {
                 planetResources?.next(data)
             }
         })
+    }
+
+    getPlanetResourcesDetails(planetId: number): Observable<ResourcesDetails> {
+        return this.http.get(`${apiUrl}/planet/${planetId}/resources/details`).pipe(map((data: any) => {
+            return new ResourcesDetails(data)
+        }))
     }
 }

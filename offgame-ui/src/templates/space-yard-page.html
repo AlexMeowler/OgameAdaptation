@@ -73,7 +73,7 @@
                     <span *ngIf="!canBuild(obj)" style="color: red">Недостаточно ресурсов!</span>
                     <ng-container *ngIf="canBuild(obj)">
                         <div class="do_order"><input type="submit" value="Заказ" (click)="createOrder(obj.unit.id, i)"></div>
-                        <input [(ngModel)]="amountInputs[i]" type="text" alt="Солнечный спутник" size="5" maxlength="5" value="0" tabindex="1" onfocus="if(this.value === '0') this.value='';" onblur="if(this.value === '') this.value='0';">
+                        <input [(ngModel)]="amountInputs[i]" type="text" alt="{{ obj.unit.name }}" size="5" maxlength="5" value="0" tabindex="1" onfocus="if(this.value === '0') this.value='';" onblur="if(this.value === '') this.value='0';">
                     </ng-container>
                 </ng-container>
                 <ng-container *ngIf="obj.requirements.length !== 0">

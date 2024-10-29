@@ -6,6 +6,7 @@ import {RequirementsComponent} from "./components/requirements-page.component";
 import {ResearchDetailsComponent} from "./components/research-details.component";
 import {SpaceYardComponent} from "./components/space-yard.component";
 import {UnitDetailsComponent} from "./components/unit-details.component";
+import {ResourcesPageComponent} from "./components/resources-page.component";
 
 export const routes: Routes = [
     {path: "buildings", component: BuildComponent},
@@ -16,5 +17,6 @@ export const routes: Routes = [
     {path: "ship-yard", component: SpaceYardComponent, data: {type: "fleet"}},
     {path: "defense-yard", component: SpaceYardComponent, data: {type: "defense"}},
     {path: "units/:id", component: UnitDetailsComponent},
+    {path: "resources", component: ResourcesPageComponent},
     {path: "**", redirectTo: "/buildings"}
 ];

@@ -93,8 +93,10 @@ public class Building extends Upgradeable {
         return ResourcesDTO.empty();
     }
 
-    public ResourcesDTO getResourceInfo(long level, long temperature, Map<Class<? extends Upgradeable>, Long> specialBuildingLevels) {
-        return getProductionPerHour(level, temperature, specialBuildingLevels);
+    public ResourcesDTO getResourceInfo(long level, double efficiency, long temperature, Map<Class<? extends Upgradeable>, Long> specialBuildingLevels) {
+        ResourcesDTO resourceInfo = getProductionPerHour(level, temperature, specialBuildingLevels).multiplyBy(efficiency);
+        resourceInfo.setEfficiency(efficiency);
+        return resourceInfo;
     }
 
     //todo building activation filter with function implementation (if building should be active or not)

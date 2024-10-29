@@ -23,9 +23,9 @@ public class ResourcesDTOTest {
     @MethodSource("provideEnergyResource")
     public void testCalcResource(ResourceDTO energy, Double expected) {
         resourcesDTO.setEnergy(energy);
-        resourcesDTO.setGlobalEffectiveness();
+        resourcesDTO.setGlobalEfficiency();
 
-        Double effectiveness = resourcesDTO.getGlobalEffectiveness();
+        Double effectiveness = resourcesDTO.getGlobalEfficiency();
 
         Assertions.assertEquals(expected, effectiveness);
     }
