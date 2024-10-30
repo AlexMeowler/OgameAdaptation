@@ -29,7 +29,7 @@ import static org.retal.offgame.dto.ResourceDTO.withAmount;
 @DiscriminatorColumn(name = "id", discriminatorType = DiscriminatorType.INTEGER)
 public class Unit {
 
-    public static final int RESOURCE_PRODUCTION_MULTIPLIER = 1;
+    private static final int CONSTRUCTION_SPEED_MULTIPLIER = 2;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -107,7 +107,7 @@ public class Unit {
     public Double calculateBuildingTime(Map<Class<? extends Upgradeable>, Long> specialBuildingLevels) {
         Long spaceYardLevel = specialBuildingLevels.get(SpaceYard.class);
         Long naniteFactoryLevel = specialBuildingLevels.get(NaniteFactory.class);
-        return calculateBuildingTime(getBuildingCost()) / (spaceYardLevel + 1) * pow(0.5, naniteFactoryLevel);
+        return calculateBuildingTime(getBuildingCost()) / (spaceYardLevel + 1) * pow(0.5, naniteFactoryLevel) / CONSTRUCTION_SPEED_MULTIPLIER;
     }
 
     private Double calculateBuildingTime(ResourcesDTO buildingCost) {

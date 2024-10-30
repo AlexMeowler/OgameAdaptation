@@ -20,7 +20,7 @@ public class FusionPowerPlant extends Building {
     public ResourcesDTO getProductionPerHour(long level, long temperature, Map<Class<? extends Upgradeable>, Long> specialBuildingLevels) {
         double production = 30 * level * pow(1.05 + 0.01 * specialBuildingLevels.get(EnergyTechnology.class), level);
         return ResourcesDTO.builder()
-                .deuterium(withProduction(-10 * level * pow(1.1, level)))
+                .deuterium(withProduction(-20 * level * pow(1.1, level)))
                 .energy(new ResourceDTO(production, 0.0, production))
                 .build();
     }

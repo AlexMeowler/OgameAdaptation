@@ -26,7 +26,8 @@ import static java.lang.Math.pow;
 @DiscriminatorColumn(name = "id", discriminatorType = DiscriminatorType.INTEGER)
 public class Building extends Upgradeable {
 
-    public static final int RESOURCE_PRODUCTION_MULTIPLIER = 1;
+    private static final int RESOURCE_PRODUCTION_MULTIPLIER = 4; // 4 for elite uni, 2 for prime uni
+    private static final int BUILD_SPEED_MULTIPLIER = 2;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -75,7 +76,7 @@ public class Building extends Upgradeable {
     public Double calculateBuildingTime(Long level, Map<Class<? extends Upgradeable>, Long> specialBuildingLevels) {
         Long robotFactoryLevel = specialBuildingLevels.get(RobotFactory.class);
         Long naniteFactoryLevel = specialBuildingLevels.get(NaniteFactory.class);
-        return calculateBuildingTime(calculateBuildingCost(level)) / (robotFactoryLevel + 1) * pow(0.5, naniteFactoryLevel);
+        return calculateBuildingTime(calculateBuildingCost(level)) / (robotFactoryLevel + 1) * pow(0.5, naniteFactoryLevel) / BUILD_SPEED_MULTIPLIER;
     }
 
     private Double calculateBuildingTime(ResourcesDTO buildingCost) {

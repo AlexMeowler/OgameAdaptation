@@ -27,7 +27,7 @@ import static java.lang.Math.pow;
 @DiscriminatorColumn(name = "id", discriminatorType = DiscriminatorType.INTEGER)
 public class Technology extends Upgradeable {
 
-    public static final int RESOURCE_PRODUCTION_MULTIPLIER = 1;
+    private static final int RESEARCH_SPEED_MULTIPLIER = 2;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -75,7 +75,7 @@ public class Technology extends Upgradeable {
     @Override
     public Double calculateBuildingTime(Long level, Map<Class<? extends Upgradeable>, Long> specialBuildingLevels) {
         Long researchLabLevel = specialBuildingLevels.get(ResearchLaboratory.class);
-        return calculateBuildingTime(calculateBuildingCost(level)) / (researchLabLevel + 1);
+        return calculateBuildingTime(calculateBuildingCost(level)) / (researchLabLevel + 1) / RESEARCH_SPEED_MULTIPLIER;
     }
 
     private Double calculateBuildingTime(ResourcesDTO buildingCost) {
