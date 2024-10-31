@@ -12,6 +12,9 @@
             <column name="base_fields" value="150"/>
             <column name="min_temperature" value="-10"/>
             <column name="max_temperature" value="30"/>
+            <column name="galaxy" value="1"/>
+            <column name="system" value="59"/>
+            <column name="position" value="4"/>
             <column name="created_at" value="NOW()"/>
             <column name="image_name" value="5.jpg"/>
         </insert>
@@ -71,6 +74,9 @@
             <column name="base_fields" value="150"/>
             <column name="min_temperature" value="-10"/>
             <column name="max_temperature" value="30"/>
+            <column name="galaxy" value="1"/>
+            <column name="system" value="59"/>
+            <column name="position" value="5"/>
             <column name="created_at" value="NOW()"/>
             <column name="image_name" value="10.jpg"/>
         </insert>
@@ -90,6 +96,9 @@
             <column name="base_fields" value="150"/>
             <column name="min_temperature" value="-10"/>
             <column name="max_temperature" value="30"/>
+            <column name="galaxy" value="1"/>
+            <column name="system" value="59"/>
+            <column name="position" value="6"/>
             <column name="created_at" value="NOW()"/>
             <column name="image_name" value="15.jpg"/>
         </insert>

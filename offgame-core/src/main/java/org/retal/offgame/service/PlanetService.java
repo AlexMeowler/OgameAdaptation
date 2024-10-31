@@ -17,6 +17,8 @@ public interface PlanetService extends CrudService<Planet, Long> {
 
     List<PlanetItem> getPlanetItemList();
 
+    List<PlanetItem> getPlanetsInSystem(Long galaxy, Long system);
+
     ResourcesDTO getResourcesInfo(Long planetId);
 
     ResourcesDetails getResourcesDetails(Long planetId);

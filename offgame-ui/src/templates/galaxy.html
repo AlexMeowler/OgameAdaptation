@@ -1,0 +1,129 @@
+<ng-template #planetRow
+             let-index="index"
+             let-planet="planet">
+    <tr>
+        <th style="width: 30px"> <!-- TODO planet size info tooltip -->
+            <a href="fleet.php?galaxy=2&amp;system=229&amp;planet=6&amp;planettype=1&amp;target_mission=7">{{ index }}</a>
+        </th>
+        <ng-container *ngIf="planet">
+            <th style="width: 30px"> <!-- TODO planet menu tooltip -->
+                <a><img ngSrc="/img/celestial/planet/{{ planet.imageName }}" height="32" width="32" alt="{{ planet.imageName }}"></a>
+            </th>
+            <th style="white-space: nowrap; width: 130px">{{ planet.name }}</th>
+            <th style="white-space: nowrap; width: 30px"> <!-- TODO moons -->
+                <!--<a><img src="/skins/epsilon/planeten/32x32/moon01.jpg" height="22" width="22"></a>-->
+            </th>
+            <th style="white-space: nowrap; width: 30px"></th>
+            <th style="width: 150px">
+                <a><br>TODO OWNER NAME</a>
+            </th>
+            <th style="white-space: nowrap; width: 125px"> <!-- TODO actions -->
+                <!-- <a href="#" onclick="javascript:doit(6, 2, 229, 6, 1, 1);">
+                    <img src="/skins/epsilon/img/e.png" alt="Шпионаж" js-title="Шпионаж" border="0">
+                </a>&nbsp;
+                <a href="messages.php?mode=write&amp;id=45387">
+                    <img src="/skins/epsilon/img/but_m.png" alt="Послать сообщение" js-title="Послать сообщение" border="0">
+                </a>&nbsp;
+                <a href="contacts.php?action=add&amp;uid=45387" onclick="user_relation('add', 'buddy', 45387); return false;">
+                    <img src="/skins/epsilon/img/b.png" alt="Добавить в друзья" js-title="Добавить в друзья" border="0"></a>&nbsp;
+                <a href="user.php?uid=45387">
+                    <img src="/skins/epsilon/img/i.png" alt="Инфо" js-title="Информация об игроке" border="0">
+                </a>&nbsp; -->
+            </th>
+        </ng-container>
+        <ng-container *ngIf="!planet">
+            <th style="width: 30px"></th>
+            <th style="white-space: nowrap; width: 130px"></th>
+            <th style="white-space: nowrap; width: 30px"></th>
+            <th style="white-space: nowrap; width: 30px"></th>
+            <th style="width: 150px"></th>
+            <th style="white-space: nowrap; width: 125px"></th>
+        </ng-container>
+    </tr>
+</ng-template>
+<div style="text-align: center; width: 750px">
+    <table style="width: auto; margin: auto">
+        <tbody>
+        <tr>
+            <td>
+                <table>
+                    <tbody>
+                    <tr>
+                        <td class="c" colspan="3">Галактика</td>
+                    </tr>
+                    <tr>
+                        <td class="l"><input value="<-" (click)="navigateTo(Number(galaxy) - 1, Number(system))" type="button"></td>
+                        <td class="l"><input [(ngModel)]="galaxyInput" size="5" maxlength="3" type="text"></td>
+                        <td class="l"><input value="->" (click)="navigateTo(Number(galaxy) + 1, Number(system))" type="button"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+            <td>
+                <table>
+                    <tbody>
+                    <tr>
+                        <td class="c" colspan="3">Система</td>
+                    </tr>
+                    <tr>
+                        <td class="l"><input value="<-" (click)="navigateTo(Number(galaxy), Number(system) - 1)" type="button"></td>
+                        <td class="l"><input [(ngModel)]="systemInput" size="5" maxlength="3" type="text"></td>
+                        <td class="l"><input value="->" (click)="navigateTo(Number(galaxy), Number(system) + 1)" type="button"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td class="l" colspan="2" align="center">
+                <input value="Просмотр" type="submit" (click)="navigateTo(galaxyInput, systemInput)">
+                <span style="float:right">Дейтерия на планете: <font color="#4dc6ff">8.956</font>
+                </span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <table>
+        <tbody>
+        <tr>
+            <td class="c" colspan="7">Звёздная система {{ this.galaxy }}:{{ this.system }}</td>
+        </tr>
+        <tr>
+            <td class="c">Поз</td>
+            <td class="c">Планета</td>
+            <td class="c">Название</td>
+            <td class="c">Луна</td>
+            <td class="c">Поле обломков</td>
+            <td class="c">Игрок</td>
+            <td class="c">Действия</td>
+        </tr>
+        <ng-container *ngFor="let item of [].constructor(15); let i = index">
+            <ng-container *ngTemplateOutlet="planetRow;context:{index:i+1,planet:planetMap.has(i + 1) ? planetMap.get(i + 1) : undefined}"/>
+        </ng-container>
+        <tr>
+            <th style="width: 30px">16</th>
+            <th colspan="7"><a
+                    href="fleet.php?galaxy=2&amp;system=229&amp;planet=16;planettype=1&amp;target_mission=15">Отправить
+                экспедицию</a></th>
+        </tr>
+        <tr> <!-- TODO map generator -->
+            <td class="c" colspan="6">( 10 обитаемых планет )<a href="/map.png" class="fright" target="_blank">Карта</a>
+            </td>
+            <td class="c" colspan="2"></td>
+        </tr>
+        <tr> <!-- TODO planet / player statistics -->
+            <td class="c" colspan="3"><span id="missiles">0</span> межпланетных ракет</td>
+            <td class="c" colspan="3"><span id="slots">0</span>/3 Флотов</td>
+            <td class="c" colspan="2"><span id="recyclers">0</span> переработчиков<br><span id="probes">10</span>
+                шпионских зондов
+            </td>
+        </tr>
+        <tr style="display: none;" id="fleetstatusrow"> <!-- TODO for menu -->
+            <th class="c" colspan="8"><!--<div id="fleetstatus"></div>-->
+                <table style="font-weight: bold" width="100%" id="fleetstatustable">
+                    <!-- will be filled with content later on while processing ajax replys --></table>
+            </th>
+        </tr>
+        </tbody>
+    </table>
+</div>

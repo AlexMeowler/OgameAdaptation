@@ -7,6 +7,7 @@ import {ResearchDetailsComponent} from "./components/research-details.component"
 import {SpaceYardComponent} from "./components/space-yard.component";
 import {UnitDetailsComponent} from "./components/unit-details.component";
 import {ResourcesPageComponent} from "./components/resources-page.component";
+import {GalaxyComponent} from "./components/galaxy.component";
 
 export const routes: Routes = [
     {path: "buildings", component: BuildComponent},
@@ -18,5 +19,6 @@ export const routes: Routes = [
     {path: "defense-yard", component: SpaceYardComponent, data: {type: "defense"}},
     {path: "units/:id", component: UnitDetailsComponent},
     {path: "resources", component: ResourcesPageComponent},
+    {path: "galaxy", component: GalaxyComponent},
     {path: "**", redirectTo: "/buildings"}
 ];

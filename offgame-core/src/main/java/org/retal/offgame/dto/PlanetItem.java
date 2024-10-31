@@ -16,4 +16,7 @@ public class PlanetItem {
     private Long totalFields;
     private Long minTemperature;
     private Long maxTemperature;
+    private Long galaxy;
+    private Long system;
+    private Long position;
 }

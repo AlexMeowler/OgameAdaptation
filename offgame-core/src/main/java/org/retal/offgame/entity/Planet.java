@@ -50,6 +50,15 @@ public class Planet {
     @Column(insertable = false, updatable = false)
     private Long maxTemperature;
 
+    @Column
+    private Long galaxy;
+
+    @Column
+    private Long system;
+
+    @Column
+    private Long position;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "planet")
     @JsonIgnore
     private Set<BuildingInstance> buildings;

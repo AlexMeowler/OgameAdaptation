@@ -45,8 +45,9 @@ export class PageWithResourcesComponent implements OnInit, OnDestroy {
     contextDeuterium!: ResourceContext
     contextEnergy!: ResourceContext
 
-    planetListSubscription: Subscription
+    planetListSubscription!: Subscription
     planetList: PlanetItem[] = []
+    activePlanet!: PlanetItem
 
     userSubscription: Subscription
     user!: User
@@ -60,15 +61,19 @@ export class PageWithResourcesComponent implements OnInit, OnDestroy {
             next: (data?: User) => {
                 if (data) {
                     this.user = data;
-                    this.resourceService.updateResources(this.user.activePlanet);
-                    this.resourcesSubscription = this.initResourceSubscription();
+                    this.planetListSubscription = this.initPlanetListSubscription()
+                    this.resourceService.updateResources(this.user.activePlanet)
+                    this.resourcesSubscription = this.initResourceSubscription()
                 }
             }
         })
+    }
 
-        this.planetListSubscription = this.userService.getPlanetList().subscribe({
+    private initPlanetListSubscription() {
+        return  this.userService.getPlanetList().subscribe({
             next: (data: PlanetItem[]) => {
                 this.planetList = data;
+                this.activePlanet = this.planetList.filter(pl => pl.id === this.user.activePlanet)[0]
             }
         })
     }

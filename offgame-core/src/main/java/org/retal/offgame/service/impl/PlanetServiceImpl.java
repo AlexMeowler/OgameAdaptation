@@ -62,6 +62,14 @@ public class PlanetServiceImpl extends AbstractCrudService<Planet, Long> impleme
                 .orElse(emptyList());
     }
 
+    @Override
+    @Transactional
+    public List<PlanetItem> getPlanetsInSystem(Long galaxy, Long system) {
+        return planetRepository.findByGalaxyAndSystemOrderByPositionAsc(galaxy, system).stream()
+                .map(this::toPlanetItem)
+                .collect(toList());
+    }
+
     private PlanetItem toPlanetItem(Planet planet) {
         Map<Class<? extends Upgradeable>, Long> specialEntityLevels = getSpecialEntityLevels(planet.getId());
 
@@ -73,6 +81,9 @@ public class PlanetServiceImpl extends AbstractCrudService<Planet, Long> impleme
                 .usedFields(planet.getUsedFields(specialEntityLevels))
                 .minTemperature(planet.getMinTemperature())
                 .maxTemperature(planet.getMaxTemperature())
+                .galaxy(planet.getGalaxy())
+                .system(planet.getSystem())
+                .position(planet.getPosition())
                 .build();
     }
 
