@@ -142,6 +142,7 @@ export class ResearchComponent extends Emittable implements OnDestroy {
         this.resourcesSubscription.unsubscribe();
         this.userSubscription.unsubscribe();
         this.planetNamesSubscription.unsubscribe();
+        clearInterval(this.currentResearchTimer);
     }
 
     canBuild(technologyInstance: TechnologyInstance): boolean {

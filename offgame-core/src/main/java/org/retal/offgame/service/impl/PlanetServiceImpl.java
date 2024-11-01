@@ -33,7 +33,6 @@ public class PlanetServiceImpl extends AbstractCrudService<Planet, Long> impleme
 
     private final PlanetRepository planetRepository;
     private final ResourcesRepository resourcesRepository;
-
     private final UserService userService;
 
     @Override

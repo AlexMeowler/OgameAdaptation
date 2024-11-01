@@ -29,13 +29,13 @@
              let-resourceName="name">
     <tr>
         <th text-tooltip tooltipText="Осталось до заполнения хранилища">
-            <span style="color: {{ calcGradient(resource.percentFilled) }}">{{ resource.fillTimeLeft | duration:':' }}</span>
+            <span style="color: {{ UtilService.calcGradient(resource.percentFilled) }}">{{ resource.fillTimeLeft | duration:':' }}</span>
         </th>
         <th>{{ resourceName }}</th>
         <th>{{ resource.percentFilled * 100 | customNumber }}%</th>
         <th>
             <div style="border: 1px solid rgb(153, 153, 255); width: 250px;">
-                <div style="background-color: {{ calcGradient(resource.percentFilled) }}; width: {{ resource.percentFilled * 100 | customNumber }}%">
+                <div style="background-color: {{ UtilService.calcGradient(resource.percentFilled) }}; width: {{ resource.percentFilled * 100 | customNumber }}%">
                     &nbsp;
                 </div>
             </div>
@@ -110,13 +110,13 @@
         <ng-container *ngTemplateOutlet="storageStatusRow;context:{name:'Кристалл',resource:resourcesDetails.totalResources.crystal}"/>
         <ng-container *ngTemplateOutlet="storageStatusRow;context:{name:'Дейтерий',resource:resourcesDetails.totalResources.deuterium}"/>
         <tr>
-            <th colspan="2" text-tooltip tooltipText="Эффективность добычи падает при отрицательном балансе энергии">
+            <th style="width: 50%" colspan="2" text-tooltip tooltipText="Эффективность добычи падает при отрицательном балансе энергии">
                 Эффективность добычи ресурсов
             </th>
-            <th>{{ resourcesDetails.totalResources.globalEfficiency * 100 | customNumber }}%</th>
+            <th style="width: 16%">{{ resourcesDetails.totalResources.globalEfficiency * 100 | customNumber }}%</th>
             <th>
                 <div style="border: 1px solid rgb(153, 153, 255); width: 250px;">
-                    <div style="background-color: {{ calcGradient(resourcesDetails.totalResources.globalEfficiency, true) }}; width: {{ resourcesDetails.totalResources.globalEfficiency * 100 | customNumber }}%">
+                    <div style="background-color: {{ UtilService.calcGradient(resourcesDetails.totalResources.globalEfficiency, true) }}; width: {{ resourcesDetails.totalResources.globalEfficiency * 100 | customNumber }}%">
                         &nbsp;
                     </div>
                 </div>

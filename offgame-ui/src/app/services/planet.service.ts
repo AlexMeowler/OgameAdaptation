@@ -6,6 +6,7 @@ import {BuildingInstance} from "../model/BuildingInstance";
 import {TechnologyInstance} from "../model/TechnologyInstance";
 import {UnitInstance} from "../model/UnitInstance";
 import {PlanetItem} from "../model/PlanetItem";
+import {PlanetOverview} from "../model/PlanetOverview";
 
 @Injectable({
     providedIn: 'root'
@@ -22,6 +23,12 @@ export class PlanetService {
     getPlanetInfo(planetId:number) {
         return this.http.get(`${apiUrl}/planet/${planetId}`).pipe(map((data: any) => {
             return new PlanetItem(data)
+        }))
+    }
+
+    getPlanetOverview(planetId:number) {
+        return this.http.get(`${apiUrl}/planet/${planetId}/overview`).pipe(map((data: any) => {
+            return new PlanetOverview(data)
         }))
     }
 

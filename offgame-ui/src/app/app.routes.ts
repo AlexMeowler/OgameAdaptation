@@ -8,8 +8,10 @@ import {SpaceYardComponent} from "./components/space-yard.component";
 import {UnitDetailsComponent} from "./components/unit-details.component";
 import {ResourcesPageComponent} from "./components/resources-page.component";
 import {GalaxyComponent} from "./components/galaxy.component";
+import {OverviewPageComponent} from "./components/overview-page.component";
 
 export const routes: Routes = [
+    {path: "overview", component: OverviewPageComponent},
     {path: "buildings", component: BuildComponent},
     {path: "buildings/:id", component: BuildingDetailsComponent},
     {path: "research", component: ResearchComponent},

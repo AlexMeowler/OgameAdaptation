@@ -55,7 +55,7 @@ export class BuildingDetailsComponent implements OnDestroy {
                     this.user = data
                     this.resourceService.updateResources(this.user.activePlanet);
                     this.resourcesSubscription = this.initResourceSubscription();
-                    this.initBuildingDetails(activateRoute, buildingService)
+                    this.initBuildingDetails(activateRoute)
                 }
             }
         })
@@ -69,9 +69,9 @@ export class BuildingDetailsComponent implements OnDestroy {
         })
     }
 
-    private initBuildingDetails(activateRoute: ActivatedRoute, buildingService: BuildingService) {
+    private initBuildingDetails(activateRoute: ActivatedRoute) {
         this.routeParamsSubscription = activateRoute.paramMap
-            .pipe(switchMap((params: ParamMap) => buildingService.getBuildingDetails(this.user.activePlanet, Number(params.get("id")))))
+            .pipe(switchMap((params: ParamMap) => this.buildingService.getBuildingDetails(this.user.activePlanet, Number(params.get("id")))))
             .subscribe({
                 next: (data: BuildingDetails) => {
                     this.building = data

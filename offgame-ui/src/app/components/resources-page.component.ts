@@ -13,6 +13,7 @@ import {ResourcesDetails} from "../model/resource/ResourcesDetails";
 import {FormsModule} from "@angular/forms";
 import {DurationPipe} from "../pipes/DurationPipe";
 import {TooltipDirective} from "./tooltip/tooltip.directive";
+import {UtilService} from "../services/util.service";
 
 @Component({
     selector: 'resources-page',
@@ -102,27 +103,6 @@ export class ResourcesPageComponent extends Emittable implements OnDestroy {
         })
     }
 
-    calcGradient(weight: number, inverse?: boolean) {
-        let colorA = {
-            red: 0,
-            green: 255,
-            blue: 0
-        }
-        let colorB = {
-            red: 255,
-            green: 0,
-            blue: 0
-        }
-        let w1 = inverse ? weight : 1 - weight ;
-        let w2 = 1 - w1
-        let result = {
-            red: Math.round(colorA.red * w1 + colorB.red * w2),
-            green: Math.round(colorA.green * w1 + colorB.green * w2),
-            blue: Math.round(colorA.blue * w1 + colorB.blue * w2)
-        }
-        return `rgb(${result.red}, ${result.green}, ${result.blue})`
-    }
-
     ngOnDestroy(): void {
         this.resourcesSubscription.unsubscribe();
         this.userSubscription.unsubscribe();
@@ -131,4 +111,5 @@ export class ResourcesPageComponent extends Emittable implements OnDestroy {
     protected readonly DEFAULT_PRODUCTION = DEFAULT_PRODUCTION;
     protected readonly Array = Array;
     protected readonly map = map;
+    protected readonly UtilService = UtilService;
 }
